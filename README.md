@@ -1,8 +1,9 @@
 ﻿# RoboCoach
 
 ```shell
-npm install -g webpack
-npm install -g jsx-typescript
+$ npm install -g webpack
+$ npm install -g jsx-typescript
+$ npm install -g firebase-tools
 ```
 
 ## Technology stack:
