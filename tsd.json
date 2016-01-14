@@ -1,0 +1,42 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "./typings/tsd.d.ts",
+  "installed": {
+    "react/react-addons-test-utils.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-addons-update.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-addons-transition-group.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-addons-perf.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-addons-css-transition-group.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-addons-linked-state-mixin.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "react/react-dom.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "flux/flux.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "node/node.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    },
+    "jasmine/jasmine.d.ts": {
+      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+    }
+  }
+}

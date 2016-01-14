@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "sourceMap": true,
+        "jsx": "react"
+    },
+    "files": [
+        "./js/ActionCreators/CommonActionCreators.ts",
+        "./js/Actions/AppLoadedAction.ts",
+        "./js/Actions/IAction.ts",
+        "./js/Actions/SayHelloAction.ts",
+        "./js/Dispatcher/Dispatcher.ts",
+        "./js/Log/ActionLogEntry.ts",
+        "./js/Log/ActionLogger.ts",
+        "./js/Stores/BaseStore.ts",
+        "./js/Stores/CommonStore.ts",
+        "./js/App.tsx",
+        "./js/Components/ContentPage/__tests__/ContentPage-test.tsx",
+        "./js/Components/ContentPage/ContentBody/ContentBody.tsx",
+        "./js/Components/ContentPage/ContentHeader/ContentHeader.tsx",
+        "./js/Components/ContentPage/ContentPage.tsx",
+        "./js/Components/HelloWorld/HelloWorld.tsx",
+        "./js/Index.tsx",
+        "./typings/tsd.d.ts"
+    ],
+    "filesGlob": [
+        "./js/**/*.ts",
+        "./js/**/*.tsx",
+        "./typings/tsd.d.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
