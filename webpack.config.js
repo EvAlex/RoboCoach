@@ -4,6 +4,7 @@ var path = require("path");
 var webpackShared = require("./webpack.shared");
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var nodeModulesPath = path.join(__dirname, 'node_modules');
 
@@ -14,7 +15,10 @@ var config = {
     vendors: [
       'flux',
       'react',
-      'react-dom'
+      'react-dom',
+      'jquery',
+      'bootstrap-js',
+      'bootstrap-css'
     ],
     app: [
       path.join(__dirname, 'js', 'Index.tsx')
@@ -32,13 +36,16 @@ var config = {
     alias: {
       'react': path.join(nodeModulesPath, 'react', 'react.js'),
       'react-dom': path.join(nodeModulesPath, 'react-dom', 'dist', 'react-dom.js'),
-      'flux': path.join(nodeModulesPath, 'flux', 'index.js')
+      'flux': path.join(nodeModulesPath, 'flux', 'index.js'),
+      'jquery': path.join(nodeModulesPath, 'jquery', 'dist', 'jquery.js'),
+      'bootstrap-js': path.join(nodeModulesPath, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'),
+      'bootstrap-css': path.join(nodeModulesPath, 'bootstrap', 'dist', 'css', 'bootstrap.min.css')
     }
   },
 
   output: {
-      path: path.join(__dirname, 'build'),
-      filename: '[name]_[chunkhash].js'
+      path: path.join(__dirname, 'dist'),
+      filename: '[name].js'
   },
 
   module: {
@@ -48,7 +55,7 @@ var config = {
     noParse: [],
     loaders: [
       { test: /\.ts(x?)$/, loader: 'ts-loader?instance=jsx', include: path.resolve(__dirname, "js") },
-      { test: /\.css$/,  loader: ExtractTextPlugin.extract("style-loader", "css-loader?minimize"), include: path.resolve(__dirname, "js") },
+      { test: /\.css$/,  loader: ExtractTextPlugin.extract("style-loader", "css-loader?minimize") },
       { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader?minimize!less-loader?compress"), include: path.resolve(__dirname, "js") },
       { test: /\.module\.less$/,
         loader: ExtractTextPlugin.extract("style-loader","css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader?-compress"),
@@ -62,12 +69,15 @@ var config = {
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors_[chunkhash].js'),
     new ExtractTextPlugin('[name].css', { allChunks: true }),
     new webpack.ProvidePlugin({
-           $: "jquery",
-           jQuery: "jquery"
-       })
+      $: "jquery",
+      jQuery: "jquery"
+    }),
+    new HtmlWebpackPlugin({
+        template: "html/index.html",
+        hash: true
+    })
   ],
 
   tslint: {

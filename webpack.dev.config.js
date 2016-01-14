@@ -4,6 +4,7 @@ var webpackShared = require("./webpack.shared");
 var webpack = require('webpack');
 var WebpackConfig = require('webpack-config');
 var path = require("path");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var mainConfig = new WebpackConfig().extend("webpack.config");
 
@@ -21,7 +22,7 @@ var devConfigExtension = {
 
   output: {
     filename: '[name].js',
-    publicPath: "http://localhost:3333/assets/"
+    publicPath: "http://localhost:3333/html"
   },
 
   resolve: {
@@ -36,10 +37,10 @@ var devConfigExtension = {
   module: {
     loaders: [
       { test: /\.ts(x?)$/, loaders: ['react-hot', 'ts-loader?instance=jsx'], include: path.resolve(__dirname, "js") },
-      { test: /\.css$/, exclude: /\.import\.css$/,  loader: "style!css", include: path.resolve(__dirname, "js") },
+      { test: /\.css$/, exclude: /\.import\.css$/,  loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
       { test: /\.import\.css$/,  loader: "style!css", include: path.resolve(__dirname, "js") },
-      { test: /\.less$/, exclude: /\.module\.less$/, loader: "style!css!less", include: path.resolve(__dirname, "js") },
-      { test: /\.module\.less$/, loader: "style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less", include: path.resolve(__dirname, "js") },
+      { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
+      { test: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader","css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader"), include: path.resolve(__dirname, "js") },
       { test: /\.(jpg|png|jpg|png|woff|eot|ttf|svg|gif)$/, loader: "file-loader?name=[name].[ext]" },
 
       //    for bootstrap-webpack
@@ -49,6 +50,7 @@ var devConfigExtension = {
   },
 
    plugins: [
+    new ExtractTextPlugin('[name].css', { allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     // Used for hot-reload
     new webpack.HotModuleReplacementPlugin(),
