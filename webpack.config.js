@@ -5,6 +5,7 @@ var webpackShared = require("./webpack.shared");
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 var nodeModulesPath = path.join(__dirname, 'node_modules');
 
@@ -69,6 +70,7 @@ var config = {
   },
 
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new ExtractTextPlugin('[name].css', { allChunks: true }),
     new webpack.ProvidePlugin({
       $: "jquery",
