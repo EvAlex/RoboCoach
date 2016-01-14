@@ -21,6 +21,7 @@
         "./js/Components/ContentPage/ContentHeader/ContentHeader.tsx",
         "./js/Components/ContentPage/ContentPage.tsx",
         "./js/Components/HelloWorld/HelloWorld.tsx",
+        "./js/Components/WorkoutPage/WorkoutPage.tsx",
         "./js/Index.tsx",
         "./typings/tsd.d.ts"
     ],
