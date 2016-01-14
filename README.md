@@ -1,10 +1,20 @@
 ﻿# RoboCoach
 
+## Environment Setup
 ```shell
 $ npm install -g webpack
 $ npm install -g jsx-typescript
 $ npm install -g firebase-tools
 ```
+
+## Develop
+* `$ npm start` - starts webpack-dev-server.
+* open http://localhost:3333/html/
+* develop. No need to refresh page - webpack-dev-server will refresh modules inside page automatically
+
+## Deploy
+* `firebase deploy`
+* open https://robocoach.firebaseapp.com/ to verify deployment
 
 ## Technology stack:
 * [Typescript](https://github.com/Microsoft/TypeScript)
