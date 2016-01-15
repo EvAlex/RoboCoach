@@ -3,6 +3,7 @@ import WorkoutPage from "./Components/WorkoutPage/WorkoutPage";
 import CommonActionCreators from "./ActionCreators/CommonActionCreators";
 require("./Log/ActionLogger");
 
+require("bluebird");
 require("jquery");
 require("bootstrap-webpack!../bootstrap.config.js");
 // Fuck require("bootstrap-webpack");

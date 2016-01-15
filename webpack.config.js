@@ -17,6 +17,7 @@ var config = {
       'flux',
       'react',
       'react-dom',
+      'bluebird',
       'jquery',
       'bootstrap-js',
       'bootstrap-css'
@@ -37,6 +38,7 @@ var config = {
     alias: {
       'react': path.join(nodeModulesPath, 'react', 'react.js'),
       'react-dom': path.join(nodeModulesPath, 'react-dom', 'dist', 'react-dom.js'),
+      'bluebird': path.join(nodeModulesPath, 'bluebird', 'js', 'browser', 'bluebird.min.js'),
       'flux': path.join(nodeModulesPath, 'flux', 'index.js'),
       'jquery': path.join(nodeModulesPath, 'jquery', 'dist', 'jquery.js'),
       'bootstrap-js': path.join(nodeModulesPath, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'),

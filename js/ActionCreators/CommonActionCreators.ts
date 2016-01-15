@@ -1,6 +1,8 @@
 import Dispatcher from "../Dispatcher/Dispatcher";
 import AppLoadedAction from "../Actions/AppLoadedAction";
 import SayHelloAction from "../Actions/SayHelloAction";
+import StartWorkoutAction from "../Actions/StartWorkoutAction";
+import WorkoutPlan from "../Models/WorkoutPlan";
 
 class CommonActionCreators {
     loadApp(): void {
@@ -16,6 +18,10 @@ class CommonActionCreators {
 
     sayHello(): void {
          Dispatcher.dispatch(new SayHelloAction());
+    }
+
+    startWorkout(workoutPlan: WorkoutPlan): void {
+        Dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
     }
 }
 

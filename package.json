@@ -14,6 +14,7 @@
     "test-browser-debug": "karma start karma.conf.js --browsers=Chrome --single-run=false --debug --auto-watch"
   },
   "devDependencies": {
+    "bluebird": "^3.1.1",
     "bootstrap": "^3.3.6",
     "bootstrap-webpack": "0.0.5",
     "clean-webpack-plugin": "^0.1.6",
