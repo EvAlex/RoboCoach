@@ -1,0 +1,4 @@
+
+interface IRestPlanAction extends IWorkoutPlanAction {
+
+}

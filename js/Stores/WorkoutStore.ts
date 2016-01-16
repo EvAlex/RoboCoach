@@ -1,6 +1,7 @@
 import IAction from "./../Actions/IAction";
 import dispatcher from "../Dispatcher/Dispatcher";
 import AppLoadedAction from "../Actions/AppLoadedAction";
+import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import WorkoutStatus from "../Models/WorkoutStatus";
 import WorkoutPlan from "../Models/WorkoutPlan";
 import BaseStore from "./BaseStore";
@@ -57,8 +58,11 @@ export class WorkoutStore extends BaseStore {
 
     private processActions(action: IAction): void {
         if (action instanceof AppLoadedAction) {
-            this.emitChange();
             this.initWorkoutStatus();
+        } else if (action instanceof StartWorkoutAction) {
+            this.currentWorkout.status.start();
+            this.currentWorkout.plan = action.WorkoutPlan;
+            this.emitChange();
         }
     }
 
@@ -81,7 +85,7 @@ export class WorkoutStore extends BaseStore {
             statusJson: { startTime?: Date, endTime?: Date } = statusFromLocalStorage ? JSON.parse(statusFromLocalStorage) : {},
             status: WorkoutStatus = new WorkoutStatus(statusJson.startTime, statusJson.endTime),
             planFromLocalStorage: string = localStorage.getItem("RoboCoach.Workouts.Current.Plan"),
-            planJson: {} = planFromLocalStorage ? JSON.parse(planFromLocalStorage) : {},
+            planJson: WorkoutPlan = planFromLocalStorage ? JSON.parse(planFromLocalStorage) : {},
             plan: WorkoutPlan = planJson;
         return Promise.resolve({
             status: status,

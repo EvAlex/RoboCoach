@@ -1,0 +1,4 @@
+
+interface IExcercizePlanAction extends IWorkoutPlanAction {
+
+}

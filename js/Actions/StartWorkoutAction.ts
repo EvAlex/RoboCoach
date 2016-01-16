@@ -9,6 +9,10 @@ export default class StartWorkoutAction implements IAction {
         this.workoutPlan = workoutPlan;
     }
 
+    public get WorkoutPlan(): WorkoutPlan {
+        return this.workoutPlan;
+    }
+
     toLogEntry(): ActionLogEntry {
         return new ActionLogEntry("StartWorkoutAction");
     }
