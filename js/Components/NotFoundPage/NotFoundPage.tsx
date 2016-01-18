@@ -6,13 +6,26 @@ import React = require("react");
 const styles: any = require("./NotFoundPage.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
+const templateRenderFn: () => React.ReactElement<{}> = require("./NotFoundPage.rt.html");
 
-export default class NotFoundPage extends React.Component<{}, {}> {
+interface INotFoundPageProps {
+}
+
+interface INotFoundPageState {
+}
+
+export default class NotFoundPage extends React.Component<INotFoundPageProps, INotFoundPageState> {
+
+    constructor() {
+        super();
+        this.state = {
+            prevLocation: "unknown",
+            nextLocation: "unknown"
+        };
+    }
 
     render(): React.ReactElement<{}> {
-        return  <div>
-                    <h1>Sorry, but I can't find this page.</h1>
-                </div>;
+        return templateRenderFn.bind(this)();
     }
 
 }
