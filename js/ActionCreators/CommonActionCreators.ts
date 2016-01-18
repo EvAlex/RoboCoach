@@ -1,7 +1,12 @@
-import Dispatcher from "../Dispatcher/Dispatcher";
+import dispatcher from "../Dispatcher/Dispatcher";
+
 import AppLoadedAction from "../Actions/AppLoadedAction";
 import SayHelloAction from "../Actions/SayHelloAction";
 import StartWorkoutAction from "../Actions/StartWorkoutAction";
+import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
+import ReceiveWorkoutPlanAction from "../Actions/ReceiveWorkoutPlanAction";
+import ReceiveWorkoutPlanFailAction from "../Actions/ReceiveWorkoutPlanFailAction";
+
 import WorkoutPlan from "../Models/WorkoutPlan";
 
 class CommonActionCreators {
@@ -13,15 +18,27 @@ class CommonActionCreators {
             "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt" +
             "in culpa qui officia deserunt mollit anim id est laborum.";
 
-        Dispatcher.dispatch(new AppLoadedAction(bodyTitle, bodySummary));
+        dispatcher.dispatch(new AppLoadedAction(bodyTitle, bodySummary));
     }
 
     sayHello(): void {
-         Dispatcher.dispatch(new SayHelloAction());
+         dispatcher.dispatch(new SayHelloAction());
     }
 
     startWorkout(workoutPlan: WorkoutPlan): void {
-        Dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
+        dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
+    }
+
+    requestWorkoutPlan(planId: string): void {
+        dispatcher.dispatch(new RequestWorkoutPlanAction(planId));
+    }
+
+    receiveWorkoutPlan(plan: WorkoutPlan, requestAction: RequestWorkoutPlanAction): void {
+        dispatcher.dispatch(new ReceiveWorkoutPlanAction(plan, requestAction));
+    }
+
+    receiveWorkoutPlanFail(planId: string, error: IRoboCoachError, requestAction: RequestWorkoutPlanAction): void {
+        dispatcher.dispatch(new ReceiveWorkoutPlanFailAction(planId, error, requestAction));
     }
 }
 

@@ -1,11 +1,12 @@
-import IAction from "./IAction";
+import {ActionBase} from "./ActionBase";
 import ActionLogEntry from "../Log/ActionLogEntry";
 
-export default class AppLoadedAction implements IAction {
+export default class AppLoadedAction extends ActionBase {
     bodyTitle: string;
     bodySummary: string;
 
     constructor(bodyTitle: string, bodySummary: string) {
+        super();
         this.bodyTitle = bodyTitle;
         this.bodySummary = bodySummary;
     }

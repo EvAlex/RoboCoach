@@ -1,6 +1,8 @@
 
 export default class WorkoutPlan {
 
+    public id: string;
+
     private actions: IWorkoutPlanAction[];
 
     public toJson(): string {

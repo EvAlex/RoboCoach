@@ -11,3 +11,6 @@
 /// <reference path="node/node.d.ts" />
 /// <reference path="jasmine/jasmine.d.ts" />
 /// <reference path="bluebird/bluebird.d.ts" />
+/// <reference path="react-router/history.d.ts" />
+/// <reference path="react-router/react-router.d.ts" />
+/// <reference path="firebase/firebase.d.ts" />
