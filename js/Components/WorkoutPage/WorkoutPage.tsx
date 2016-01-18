@@ -14,13 +14,21 @@ interface IWorkoutPageState {
 
 export default class WorkoutPage extends React.Component<{}, IWorkoutPageState> {
     private store: WorkoutStore.WorkoutStore = WorkoutStore.default;
+    private onStoreChangeListener: () => void = () => this.onStoreChange();
 
     constructor() {
         super();
         this.state = {
             workoutStatus: this.store.getCurrentWorkoutStatus()
         };
-        this.store.addListener(() => this.onStoreChange());
+    }
+
+    componentDidMount(): void {
+        this.store.addListener(this.onStoreChangeListener);
+    }
+
+    componentWillUnmount(): void {
+        this.store.removeListener(this.onStoreChangeListener);
     }
 
     render(): React.ReactElement<{}> {
