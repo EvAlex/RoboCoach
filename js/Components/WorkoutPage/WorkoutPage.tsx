@@ -5,8 +5,10 @@ import React = require("react");
 const styles: any = require("./WorkoutPage.module.less");
 /* tslint:enable:no-any */
 
+import {Link} from "react-router";
 import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
+import WorkoutPlan from "../../Models/WorkoutPlan";
 
 interface IWorkoutPageState {
     workoutStatus: WorkoutStore.CurrentWorkoutStatus;
@@ -59,6 +61,10 @@ export default class WorkoutPage extends React.Component<{}, IWorkoutPageState> 
                         I've faced unexpected CurrentWorkoutStatus enum value if you are interested.
                     </span>;
                 break;
+        }
+        var plan: WorkoutPlan = this.store.getCurrentWorkoutPlan();
+        if (!plan || !plan.id) {
+            content = <Link to="workout-plans">Choose Workout Plan to start.</Link>;
         }
         return      <div className={styles.container}>
                         {content}
