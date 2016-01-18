@@ -44,7 +44,6 @@
         "./js/Components/WorkoutPlansPage/WorkoutPlanDetails/WorkoutPlanDetails.tsx",
         "./js/Components/WorkoutPlansPage/WorkoutPlansPage.tsx",
         "./js/Index.tsx",
-        "./js/Router.tsx",
         "./typings/tsd.d.ts"
     ],
     "filesGlob": [
