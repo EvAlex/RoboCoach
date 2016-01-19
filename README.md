@@ -2,16 +2,17 @@
 
 ## Environment Setup
 ```shell
-$ npm install -g webpack jsx-typescript firebase-tools
+$ npm install -g webpack jsx-typescript firebase-tools tsd
 ```
 
 ## Develop
-* `$ npm start` - starts webpack-dev-server.
+* After every `git pull` execute `npm install` and `tsd install`
+* `npm start` - starts webpack-dev-server.
 * open http://localhost:3333/html/
-* develop. No need to refresh page - webpack-dev-server will refresh modules inside page automatically
+* develop, save files and refresh page - webpack-dev-server will recompile everything automatically. Sometimes it may need to terminate it and `npm start` again.
 
 ## Deploy
-* `firebase deploy`
+* `firebase deploy`. Ask [@EvAlex](https://github.com/evalex/) to add you as collaborator.
 * open https://robocoach.firebaseapp.com/ to verify deployment
 
 
@@ -34,12 +35,17 @@ $ npm install -g webpack jsx-typescript firebase-tools
 * [CSS modules](https://github.com/css-modules/css-modules)
 
 
-### Atom integration
+### Using Atom for development
+1. Install [Github Atom](https://atom.io/)
+2. Install Atom packages
 ```shell
-$ apm install atom-typescript
+$ apm install atom-typescript atom-beautify file-icons linter minimap
 ```
+3. File > Settings (Ctrl + Comma). Choose Themes tab. If you prefer select "One Light" theme both for "UI Theme" and "Syntax Theme".
+4. File > Settings (Ctrl + Comma). Choose settings tab. Set "Tab Length" to 4
+5. File > Settings (Ctrl + Comma). Choose Packages tab. Find "tree-view" package there. Open its settings. Check "Hide Ignored Names" and "Hide VCS ignored names"
 
-### Visual Studio Code integration
+### Using Visual Studio Code for development
 #### Show tslint errors only in VS Code
 * Hit Ctrl + P
 * Run "task tslint-watch"
@@ -48,6 +54,6 @@ $ apm install atom-typescript
 * Hit Ctrl + P
 * Run "task webpack-watch"
 
-####Kill running task
+#### Kill running task
 * Hit Ctrl + shift + P
 * Run "Tasks: Terminate Running Task"
