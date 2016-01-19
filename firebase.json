@@ -1,9 +1,23 @@
 {
-  "firebase": "robocoach",
-  "public": "dist",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
+    "firebase": "robocoach",
+    "public": "dist",
+    "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+    ],
+    "rewrites": [
+        {
+            "source": "/workout-plans",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/workout-plans/**",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/workout-plans/create",
+            "destination": "/index.html"
+        }
+    ]
 }
