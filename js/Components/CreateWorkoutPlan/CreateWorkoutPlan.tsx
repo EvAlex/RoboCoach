@@ -1,4 +1,5 @@
 import React = require("react");
+import {Link} from "react-router";
 
 /* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
@@ -55,7 +56,8 @@ export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkou
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button type="submit" className="btn btn-default">Create</button>
+                            <button type="submit" className="btn btn-success">Create</button>
+                            <Link to="/workout-plans" className="btn btn-default">Cancel</Link>
                         </div>
                     </div>
                 </form>
