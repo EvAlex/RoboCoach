@@ -22,7 +22,7 @@ var devConfigExtension = {
 
   output: {
     filename: '[name].js',
-    publicPath: "http://localhost:3333/html"
+    publicPath: "http://localhost:3333/"
   },
 
   resolve: {

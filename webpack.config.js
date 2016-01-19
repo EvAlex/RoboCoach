@@ -80,7 +80,7 @@ var config = {
       jQuery: "jquery"
     }),
     new HtmlWebpackPlugin({
-        template: "html/index.html",
+        template: "index.html",
         hash: true
     })
   ],

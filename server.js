@@ -11,7 +11,7 @@ var server = new WebpackDevServer(compiler, {
     noInfo: false,
     publicPath: config.output.publicPath,
     historyApiFallback: {
-        index: '/html/index.html'
+        index: '/index.html'
     },
     stats: {
         // With console colors

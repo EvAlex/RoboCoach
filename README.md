@@ -8,7 +8,7 @@ $ npm install -g webpack jsx-typescript firebase-tools tsd
 ## Develop
 * After every `git pull` execute `npm install` and `tsd install`
 * `npm start` - starts webpack-dev-server.
-* open http://localhost:3333/html/
+* open http://localhost:3333/
 * develop, save files and refresh page - webpack-dev-server will recompile everything automatically. Sometimes it may need to terminate it and `npm start` again.
 
 ## Deploy

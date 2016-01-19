@@ -1,4 +1,3 @@
-/// <reference path="react/react-global.d.ts" />
 /// <reference path="react/react-addons-css-transition-group.d.ts" />
 /// <reference path="react/react-addons-linked-state-mixin.d.ts" />
 /// <reference path="react/react-addons-perf.d.ts" />
