@@ -38,6 +38,7 @@
         "./js/Components/ContentPage/ContentBody/ContentBody.tsx",
         "./js/Components/ContentPage/ContentHeader/ContentHeader.tsx",
         "./js/Components/ContentPage/ContentPage.tsx",
+        "./js/Components/CreateWorkoutPlan/CreateWorkoutPlan.tsx",
         "./js/Components/HelloWorld/HelloWorld.tsx",
         "./js/Components/NotFoundPage/NotFoundPage.tsx",
         "./js/Components/WorkoutPage/WorkoutPage.tsx",
