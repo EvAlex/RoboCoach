@@ -58,6 +58,7 @@ var config = {
     noParse: [],
     loaders: [
       { test: /\.ts(x?)$/, loader: 'ts-loader?instance=jsx', include: path.resolve(__dirname, "js") },
+      { test: /\.rt\.html/, loader: "react-templates-loader?targetVersion=0.14.0" /*path.join(__dirname, "rt-loader!ts-loader")*/ },
       { test: /\.css$/,  loader: ExtractTextPlugin.extract("style-loader", "css-loader?minimize") },
       { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader?minimize!less-loader?compress"), include: path.resolve(__dirname, "js") },
       { test: /\.module\.less$/,

@@ -17,6 +17,7 @@
         "./js/Actions/SayHelloAction.ts",
         "./js/Actions/StartWorkoutAction.ts",
         "./js/BackendApi/RoboCoachDb.ts",
+        "./js/Components/NotFoundPage/INotFoundPageState.ts",
         "./js/Dispatcher/Dispatcher.ts",
         "./js/Errors/IRoboCoachError.d.ts",
         "./js/Errors/RoboCoachDbError.ts",

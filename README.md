@@ -2,9 +2,7 @@
 
 ## Environment Setup
 ```shell
-$ npm install -g webpack
-$ npm install -g jsx-typescript
-$ npm install -g firebase-tools
+$ npm install -g webpack jsx-typescript firebase-tools
 ```
 
 ## Develop

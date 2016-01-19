@@ -37,6 +37,7 @@ var devConfigExtension = {
   module: {
     loaders: [
       { test: /\.ts(x?)$/, loaders: ['react-hot', 'ts-loader?instance=jsx'], include: path.resolve(__dirname, "js") },
+      { test: /\.rt\.html/, loader: "react-templates-loader?targetVersion=0.14.0" /*path.join(__dirname, "rt-loader!ts-loader")*/ },
       { test: /\.css$/, exclude: /\.import\.css$/,  loader: ExtractTextPlugin.extract("style-loader", "css-loader") },
       { test: /\.import\.css$/,  loader: "style!css", include: path.resolve(__dirname, "js") },
       { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
