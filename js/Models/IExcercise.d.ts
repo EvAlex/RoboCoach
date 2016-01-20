@@ -1,0 +1,4 @@
+
+interface IExcercise {
+    name: string;
+}

@@ -11,8 +11,6 @@ import WorkoutPlanDetails from "./Components/WorkoutPlansPage/WorkoutPlanDetails
 import CreateWorkoutPlan from "./Components/CreateWorkoutPlan/CreateWorkoutPlan";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 
-// ReactDom.render(<App />, document.getElementById("root"));
-
 ReactDom.render(
     <Router history={createHistory()}>
         <Route path="/" component={App}>

@@ -7,7 +7,7 @@ export default class WorkoutPlan {
 
     public description: string;
 
-    private actions: IWorkoutPlanAction[];
+    public actions: (IExcercisePlanAction | IRestPlanAction)[];
 
     public toJson(): string {
         var model: any = {
