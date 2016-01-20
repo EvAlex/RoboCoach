@@ -48,7 +48,14 @@ export class RoboCoachDb {
             .once(
             "value",
             (s: FirebaseDataSnapshot) => {
-                CommonActionCreators.receiveWorkoutPlan(s.val(), action);
+                if (s.val()) {
+                    CommonActionCreators.receiveWorkoutPlan(s.val(), action);
+                } else {
+                    CommonActionCreators.receiveWorkoutPlanFail(
+                        action.PlanId,
+                        new RoboCoachDbError("Workout plan with specified id not found"),
+                        action);
+                }
             },
             (err: string | Error) => {
                 var error: RoboCoachDbError = new RoboCoachDbError(err);
@@ -105,6 +112,7 @@ export class RoboCoachDb {
             { duration: 10000, excercise: "Лизарды" },
             { duration: 10000 },
         ];
+        res.push(plan);
 
         return res;
     }

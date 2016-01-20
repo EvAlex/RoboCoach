@@ -30,7 +30,9 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            plans: []
+        };
     }
 
     componentDidMount(): void {
@@ -52,6 +54,17 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
                         <Link to="workout-plans/create" className="btn btn-success" activeClassName="disabled">
                             Create Workout Plan
                         </Link>
+
+                        <div className="list-group">
+                            {this.state.plans.map(p => (
+                                    <Link to={"/workout-plans/" + p.id}
+                                          className="list-group-item"
+                                          activeClassName="active"
+                                          key={p.id}>
+                                        { p.name }
+                                    </Link>
+                                ))}
+                        </div>
                     </div>
                     <div className="col-md-8" >
                         { this.props.children }
@@ -63,7 +76,7 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
 
     private onWorkoutPlansStoreChanged(): void {
         this.setState({
-            plans: this.workoutPlansStore.getWorkoutPlans()
+            plans: this.workoutPlansStore.getWorkoutPlans() || []
         });
     }
 

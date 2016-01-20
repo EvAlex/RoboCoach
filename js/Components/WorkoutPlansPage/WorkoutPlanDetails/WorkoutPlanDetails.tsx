@@ -27,6 +27,9 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
     constructor() {
         super();
+        this.state = {
+            plan: new WorkoutPlan()
+        };
     }
 
     componentDidMount(): void {
@@ -48,8 +51,8 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     render(): React.ReactElement<{}> {
         return (
             <div>
-                <h2>Workout Plan {this.state.plan.id}</h2>
-                {/* etc. */}
+                <h2>Workout Plan {this.props.params.planId}</h2>
+                <p>{this.state.plan.description}</p>
             </div>
         );
     }
