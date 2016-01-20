@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 5.4.1
+before_script:
+  - npm install -g webpack jsx-typescript firebase-tools tsd
+  - npm install
+  - tsd install
+script:
+  - npm run build
