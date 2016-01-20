@@ -6,6 +6,9 @@ import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import ReceiveWorkoutPlanAction from "../Actions/ReceiveWorkoutPlanAction";
 import ReceiveWorkoutPlanFailAction from "../Actions/ReceiveWorkoutPlanFailAction";
+import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
+import ReceiveWorkoutPlansAction from "../Actions/ReceiveWorkoutPlansAction";
+import ReceiveWorkoutPlansFailAction from "../Actions/ReceiveWorkoutPlansFailAction";
 
 import WorkoutPlan from "../Models/WorkoutPlan";
 
@@ -39,6 +42,18 @@ class CommonActionCreators {
 
     receiveWorkoutPlanFail(planId: string, error: IRoboCoachError, requestAction: RequestWorkoutPlanAction): void {
         dispatcher.dispatch(new ReceiveWorkoutPlanFailAction(planId, error, requestAction));
+    }
+
+    requestWorkoutPlans(): void {
+        dispatcher.dispatch(new RequestWorkoutPlansAction());
+    }
+
+    receiveWorkoutPlans(plans: WorkoutPlan[], requestAction: RequestWorkoutPlansAction): void {
+        dispatcher.dispatch(new ReceiveWorkoutPlansAction(plans, requestAction));
+    }
+
+    receiveWorkoutPlansFail(error: IRoboCoachError, requestAction: RequestWorkoutPlansAction): void {
+        dispatcher.dispatch(new ReceiveWorkoutPlansFailAction(error, requestAction));
     }
 }
 

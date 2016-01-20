@@ -1,32 +1,10 @@
 
 export default class RoboCoachError implements IRoboCoachError {
 
-    constructor(
-        private errorMessage: string,
-        private errorName: string,
-        private errorStack?: string,
-        private innerError?: Error) {
-    }
-
-    public get message(): string {
-        return this.errorMessage;
-    }
-
-    public get name(): string {
-        return this.errorName;
-    }
-
-    public get stack(): string {
-        return this.errorStack;
-    }
-
-    public get InnerError(): Error {
-        return this.innerError;
-    }
-
-    toString(): string {
-        return `${this.errorName}: ${this.errorMessage}`;
-    }
+    private errorMessage: string;
+    private errorName: string;
+    private errorStack: string;
+    private innerError: Error;
 
     static parseError(error: string | Error | Object): Error {
         var res: Error;
@@ -49,5 +27,36 @@ export default class RoboCoachError implements IRoboCoachError {
             res = new Error("Unknown error.");
         }
         return res;
+    }
+
+    constructor(
+        errorMessage: string,
+        errorName: string,
+        errorStack?: string,
+        innerError?: Error) {
+        this.errorMessage = errorMessage;
+        this.errorName = errorName;
+        this.errorStack = errorStack;
+        this.innerError = innerError;
+    }
+
+    public get message(): string {
+        return this.errorMessage;
+    }
+
+    public get name(): string {
+        return this.errorName;
+    }
+
+    public get stack(): string {
+        return this.errorStack;
+    }
+
+    public get InnerError(): Error {
+        return this.innerError;
+    }
+
+    toString(): string {
+        return `${this.errorName}: ${this.errorMessage}`;
     }
 }

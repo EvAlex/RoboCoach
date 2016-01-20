@@ -1,5 +1,3 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 import Flux = require("flux");
 import IAction from "../Actions/IAction";
 

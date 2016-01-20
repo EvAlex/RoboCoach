@@ -1,38 +1,48 @@
 
 import * as Firebase from "firebase";
 import IAction from "./../Actions/IAction";
-import dispatcher from "../Dispatcher/Dispatcher";
+import Dispatcher from "../Dispatcher/Dispatcher";
 import WorkoutPlan from "../Models/WorkoutPlan";
 
 import CommonActionCreators from "../ActionCreators/CommonActionCreators";
+import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
-import ReceiveWorkoutPlanAction from "../Actions/ReceiveWorkoutPlanAction";
 
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
-class RoboCoachDb {
+export class RoboCoachDb {
     private firebase: Firebase;
     private testWorkoutPlans: WorkoutPlan[];
 
     constructor() {
         this.firebase = new Firebase("https://robocoach-dev.firebaseio.com/");
-        dispatcher.register((action: IAction) => this.processAction(action));
+        Dispatcher.register((action: IAction) => this.processAction(action));
         this.testWorkoutPlans = this.createTestWorkoutPlans();
     }
 
     private processAction(action: IAction): void {
-        if (action instanceof RequestWorkoutPlanAction) {
+        if (action instanceof RequestWorkoutPlansAction) {
+            this.processRequestWorkoutPlansAction(action);
+        } else if (action instanceof RequestWorkoutPlanAction) {
             this.processRequestWorkoutPlanAction(action);
         }
     }
 
-    public processRequestWorkoutPlanAction(action: RequestWorkoutPlanAction): void {
+    private processRequestWorkoutPlansAction(action: RequestWorkoutPlansAction): void {
         console.warn("WARNING! Mock Workout plan in RoboCoachDb.");
-        var plan: WorkoutPlan = this.testWorkoutPlans.filter(p => p.id == action.PlanId)[0];
+        window.setTimeout(() => CommonActionCreators.receiveWorkoutPlans(this.testWorkoutPlans, action));
+    }
+
+    private processRequestWorkoutPlanAction(action: RequestWorkoutPlanAction): void {
+        console.warn("WARNING! Mock Workout plan in RoboCoachDb.");
+        var plan: WorkoutPlan = this.testWorkoutPlans.filter(p => p.id === action.PlanId)[0];
         if (plan) {
-            CommonActionCreators.receiveWorkoutPlan(plan, action);
+            window.setTimeout(() => CommonActionCreators.receiveWorkoutPlan(plan, action));
         } else {
-            CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, new RoboCoachDbError("Workout plan with specified id not found"), action);
+            window.setTimeout(() => CommonActionCreators.receiveWorkoutPlanFail(
+                action.PlanId,
+                new RoboCoachDbError("Workout plan with specified id not found"),
+                action));
         }
         this.firebase.child(`WorkoutPlans/${action.PlanId}`)
             .once(
@@ -41,7 +51,7 @@ class RoboCoachDb {
                 CommonActionCreators.receiveWorkoutPlan(s.val(), action);
             },
             (err: string | Error) => {
-                var error = new RoboCoachDbError(err);
+                var error: RoboCoachDbError = new RoboCoachDbError(err);
                 CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, error, action);
             });
     }
@@ -100,3 +110,5 @@ class RoboCoachDb {
     }
 
 }
+
+export default new RoboCoachDb();
