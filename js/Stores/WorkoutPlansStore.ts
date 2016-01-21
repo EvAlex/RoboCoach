@@ -2,6 +2,7 @@ import IAction from "./../Actions/IAction";
 import dispatcher from "../Dispatcher/Dispatcher";
 import ReceiveWorkoutPlansAction from "../Actions/ReceiveWorkoutPlansAction";
 import ReceiveWorkoutPlanAction from "../Actions/ReceiveWorkoutPlanAction";
+import CreateWorkoutPlanSuccessAction from "../Actions/CreateWorkoutPlanSuccessAction";
 import WorkoutPlan from "../Models/WorkoutPlan";
 import BaseStore from "./BaseStore";
 
@@ -14,7 +15,7 @@ export class WorkoutPlansStore extends BaseStore {
     }
 
     public getWorkoutPlans(): WorkoutPlan[] {
-        return this.plans;
+        return this.plans.slice();
     }
 
     public findWorkoutPlan(planId: string): WorkoutPlan {
@@ -27,6 +28,11 @@ export class WorkoutPlansStore extends BaseStore {
             this.emitChange();
         } else if (action instanceof ReceiveWorkoutPlanAction) {
             this.processReceiveWorkoutPlanAction(action);
+        } else if (action instanceof CreateWorkoutPlanSuccessAction) {
+            if (!this.plans.some(p => p.id === action.WorkoutPlan.id)) {
+                this.plans.push(action.WorkoutPlan);
+                this.emitChange();
+            }
         }
     }
 
