@@ -7,6 +7,7 @@ import WorkoutPlan from "../Models/WorkoutPlan";
 import CommonActionCreators from "../ActionCreators/CommonActionCreators";
 import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
+import CreateWorkoutPlanAction  from "../Actions/CreateWorkoutPlanAction";
 
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
@@ -25,6 +26,8 @@ export class RoboCoachDb {
             this.processRequestWorkoutPlansAction(action);
         } else if (action instanceof RequestWorkoutPlanAction) {
             this.processRequestWorkoutPlanAction(action);
+        } else if (action instanceof CreateWorkoutPlanAction) {
+            this.processCreateWorkoutPlanAction(action);
         }
     }
 
@@ -61,6 +64,13 @@ export class RoboCoachDb {
                 var error: RoboCoachDbError = new RoboCoachDbError(err);
                 CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, error, action);
             });
+    }
+
+    private processCreateWorkoutPlanAction(action: CreateWorkoutPlanAction): void {
+        action.Plan.id = this.testWorkoutPlans[this.testWorkoutPlans.length - 1].id;
+        action.Plan.id = action.Plan.id + "1";
+        this.testWorkoutPlans.push(action.Plan);
+        window.setTimeout(() => CommonActionCreators.createWorkoutPlanSuccessed(action.Plan, action));
     }
 
     private createTestWorkoutPlans(): WorkoutPlan[] {

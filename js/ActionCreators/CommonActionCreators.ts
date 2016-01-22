@@ -9,6 +9,9 @@ import ReceiveWorkoutPlanFailAction from "../Actions/ReceiveWorkoutPlanFailActio
 import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import ReceiveWorkoutPlansAction from "../Actions/ReceiveWorkoutPlansAction";
 import ReceiveWorkoutPlansFailAction from "../Actions/ReceiveWorkoutPlansFailAction";
+import CreateWorkoutPlanAction from "../Actions/CreateWorkoutPlanAction";
+import CreateWorkoutPlanSuccessAction from "../Actions/CreateWorkoutPlanSuccessAction";
+import CreateWorkoutPlanFailAction from "../Actions/CreateWorkoutPlanFailAction";
 
 import WorkoutPlan from "../Models/WorkoutPlan";
 
@@ -25,7 +28,7 @@ class CommonActionCreators {
     }
 
     sayHello(): void {
-         dispatcher.dispatch(new SayHelloAction());
+        dispatcher.dispatch(new SayHelloAction());
     }
 
     startWorkout(workoutPlan: WorkoutPlan): void {
@@ -54,6 +57,18 @@ class CommonActionCreators {
 
     receiveWorkoutPlansFail(error: IRoboCoachError, requestAction: RequestWorkoutPlansAction): void {
         dispatcher.dispatch(new ReceiveWorkoutPlansFailAction(error, requestAction));
+    }
+
+    createWorkoutPlan(workoutPlan: WorkoutPlan): void {
+        dispatcher.dispatch(new CreateWorkoutPlanAction(workoutPlan));
+    }
+
+    createWorkoutPlanSuccessed(workoutPlan: WorkoutPlan, requestAction: CreateWorkoutPlanAction): void {
+        dispatcher.dispatch(new CreateWorkoutPlanSuccessAction(workoutPlan, requestAction));
+    }
+
+    createWorkoutPlanFailed(error: IRoboCoachError, requestAction: CreateWorkoutPlanAction): void {
+        dispatcher.dispatch(new CreateWorkoutPlanFailAction(error, requestAction));
     }
 }
 

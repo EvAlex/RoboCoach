@@ -10,6 +10,9 @@ const styles: any = require("./WorkoutPlanDetails.module.less");
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import * as WorkoutPlansStore from "../../../Stores/WorkoutPlansStore";
 import WorkoutPlan from "../../../Models/WorkoutPlan";
+import dispatcher from "../../../Dispatcher/Dispatcher";
+import IAction from "../../../Actions/IAction";
+import ReceiveWorkoutPlanFailAction from "../../../Actions/ReceiveWorkoutPlanFailAction";
 
 interface IWorkoutDetailsProps {
     params: {
@@ -18,12 +21,14 @@ interface IWorkoutDetailsProps {
 }
 
 interface IWorkoutDetailsState {
-    plan: WorkoutPlan;
+    plan?: WorkoutPlan;
+    planRequestError?: IRoboCoachError;
 }
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutPlansStore.WorkoutPlansStore = WorkoutPlansStore.default;
     private onStoreChangeListener: () => void = () => this.onStoreChange();
+    private registrationId: string;
 
     constructor() {
         super();
@@ -34,10 +39,12 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
     componentDidMount(): void {
         this.store.addListener(this.onStoreChangeListener);
+        this.registrationId = dispatcher.register(a => this.processAction(a));
         var plan: WorkoutPlan = this.store.findWorkoutPlan(this.props.params.planId);
         if (plan !== null) {
             this.setState({
-                plan: plan
+                plan: plan,
+                planRequestError: null
             });
         } else {
             CommonActionCreators.requestWorkoutPlan(this.props.params.planId);
@@ -46,13 +53,16 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
     componentWillUnmount(): void {
         this.store.removeListener(this.onStoreChangeListener);
+        dispatcher.unregister(this.registrationId);
     }
 
     render(): React.ReactElement<{}> {
         return (
             <div>
                 <h2>Workout Plan {this.props.params.planId}</h2>
-                <p>{this.state.plan.description}</p>
+
+                <p>{ this.state.planRequestError ? <div>this.state.planRequestError.toString()</div> : this.state.plan.description}</p>
+
             </div>
         );
     }
@@ -61,7 +71,23 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         var plan: WorkoutPlan = this.store.findWorkoutPlan(this.props.params.planId);
         if (plan !== null) {
             this.setState({
-                plan: plan
+                plan: plan,
+                planRequestError: null
+            });
+        }
+    }
+
+    private processAction(action: IAction): void {
+        if (action instanceof ReceiveWorkoutPlanFailAction) {
+            this.processReceiveWorkoutPlanFailAction(action);
+        }
+    }
+
+    private processReceiveWorkoutPlanFailAction(action: ReceiveWorkoutPlanFailAction): void {
+        if (this.props.params.planId === action.PlanId) {
+            this.setState({
+                plan: null,
+                planRequestError: action.Error
             });
         }
     }
