@@ -1,4 +1,4 @@
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry} from "../Log/ActionLogEntry";
 
 /**
  * Interface for all actions

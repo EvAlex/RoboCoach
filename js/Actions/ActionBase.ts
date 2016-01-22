@@ -1,6 +1,6 @@
 
 import IAction from "./IAction";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry} from "../Log/ActionLogEntry";
 
 export abstract class ActionBase implements IAction {
     private timestamp: Date;

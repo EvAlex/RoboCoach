@@ -33,7 +33,8 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     constructor() {
         super();
         this.state = {
-            plan: new WorkoutPlan()
+            plan: new WorkoutPlan(),
+            planRequestError: null
         };
     }
 
@@ -61,7 +62,9 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
             <div>
                 <h2>Workout Plan {this.props.params.planId}</h2>
 
-                <p>{ this.state.planRequestError ? <div>this.state.planRequestError.toString()</div> : this.state.plan.description}</p>
+                { this.state.planRequestError
+                    ? <div className="alert alert-danger">{this.state.planRequestError.toString()}</div>
+                    : <p>{this.state.plan.description}</p> }
 
             </div>
         );

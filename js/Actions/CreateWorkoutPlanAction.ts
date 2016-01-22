@@ -1,5 +1,5 @@
 import {ActionBase} from "./ActionBase";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry} from "../Log/ActionLogEntry";
 import WorkoutPlan from "../Models/WorkoutPlan";
 
 export default class CreateWorkoutPlanAction extends ActionBase {

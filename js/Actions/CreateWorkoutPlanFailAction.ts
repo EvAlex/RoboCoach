@@ -1,4 +1,4 @@
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 import {ResponseActionBase} from "./ResponseActionBase";
 import CreateWorkoutPlanAction from "./CreateWorkoutPlanAction";
 
@@ -15,6 +15,6 @@ export default class CreateWorkoutPlanFailAction extends ResponseActionBase {
     }
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`RequestWorkoutPlansAction`);
+        return new ActionLogEntry(`RequestWorkoutPlansAction`, LogLevel.Error, { error: this.error.toString() });
     }
 }

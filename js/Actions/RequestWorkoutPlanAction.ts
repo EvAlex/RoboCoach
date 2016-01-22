@@ -1,5 +1,5 @@
 import {ActionBase} from "./ActionBase";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 
 export default class RequestWorkoutPlanAction extends ActionBase {
 
@@ -14,6 +14,6 @@ export default class RequestWorkoutPlanAction extends ActionBase {
     private planId: string;
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`RequestWorkoutPlanAction("${this.planId}")`);
+        return new ActionLogEntry("RequestWorkoutPlanAction", LogLevel.Info, { planId: this.planId });
     }
 }

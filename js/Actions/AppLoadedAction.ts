@@ -1,5 +1,5 @@
 import {ActionBase} from "./ActionBase";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 
 export default class AppLoadedAction extends ActionBase {
     bodyTitle: string;
@@ -14,6 +14,7 @@ export default class AppLoadedAction extends ActionBase {
     toLogEntry(): ActionLogEntry {
         return new ActionLogEntry(
             "AppLoadedAction",
+            LogLevel.Info,
             {
                 "bodyTitle": this.bodyTitle
             });

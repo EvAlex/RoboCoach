@@ -1,6 +1,6 @@
 import {ResponseActionBase} from "./ResponseActionBase";
 import RequestWorkoutPlanAction from "./RequestWorkoutPlanAction";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 
 export default class ReceiveWorkoutPlanFailAction extends ResponseActionBase {
 
@@ -21,6 +21,9 @@ export default class ReceiveWorkoutPlanFailAction extends ResponseActionBase {
     private error: IRoboCoachError;
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`ReceiveWorkoutPlanFailAction(id: "${this.planId}", error: "${this.error}")`);
+        return new ActionLogEntry(
+            "ReceiveWorkoutPlanFailAction",
+            LogLevel.Error,
+            { id: this.planId, error: this.error.toString() });
     }
 }

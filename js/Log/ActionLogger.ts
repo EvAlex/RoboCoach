@@ -2,7 +2,7 @@
 
 import IAction from "../Actions/IAction";
 import Dispatcher from "../Dispatcher/Dispatcher";
-import ActionLogEntry from "./ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "./ActionLogEntry";
 
 /**
  * Logger that logs all actions
@@ -20,9 +20,32 @@ class ActionLogger {
         let logEntry: ActionLogEntry = action.toLogEntry();
 
         if (logEntry != null) {
-            console.log(`ActionLogger: ${logEntry.toString()}`);
-
+            var msg: string = `${this.dateToString(action.getTimestamp())}> [ActionLogger] ${logEntry.toString()}`;
+            if (logEntry.level === LogLevel.Info) {
+                console.log(msg);
+            } else if (logEntry.level === LogLevel.Warn) {
+                console.warn(msg);
+            } else if (logEntry.level === LogLevel.Error) {
+                console.error(msg);
+            }
         }
+    }
+
+    private dateToString(date: Date): string {
+        return (
+            this.pad(date.getHours(), 2) +
+            ":" +
+            this.pad(date.getMinutes(), 2) +
+            ":" +
+            this.pad(date.getSeconds(), 2) +
+            ":" +
+            this.pad(date.getMilliseconds(), 3));
+    }
+
+    private pad(n: any, width: any, z?: any): string {
+      z = z || "0";
+      n = n + "";
+      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 }
 

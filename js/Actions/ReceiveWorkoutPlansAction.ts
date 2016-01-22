@@ -1,6 +1,6 @@
 import {ResponseActionBase} from "./ResponseActionBase";
 import RequestWorkoutPlansAction from "./RequestWorkoutPlansAction";
-import ActionLogEntry from "../Log/ActionLogEntry";
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 import WorkoutPlan from "../Models/WorkoutPlan";
 
 export default class ReceiveWorkoutPlansAction extends ResponseActionBase {
@@ -16,6 +16,6 @@ export default class ReceiveWorkoutPlansAction extends ResponseActionBase {
     private plans: WorkoutPlan[];
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`ReceiveWorkoutPlansAction`);
+        return new ActionLogEntry(`ReceiveWorkoutPlansAction`, LogLevel.Info);
     }
 }
