@@ -1,5 +1,7 @@
 ﻿# RoboCoach
 
+[![Build Status](https://api.travis-ci.org/EvAlex/RoboCoach.svg?branch=master)](http://travis-ci.org/EvAlex/RoboCoach)
+
 ## Environment Setup
 ```shell
 $ npm install -g webpack jsx-typescript firebase-tools tsd
