@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "webpack",
+    "deploy": "webpack & firebase deploy",
     "watch": "webpack -w",
     "test": "karma start karma.conf.js",
     "test-debug": "karma start karma.conf.js --single-run=false --debug --auto-watch",

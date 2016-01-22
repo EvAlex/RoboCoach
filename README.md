@@ -14,8 +14,13 @@ $ npm install -g webpack jsx-typescript firebase-tools tsd
 * develop, save files and refresh page - webpack-dev-server will recompile everything automatically. Sometimes it may need to terminate it and `npm start` again.
 
 ## Deploy
-* `firebase deploy`. Ask [@EvAlex](https://github.com/evalex/) to add you as collaborator.
-* open https://robocoach.firebaseapp.com/ to verify deployment
+Deploy is performed automatically on push. But Travis CI sometimes hangs before build, so here's the way to do it manually:
+```shell
+$ npm run deploy
+```
+Ask [@EvAlex](https://github.com/evalex/) to add you as collaborator on Firebase.
+
+Open https://robocoach.firebaseapp.com/ to verify deployment
 
 
 ## Tests
