@@ -64,7 +64,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
                 { this.state.planRequestError
                     ? <div className="alert alert-danger">{this.state.planRequestError.toString()}</div>
-                    : <p>{this.state.plan.description}</p> }
+                    : <p>{this.state.plan.name}</p> }
 
             </div>
         );

@@ -47,7 +47,6 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
     }
 
     render(): React.ReactElement<{}> {
-        console.log(this.state.plans.length);
         return (
             <div className="container">
                 <div className="row">

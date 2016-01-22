@@ -1,7 +1,6 @@
 import React = require("react");
 import {Link} from "react-router";
 import Dispatcher from "../../Dispatcher/Dispatcher";
-import {createHistory} from "history";
 
 /* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
@@ -82,11 +81,12 @@ export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkou
 
     onFormSubmit(e: any): void {
         e.preventDefault();
-        CommonActionCreators.createWorkoutPlan(new WorkoutPlan());
+        CommonActionCreators.createWorkoutPlan(this.state.plan);
     }
 
     processSuccessSubmitted(action: CreateWorkoutPlanSuccessAction): void {
-        createHistory().pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
+        this.props["history"].pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
+        // C createHistory().pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
     }
 
     processFailedSubmit(action: CreateWorkoutPlanFailAction): void {

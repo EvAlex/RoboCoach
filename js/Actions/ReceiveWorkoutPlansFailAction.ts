@@ -15,6 +15,6 @@ export default class ReceiveWorkoutPlansFailAction extends ResponseActionBase {
     private error: IRoboCoachError;
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry("ReceiveWorkoutPlanFailAction", LogLevel.Error, { error: this.error.toString() });
+        return new ActionLogEntry("ReceiveWorkoutPlansFailAction", LogLevel.Error, { error: this.error.toString() });
     }
 }

@@ -16,6 +16,6 @@ export default class CreateWorkoutPlanSuccessAction extends ResponseActionBase {
     }
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`RequestWorkoutPlansAction`, LogLevel.Info);
+        return new ActionLogEntry(`CreateWorkoutPlanSuccessAction`, LogLevel.Info);
     }
 }

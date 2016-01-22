@@ -32,6 +32,8 @@ export class WorkoutPlansStore extends BaseStore {
             if (!this.plans.some(p => p.id === action.WorkoutPlan.id)) {
                 this.plans.push(action.WorkoutPlan);
                 this.emitChange();
+            } else {
+                console.log("====> already there");
             }
         }
     }

@@ -15,6 +15,6 @@ export default class CreateWorkoutPlanFailAction extends ResponseActionBase {
     }
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`RequestWorkoutPlansAction`, LogLevel.Error, { error: this.error.toString() });
+        return new ActionLogEntry(`CreateWorkoutPlanFailAction`, LogLevel.Error, { error: this.error.toString() });
     }
 }

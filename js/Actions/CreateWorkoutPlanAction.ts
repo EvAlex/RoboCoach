@@ -15,6 +15,6 @@ export default class CreateWorkoutPlanAction extends ActionBase {
     }
 
     toLogEntry(): ActionLogEntry {
-        return new ActionLogEntry(`RequestWorkoutPlansAction`);
+        return new ActionLogEntry(`CreateWorkoutPlanAction`);
     }
 }

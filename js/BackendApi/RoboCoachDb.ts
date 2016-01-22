@@ -32,8 +32,8 @@ export class RoboCoachDb {
     }
 
     private processRequestWorkoutPlansAction(action: RequestWorkoutPlansAction): void {
-        console.warn("WARNING! Mock Workout plan in RoboCoachDb.");
-        window.setTimeout(() => CommonActionCreators.receiveWorkoutPlans(this.testWorkoutPlans, action));
+        console.warn("WARNING! Mock Workout Plans in RoboCoachDb.");
+        window.setTimeout(() => CommonActionCreators.receiveWorkoutPlans(this.testWorkoutPlans.slice(), action));
     }
 
     private processRequestWorkoutPlanAction(action: RequestWorkoutPlanAction): void {
@@ -47,6 +47,7 @@ export class RoboCoachDb {
                 new RoboCoachDbError("Workout plan with specified id not found"),
                 action));
         }
+        /*
         this.firebase.child(`WorkoutPlans/${action.PlanId}`)
             .once(
             "value",
@@ -64,6 +65,7 @@ export class RoboCoachDb {
                 var error: RoboCoachDbError = new RoboCoachDbError(err);
                 CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, error, action);
             });
+            */
     }
 
     private processCreateWorkoutPlanAction(action: CreateWorkoutPlanAction): void {
