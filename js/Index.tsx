@@ -10,7 +10,7 @@ import WorkoutPlansPage from "./Components/WorkoutPlansPage/WorkoutPlansPage";
 import WorkoutPlanDetails from "./Components/WorkoutPlansPage/WorkoutPlanDetails/WorkoutPlanDetails";
 import CreateWorkoutPlan from "./Components/CreateWorkoutPlan/CreateWorkoutPlan";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
-red build test
+red
 ReactDom.render(
     <Router history={createHistory()}>
         <Route path="/" component={App}>
