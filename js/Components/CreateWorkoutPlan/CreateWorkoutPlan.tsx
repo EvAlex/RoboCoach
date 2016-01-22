@@ -14,11 +14,14 @@ import IAction from "../../Actions/IAction";
 import CreateWorkoutPlanSuccessAction from "../../Actions/CreateWorkoutPlanSuccessAction";
 import CreateWorkoutPlanFailAction from "../../Actions/CreateWorkoutPlanFailAction";
 
+interface ICreateWorkoutPlansProps extends ReactRouter.RouteComponentProps<{}, {}> {
+}
+
 interface ICreateWorkoutPlansState {
     plan: WorkoutPlan;
 }
 
-export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkoutPlansState> {
+export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
 
     constructor() {
         super();
@@ -85,8 +88,7 @@ export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkou
     }
 
     processSuccessSubmitted(action: CreateWorkoutPlanSuccessAction): void {
-        this.props["history"].pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
-        // C createHistory().pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
+        this.props.history.pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
     }
 
     processFailedSubmit(action: CreateWorkoutPlanFailAction): void {

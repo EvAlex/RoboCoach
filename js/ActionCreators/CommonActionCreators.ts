@@ -2,7 +2,6 @@ import dispatcher from "../Dispatcher/Dispatcher";
 
 import AppLoadedAction from "../Actions/AppLoadedAction";
 import SayHelloAction from "../Actions/SayHelloAction";
-import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import ReceiveWorkoutPlanAction from "../Actions/ReceiveWorkoutPlanAction";
 import ReceiveWorkoutPlanFailAction from "../Actions/ReceiveWorkoutPlanFailAction";
@@ -12,6 +11,9 @@ import ReceiveWorkoutPlansFailAction from "../Actions/ReceiveWorkoutPlansFailAct
 import CreateWorkoutPlanAction from "../Actions/CreateWorkoutPlanAction";
 import CreateWorkoutPlanSuccessAction from "../Actions/CreateWorkoutPlanSuccessAction";
 import CreateWorkoutPlanFailAction from "../Actions/CreateWorkoutPlanFailAction";
+import StartWorkoutAction from "../Actions/StartWorkoutAction";
+import ProcessWorkoutStartedAction from "../Actions/ProcessWorkoutStartedAction";
+import ProcessWorkoutStartFailedAction from "../Actions/ProcessWorkoutStartFailedAction";
 
 import WorkoutPlan from "../Models/WorkoutPlan";
 
@@ -29,10 +31,6 @@ class CommonActionCreators {
 
     sayHello(): void {
         dispatcher.dispatch(new SayHelloAction());
-    }
-
-    startWorkout(workoutPlan: WorkoutPlan): void {
-        dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
     }
 
     requestWorkoutPlan(planId: string): void {
@@ -63,12 +61,24 @@ class CommonActionCreators {
         dispatcher.dispatch(new CreateWorkoutPlanAction(workoutPlan));
     }
 
-    createWorkoutPlanSuccessed(workoutPlan: WorkoutPlan, requestAction: CreateWorkoutPlanAction): void {
+    createWorkoutPlanSucceeded(workoutPlan: WorkoutPlan, requestAction: CreateWorkoutPlanAction): void {
         dispatcher.dispatch(new CreateWorkoutPlanSuccessAction(workoutPlan, requestAction));
     }
 
     createWorkoutPlanFailed(error: IRoboCoachError, requestAction: CreateWorkoutPlanAction): void {
         dispatcher.dispatch(new CreateWorkoutPlanFailAction(error, requestAction));
+    }
+
+    startWorkout(workoutPlan: IWorkoutPlan): void {
+        dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
+    }
+
+    processWorkoutStarted(workout: IWorkout, requestAction: StartWorkoutAction): void {
+        dispatcher.dispatch(new ProcessWorkoutStartedAction(workout, requestAction));
+    }
+
+    processWorkoutStartFailed(error: IRoboCoachError, requestAction: StartWorkoutAction): void {
+        dispatcher.dispatch(new ProcessWorkoutStartFailedAction(error, requestAction));
     }
 }
 
