@@ -76,7 +76,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
             <div>
                 <h2>
                     {this.state.plan.name}
-                    <button className="btn btn-success" onClick={() => this.onStartWorkoutClicked()}>
+                    <button className="btn btn-success pull-right" onClick={() => this.onStartWorkoutClicked()}>
                         <span className="glyphicon glyphicon-fire"></span>
                         <span> Start Workout</span>
                     </button>
