@@ -13,16 +13,16 @@ import WorkoutPlan from "../../../Models/WorkoutPlan";
 import dispatcher from "../../../Dispatcher/Dispatcher";
 import IAction from "../../../Actions/IAction";
 import ReceiveWorkoutPlanFailAction from "../../../Actions/ReceiveWorkoutPlanFailAction";
+import ProcessWorkoutStartedAction from "../../../Actions/ProcessWorkoutStartedAction";
+import ProcessWorkoutStartFailedAction from "../../../Actions/ProcessWorkoutStartFailedAction";
 
-interface IWorkoutDetailsProps {
-    params: {
-        planId: string
-    };
+interface IWorkoutDetailsProps extends ReactRouter.RouteComponentProps<{ planId: string }, {}> {
 }
 
 interface IWorkoutDetailsState {
     plan?: WorkoutPlan;
     planRequestError?: IRoboCoachError;
+    workoutStartError?: IRoboCoachError;
 }
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
@@ -34,7 +34,8 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         super();
         this.state = {
             plan: new WorkoutPlan(),
-            planRequestError: null
+            planRequestError: null,
+            workoutStartError: null
         };
     }
 
@@ -45,7 +46,8 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         if (plan !== null) {
             this.setState({
                 plan: plan,
-                planRequestError: null
+                planRequestError: null,
+                workoutStartError: null
             });
         } else {
             CommonActionCreators.requestWorkoutPlan(this.props.params.planId);
@@ -58,9 +60,27 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     render(): React.ReactElement<{}> {
+        return this.state.planRequestError
+            ? this.renderError()
+            : this.renderDetails();
+    }
+
+    private renderError(): React.ReactElement<{}> {
+        return (
+            <div className="alert alert-danger">{this.state.planRequestError.toString()}</div>
+        );
+    }
+
+    private renderDetails(): React.ReactElement<{}> {
         return (
             <div>
-                <h2>Workout Plan {this.props.params.planId}</h2>
+                <h2>
+                    {this.state.plan.name}
+                    <button className="btn btn-success pull-right" onClick={() => this.onStartWorkoutClicked()}>
+                        <span className="glyphicon glyphicon-fire"></span>
+                        <span> Start Workout</span>
+                    </button>
+                </h2>
 
                 { this.state.planRequestError
                     ? <div className="alert alert-danger">{this.state.planRequestError.toString()}</div>
@@ -68,6 +88,10 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
             </div>
         );
+    }
+
+    private onStartWorkoutClicked(): void {
+        CommonActionCreators.startWorkout(this.state.plan);
     }
 
     private onStoreChange(): void {
@@ -83,6 +107,10 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     private processAction(action: IAction): void {
         if (action instanceof ReceiveWorkoutPlanFailAction) {
             this.processReceiveWorkoutPlanFailAction(action);
+        } else if (action instanceof ProcessWorkoutStartedAction) {
+            this.processWorkoutStartedAction(action);
+        } else if (action instanceof ProcessWorkoutStartFailedAction) {
+            this.processWorkoutStartFailedAction(action);
         }
     }
 
@@ -93,5 +121,20 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
                 planRequestError: action.Error
             });
         }
+    }
+
+    private processWorkoutStartedAction(action: ProcessWorkoutStartedAction): void {
+        if (this.state.workoutStartError) {
+            this.setState({
+                workoutStartError: null
+            });
+        }
+        this.props.history.pushState(null, `/workout/${action.Workout.id}`);
+    }
+
+    private processWorkoutStartFailedAction(action: ProcessWorkoutStartFailedAction): void {
+        this.setState({
+            workoutStartError: action.Error
+        });
     }
 }

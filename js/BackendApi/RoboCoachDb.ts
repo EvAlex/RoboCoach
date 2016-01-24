@@ -8,17 +8,21 @@ import CommonActionCreators from "../ActionCreators/CommonActionCreators";
 import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import CreateWorkoutPlanAction  from "../Actions/CreateWorkoutPlanAction";
+import StartWorkoutAction from "../Actions/StartWorkoutAction";
+import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
 
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
 export class RoboCoachDb {
     private firebase: Firebase;
     private testWorkoutPlans: WorkoutPlan[];
+    private testWorkouts: IWorkout[];
 
     constructor() {
         this.firebase = new Firebase("https://robocoach-dev.firebaseio.com/");
         Dispatcher.register((action: IAction) => this.processAction(action));
         this.testWorkoutPlans = this.createTestWorkoutPlans();
+        this.testWorkouts = [];
     }
 
     private processAction(action: IAction): void {
@@ -28,6 +32,10 @@ export class RoboCoachDb {
             this.processRequestWorkoutPlanAction(action);
         } else if (action instanceof CreateWorkoutPlanAction) {
             this.processCreateWorkoutPlanAction(action);
+        } else if (action instanceof StartWorkoutAction) {
+            this.processStartWorkoutAction(action);
+        } else if (action instanceof RequestWorkoutAction) {
+            this.processRequestWorkoutAction(action);
         }
     }
 
@@ -72,7 +80,40 @@ export class RoboCoachDb {
         action.Plan.id = this.testWorkoutPlans[this.testWorkoutPlans.length - 1].id;
         action.Plan.id = action.Plan.id + "1";
         this.testWorkoutPlans.push(action.Plan);
-        window.setTimeout(() => CommonActionCreators.createWorkoutPlanSuccessed(action.Plan, action));
+        window.setTimeout(() => CommonActionCreators.createWorkoutPlanSucceeded(action.Plan, action));
+    }
+
+    private processStartWorkoutAction(action: StartWorkoutAction): void {
+        var workout: IWorkout = {
+            id: action.WorkoutPlan.id + "w",
+            planName: action.WorkoutPlan.name,
+            planDescription: action.WorkoutPlan.description,
+            actions: action.WorkoutPlan.actions.map(a => {
+                var ex: IExcercise = a["excercise"],
+                    exCopy: IExcercise = ex
+                        ? { name: ex.name }
+                        : null;
+                return exCopy
+                    ? { duration: a.duration, excercise: exCopy }
+                    : { duration: a.duration };
+            }),
+            startTime: new Date()
+        };
+        this.testWorkouts.push(workout);
+        window.setTimeout(() => CommonActionCreators.processWorkoutStarted(workout, action));
+    }
+
+    private processRequestWorkoutAction(action: RequestWorkoutAction): void {
+        var workout: IWorkout = this.testWorkouts.filter(w => w.id === action.WorkoutId)[0];
+        window.setTimeout(() => {
+            if (workout) {
+                CommonActionCreators.receiveWorkout(workout, action);
+            } else {
+                CommonActionCreators.processRequestWorkoutFailed(
+                    new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
+                    action);
+            }
+        });
     }
 
     private createTestWorkoutPlans(): WorkoutPlan[] {

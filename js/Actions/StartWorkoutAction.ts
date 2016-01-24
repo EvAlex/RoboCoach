@@ -1,16 +1,15 @@
 import {ActionBase} from "./ActionBase";
 import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
-import WorkoutPlan from "../Models/WorkoutPlan";
 
 export default class StartWorkoutAction extends ActionBase {
-    private workoutPlan: WorkoutPlan;
+    private workoutPlan: IWorkoutPlan;
 
-    constructor(workoutPlan: WorkoutPlan) {
+    constructor(workoutPlan: IWorkoutPlan) {
         super();
         this.workoutPlan = workoutPlan;
     }
 
-    public get WorkoutPlan(): WorkoutPlan {
+    public get WorkoutPlan(): IWorkoutPlan {
         return this.workoutPlan;
     }
 

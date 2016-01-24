@@ -1,7 +1,7 @@
 import IAction from "./../Actions/IAction";
 import dispatcher from "../Dispatcher/Dispatcher";
 import AppLoadedAction from "../Actions/AppLoadedAction";
-import StartWorkoutAction from "../Actions/StartWorkoutAction";
+import ProcessWorkoutStartedAction from "../Actions/ProcessWorkoutStartedAction";
 import WorkoutStatus from "../Models/WorkoutStatus";
 import WorkoutPlan from "../Models/WorkoutPlan";
 import BaseStore from "./BaseStore";
@@ -26,12 +26,18 @@ interface ICurrentWorkout {
 }
 
 export class WorkoutStore extends BaseStore {
+    private workouts: IWorkout[];
     private currentWorkout: ICurrentWorkout = { status: null, plan: null };
     private currentWorkoutLoadStatus: LoadStatus = LoadStatus.Loading;
 
     constructor() {
         super();
         dispatcher.register((action: IAction) => this.processActions(action));
+        this.workouts = [];
+    }
+
+    public findWorkout(id: string): IWorkout {
+        return this.workouts.filter(w => w.id === id)[0] || null;
     }
 
     public getCurrentWorkoutStatus(): CurrentWorkoutStatus {
@@ -59,9 +65,8 @@ export class WorkoutStore extends BaseStore {
     private processActions(action: IAction): void {
         if (action instanceof AppLoadedAction) {
             this.initWorkoutStatus();
-        } else if (action instanceof StartWorkoutAction) {
-            this.currentWorkout.status.start();
-            this.currentWorkout.plan = action.WorkoutPlan;
+        } else if (action instanceof ProcessWorkoutStartedAction) {
+            this.workouts.push(action.Workout);
             this.emitChange();
         }
     }
