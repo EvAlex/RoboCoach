@@ -65,6 +65,6 @@ export default class Workout implements IWorkout {
     }
 
     public getTimeLeftForAction(action: IWorkoutPlanAction): number {
-        return new Date().getTime() - this.getActionStartTime(action).getTime();
+        return action.duration - (new Date().getTime() - this.getActionStartTime(action).getTime());
     }
 }

@@ -11,6 +11,31 @@ export interface IWorkoutPlayerProps {
 }
 
 export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, {}> {
+    private shouldTimerWork: boolean = false;
+    private fps: number = 60;
+    private lastRenderTime: number = new Date().getTime();
+
+    componentDidMount(): void {
+        this.shouldTimerWork = true;
+        window.requestAnimationFrame(t => this.onAminationFrame(t));
+    }
+
+    componentWillUnmount(): void {
+        this.shouldTimerWork = false;
+    }
+
+    componentDidUpdate(): void {
+        this.lastRenderTime = new Date().getTime();
+    }
+
+    onAminationFrame(time: number): void {
+        if (this.shouldTimerWork) {
+            if (new Date().getTime() - this.lastRenderTime > 1000 / this.fps) {
+                this.forceUpdate();
+            }
+            window.requestAnimationFrame(t => this.onAminationFrame(t));
+        }
+    }
 
     render(): React.ReactElement<{}> {
         return (
