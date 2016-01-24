@@ -1,5 +1,5 @@
 
-export default class WorkoutPlan implements IWorkoutPlan {
+export default class WorkoutPlan {
 
     public id: string;
 
@@ -9,12 +9,14 @@ export default class WorkoutPlan implements IWorkoutPlan {
 
     public actions: (IExcercisePlanAction | IRestPlanAction)[];
 
-    /*
+    public constructor() {
+        this.actions = [];
+    }
+
     public toJson(): string {
         var model: any = {
             actions: this.actions
         };
         return JSON.stringify(model);
     }
-    */
 }
