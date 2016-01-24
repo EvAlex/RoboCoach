@@ -26,12 +26,18 @@ interface ICurrentWorkout {
 }
 
 export class WorkoutStore extends BaseStore {
+    private workouts: IWorkout[];
     private currentWorkout: ICurrentWorkout = { status: null, plan: null };
     private currentWorkoutLoadStatus: LoadStatus = LoadStatus.Loading;
 
     constructor() {
         super();
         dispatcher.register((action: IAction) => this.processActions(action));
+        this.workouts = [];
+    }
+
+    public findWorkout(id: string): IWorkout {
+        return this.workouts.filter(w => w.id === id)[0] || null;
     }
 
     public getCurrentWorkoutStatus(): CurrentWorkoutStatus {

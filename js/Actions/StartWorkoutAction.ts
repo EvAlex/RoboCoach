@@ -9,7 +9,7 @@ export default class StartWorkoutAction extends ActionBase {
         this.workoutPlan = workoutPlan;
     }
 
-    public get IWorkoutPlan(): IWorkoutPlan {
+    public get WorkoutPlan(): IWorkoutPlan {
         return this.workoutPlan;
     }
 

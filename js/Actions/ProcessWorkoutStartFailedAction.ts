@@ -1,5 +1,5 @@
 import {ResponseActionBase} from "./ResponseActionBase";
-import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry"
+import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 import StartWorkoutAction from "./StartWorkoutAction";
 
 export default class ProcessWorkoutStartFailedAction extends ResponseActionBase {

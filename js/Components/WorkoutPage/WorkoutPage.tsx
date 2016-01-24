@@ -5,16 +5,18 @@ import React = require("react");
 const styles: any = require("./WorkoutPage.module.less");
 /* tslint:enable:no-any */
 
-import {Link} from "react-router";
 import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
-import WorkoutPlan from "../../Models/WorkoutPlan";
+
+interface IWorkoutPageProps extends ReactRouter.RouteComponentProps<{}, {}> {
+    children: React.ReactChildren;
+}
 
 interface IWorkoutPageState {
     workoutStatus: WorkoutStore.CurrentWorkoutStatus;
 }
 
-export default class WorkoutPage extends React.Component<{}, IWorkoutPageState> {
+export default class WorkoutPage extends React.Component<IWorkoutPageProps, IWorkoutPageState> {
     private store: WorkoutStore.WorkoutStore = WorkoutStore.default;
     private onStoreChangeListener: () => void = () => this.onStoreChange();
 
@@ -34,6 +36,7 @@ export default class WorkoutPage extends React.Component<{}, IWorkoutPageState> 
     }
 
     render(): React.ReactElement<{}> {
+        /*
         var content: React.ReactElement<{}>;
         switch (this.state.workoutStatus) {
             case WorkoutStore.CurrentWorkoutStatus.Loading:
@@ -65,9 +68,9 @@ export default class WorkoutPage extends React.Component<{}, IWorkoutPageState> 
         var plan: WorkoutPlan = this.store.getCurrentWorkoutPlan();
         if (!plan || !plan.id) {
             content = <Link to="workout-plans">Choose Workout Plan to start.</Link>;
-        }
+        }*/
         return      <div className={styles.container}>
-                        {content}
+                        {this.props.children}
                     </div>;
     }
 

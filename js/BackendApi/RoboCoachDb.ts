@@ -9,8 +9,7 @@ import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import CreateWorkoutPlanAction  from "../Actions/CreateWorkoutPlanAction";
 import StartWorkoutAction from "../Actions/StartWorkoutAction";
-import ProcessWorkoutStartedAction from "../Actions/ProcessWorkoutStartedAction";
-import ProcessWorkoutStartFailedAction from "../Actions/ProcessWorkoutStartFailedAction";
+import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
 
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
@@ -35,6 +34,8 @@ export class RoboCoachDb {
             this.processCreateWorkoutPlanAction(action);
         } else if (action instanceof StartWorkoutAction) {
             this.processStartWorkoutAction(action);
+        } else if (action instanceof RequestWorkoutAction) {
+            this.processRequestWorkoutAction(action);
         }
     }
 
@@ -84,7 +85,9 @@ export class RoboCoachDb {
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
         var workout: IWorkout = {
-            id: action.WorkoutPlan.id + 'w',
+            id: action.WorkoutPlan.id + "w",
+            planName: action.WorkoutPlan.name,
+            planDescription: action.WorkoutPlan.description,
             actions: action.WorkoutPlan.actions.map(a => {
                 var ex: IExcercise = a["excercise"],
                     exCopy: IExcercise = ex
@@ -98,6 +101,19 @@ export class RoboCoachDb {
         };
         this.testWorkouts.push(workout);
         window.setTimeout(() => CommonActionCreators.processWorkoutStarted(workout, action));
+    }
+
+    private processRequestWorkoutAction(action: RequestWorkoutAction): void {
+        var workout: IWorkout = this.testWorkouts.filter(w => w.id === action.WorkoutId)[0];
+        window.setTimeout(() => {
+            if (workout) {
+                CommonActionCreators.receiveWorkout(workout, action);
+            } else {
+                CommonActionCreators.processRequestWorkoutFailed(
+                    new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
+                    action);
+            }
+        });
     }
 
     private createTestWorkoutPlans(): WorkoutPlan[] {

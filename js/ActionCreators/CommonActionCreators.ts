@@ -14,6 +14,9 @@ import CreateWorkoutPlanFailAction from "../Actions/CreateWorkoutPlanFailAction"
 import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import ProcessWorkoutStartedAction from "../Actions/ProcessWorkoutStartedAction";
 import ProcessWorkoutStartFailedAction from "../Actions/ProcessWorkoutStartFailedAction";
+import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
+import ReceiveWorkoutAction from "../Actions/ReceiveWorkoutAction";
+import ProcessRequestWorkoutFailedAction from "../Actions/ProcessRequestWorkoutFailedAction";
 
 import WorkoutPlan from "../Models/WorkoutPlan";
 
@@ -79,6 +82,18 @@ class CommonActionCreators {
 
     processWorkoutStartFailed(error: IRoboCoachError, requestAction: StartWorkoutAction): void {
         dispatcher.dispatch(new ProcessWorkoutStartFailedAction(error, requestAction));
+    }
+
+    requestWorkout(workoutId: string): void {
+        dispatcher.dispatch(new RequestWorkoutAction(workoutId));
+    }
+
+    receiveWorkout(workout: IWorkout, requestAction: RequestWorkoutAction): void {
+        dispatcher.dispatch(new ReceiveWorkoutAction(workout, requestAction));
+    }
+
+    processRequestWorkoutFailed(error: IRoboCoachError, requestAction: RequestWorkoutAction): void {
+        dispatcher.dispatch(new ProcessRequestWorkoutFailedAction(requestAction.WorkoutId, error, requestAction));
     }
 }
 
