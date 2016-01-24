@@ -38,17 +38,39 @@ export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkou
                         <div className="col-sm-10">
                             <input type="text"
                                    className="form-control"
-                                   id="inputEmail3"
+                                   id="inputName"
                                    placeholder="Input name"
                                    value={this.state.plan.name}
                                        onChange={e => this.onNameChanged(e)} />
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputPassword3" className="col-sm-2 control-label">Description</label>
+                        <label htmlFor="inputDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                            <input type="password" className="form-control" id="inputPassword3" placeholder="Password" />
+                            <input type="text"
+                                   className="form-control"
+                                   id="inputDesc"
+                                   placeholder="Description" />
                         </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="inputActionName" className="col-sm-2 control-label">
+                            Action #{this.state.plan.actions.length + 1}
+                        </label>
+                        <div className="col-sm-4">
+                            <input type="text"
+                                   className="form-control"
+                                   id="inputActionName"
+                                   placeholder="Action Name" />
+                        </div>
+                        <div className="col-sm-2">
+                            <input type="text"
+                                   className="form-control"
+                                   id="inputActionDuration"
+                                   placeholder="40" />
+                        </div>
+                        <label className="control-label" htmlFor="inputActionDuration">sec</label>
+                        <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
@@ -68,6 +90,11 @@ export default class CreateWorkoutPlan extends React.Component<{}, ICreateWorkou
                 </form>
             </div>
         );
+    }
+
+    onAddActionClicked(e: any): void {
+        e.preventDefault();
+        alert("123");
     }
 
     componentDidMount(): void {
