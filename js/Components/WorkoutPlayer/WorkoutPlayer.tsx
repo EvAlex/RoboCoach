@@ -4,6 +4,7 @@ import React = require("react");
 const styles: any = require("./WorkoutPlayer.module.less");
 /* tslint:enable:no-any */
 
+import * as Utils from "../../Utils";
 import Workout from "../../Models/Workout";
 
 export interface IWorkoutPlayerProps {
@@ -40,7 +41,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
 
     render(): React.ReactElement<{}> {
         return (
-            <div className={styles.workoutPlayer}>
+            <div className={styles["workout-player"]}>
                 {
                     this.props.workout.isInProgress
                         ? this.renderProgress()
@@ -62,12 +63,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
             i: number = this.props.workout.actions.indexOf(action),
             next: IExcercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
         return (
-            <div>
-                <h1>Rest</h1>
-                { next
-                    ? <h3>Next excercise: {next["excercise"].name}</h3>
-                    : <h3>Workout complete!</h3> }
+            <div className={styles["rest-progress"]}>
                 { this.renderTimeLeft(left) }
+                { next
+                    ? <h1 className={styles["action-name"]}>{next["excercise"].name}</h1>
+                    : <h1>Workout complete!</h1> }
             </div>
         );
     }
@@ -76,9 +76,9 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         let left: number = this.props.workout.getTimeLeftForAction(action),
             excercise: IExcercise = action["excercise"];
         return (
-            <div>
-                <h1>{excercise.name}</h1>
+            <div className={styles["excercise-progress"]}>
                 { this.renderTimeLeft(left) }
+                <h1 className={styles["action-name"]}>{excercise.name}</h1>
             </div>
         );
     }
@@ -88,7 +88,13 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
             sec: number = Math.floor(timeLeft / 1000 - min * 60),
             ms: number = timeLeft - min * 60 * 1000 - sec * 1000;
         return (
-            <h1>{min}:{sec}.{ms}</h1>
+            <h1 className={styles["time-left"]}>
+                <span className={styles.min}>{Utils.padNumber(min, 2)}</span>
+                :
+                <span className={styles.sec}>{Utils.padNumber(sec, 2)}</span>
+                .
+                <span className={styles.ms}>{Utils.padNumber(ms, 3)}</span>
+            </h1>
         );
     }
 

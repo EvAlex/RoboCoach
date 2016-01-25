@@ -3,6 +3,7 @@
 import IAction from "../Actions/IAction";
 import Dispatcher from "../Dispatcher/Dispatcher";
 import {ActionLogEntry, LogLevel} from "./ActionLogEntry";
+import * as Utils from "../Utils";
 
 /**
  * Logger that logs all actions
@@ -33,19 +34,13 @@ class ActionLogger {
 
     private dateToString(date: Date): string {
         return (
-            this.pad(date.getHours(), 2) +
+            Utils.padNumber(date.getHours(), 2) +
             ":" +
-            this.pad(date.getMinutes(), 2) +
+            Utils.padNumber(date.getMinutes(), 2) +
             ":" +
-            this.pad(date.getSeconds(), 2) +
+            Utils.padNumber(date.getSeconds(), 2) +
             ":" +
-            this.pad(date.getMilliseconds(), 3));
-    }
-
-    private pad(n: any, width: any, z?: any): string {
-      z = z || "0";
-      n = n + "";
-      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            Utils.padNumber(date.getMilliseconds(), 3));
     }
 }
 
