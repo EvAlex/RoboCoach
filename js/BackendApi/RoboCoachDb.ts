@@ -123,6 +123,7 @@ export class RoboCoachDb {
         plan.id = "-JRHTHaIs-jNPLXOQivY";
         plan.name = "7 Минут на фитнес - Красный 5";
         plan.actions = [
+            { duration: 15000 },
             { duration: 30000, excercise: { name: "Бой с тенью" } },
             { duration: 10000 },
             { duration: 30000, excercise: { name: "Выпады" } },
@@ -150,6 +151,7 @@ export class RoboCoachDb {
         plan.id = "-JRHTHaKuITFIhnj02kE";
         plan.name = "Отжимания по 10 секунд";
         plan.actions = [
+            { duration: 15000 },
             { duration: 10000, excercise: "Отжимания" },
             { duration: 10000 },
             { duration: 10000, excercise: "Суперузкие отжимания" },
