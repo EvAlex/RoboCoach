@@ -54,10 +54,14 @@ export default class Workout implements IWorkout {
     }
 
     public getActionStartTime(action: IWorkoutPlanAction): Date {
+        if (this.workout.actions.indexOf(action) === -1) {
+            throw new Error("Specified action does not belong to current Workout");
+        }
         let startTime: number = this.workout.startTime.getTime(),
             i: number = 0;
         while (this.workout.actions[i] !== action) {
             startTime += this.workout.actions[i].duration;
+            i++;
         }
         let res: Date = new Date();
         res.setTime(startTime);
