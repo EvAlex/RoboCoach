@@ -6,6 +6,7 @@ const styles: any = require("./WorkoutPlayer.module.less");
 
 import * as Utils from "../../Utils";
 import Workout from "../../Models/Workout";
+import audioPlayer from "../../AudioPlayer/AudioPlayer";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
