@@ -9,11 +9,11 @@ export class AudioPlayer {
     }
 
     public playStart(): void {
-        console.log("=======> prepare");
+        console.log("=======> start");
     }
 
     public playFinish(): void {
-        console.log("=======> prepare");
+        console.log("=======> finish");
     }
 }
 
