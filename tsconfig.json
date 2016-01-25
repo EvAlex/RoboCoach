@@ -35,6 +35,7 @@
         "./js/Errors/RoboCoachError.ts",
         "./js/Log/ActionLogEntry.ts",
         "./js/Log/ActionLogger.ts",
+        "./js/Models/__tests__/Workout-test.ts",
         "./js/Models/IExcercise.d.ts",
         "./js/Models/IExcercisePlanAction.d.ts",
         "./js/Models/IRestPlanAction.d.ts",

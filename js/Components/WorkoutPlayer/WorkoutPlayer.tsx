@@ -33,6 +33,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
             if (new Date().getTime() - this.lastRenderTime > 1000 / this.fps) {
                 this.forceUpdate();
             }
+            this.shouldTimerWork = this.shouldTimerWork && this.props.workout.isInProgress;
             window.requestAnimationFrame(t => this.onAminationFrame(t));
         }
     }
@@ -50,7 +51,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     }
 
     private renderProgress(): React.ReactElement<{}> {
-        let action: IExcercisePlanAction | IRestPlanAction = this.props.workout.currentAction;
+        let action: IExcercisePlanAction | IRestPlanAction = this.props.workout.getAction(new Date());
         return this.props.workout.isActionRest(action)
             ? this.renderRestProgress(action)
             : this.renderExcerciseProgress(action);

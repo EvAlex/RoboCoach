@@ -35,11 +35,11 @@ export default class Workout implements IWorkout {
         return this.actions.reduce((p, c) => p + c.duration, 0);
     }
 
-    public get currentAction(): IExcercisePlanAction | IRestPlanAction {
+    public getAction(time: Date = new Date()): IExcercisePlanAction | IRestPlanAction {
         var curWorkoutTime: number = this.workout.startTime.getTime(),
-            curTime: number = new Date().getTime(),
+            curTime: number = time.getTime(),
             res: IExcercisePlanAction | IRestPlanAction = null;
-        if (curWorkoutTime < new Date().getTime()) {
+        if (curWorkoutTime < curTime) {
             for (let i: number = 0; i < this.workout.actions.length && !res; i++) {
                 if ((curWorkoutTime += this.workout.actions[i].duration) > curTime) {
                     res = this.workout.actions[i];
