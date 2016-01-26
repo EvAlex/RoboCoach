@@ -52,6 +52,11 @@ $ apm install atom-typescript atom-beautify file-icons linter minimap
 4. File > Settings (Ctrl + Comma). Choose settings tab. Set "Tab Length" to 4
 5. File > Settings (Ctrl + Comma). Choose Packages tab. Find "tree-view" package there. Open its settings. Check "Hide Ignored Names" and "Hide VCS ignored names"
 
+
+### Using Visual Studio 2015 for development
+1. Install [Node Tools for Visual Studio](https://github.com/Microsoft/nodejstools/releases) extension
+2. Install [NPM Scripts Task Runner](https://visualstudiogallery.msdn.microsoft.com/8f2f2cbc-4da5-43ba-9de2-c9d08ade4941?SRC=VSIDE) extension
+
 ### Using Visual Studio Code for development
 #### Show tslint errors only in VS Code
 * Hit Ctrl + P
