@@ -7,6 +7,7 @@ const styles: any = require("./WorkoutPlayer.module.less");
 import * as Utils from "../../Utils";
 import Workout from "../../Models/Workout";
 import audioPlayer from "../../AudioPlayer/AudioPlayer";
+import speechSynthesiser from "../../AudioPlayer/SpeechSynthesiser";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -170,6 +171,15 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
 
     private notifyPrepare(currentAction: IWorkoutPlanAction): void {
         audioPlayer.playPrepare();
+        var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
+        window.setTimeout(
+            () => {
+                speechSynthesiser.say(
+                    this.props.workout.isActionRest(currentAction)
+                        ? next["excercise"].name
+                        : currentAction["excercise"].name);
+            },
+            1000);
         this.notifications.filter(n => n.action === currentAction)[0].preparePlayed = true;
     }
 

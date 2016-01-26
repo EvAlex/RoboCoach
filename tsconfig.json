@@ -28,6 +28,7 @@
         "./js/Actions/SayHelloAction.ts",
         "./js/Actions/StartWorkoutAction.ts",
         "./js/AudioPlayer/AudioPlayer.ts",
+        "./js/AudioPlayer/SpeechSynthesiser.ts",
         "./js/BackendApi/RoboCoachDb.ts",
         "./js/Components/NotFoundPage/INotFoundPageState.ts",
         "./js/Dispatcher/Dispatcher.ts",
