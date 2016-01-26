@@ -82,17 +82,26 @@ export class AudioPlayer {
     }
 }
 
+function getCorrectUrl(relativeOrAbsolute: string): string {
+    "use strict";
+    return relativeOrAbsolute.indexOf("http") === -1
+        ? relativeOrAbsolute.indexOf("/") === 0
+            ? relativeOrAbsolute
+            : "/" + relativeOrAbsolute
+        : relativeOrAbsolute;
+}
+
 export default new AudioPlayer({
     prepare: {
-        url: require("./prepare.mp3"),
+        url: getCorrectUrl(require("./prepare.mp3")),
         data: null
     },
     start: {
-        url: require("./start.mp3"),
+        url: getCorrectUrl(require("./start.mp3")),
         data: null
     },
     finish: {
-        url: require("./finish.mp3"),
+        url: getCorrectUrl(require("./finish.mp3")),
         data: null
     }
 });
