@@ -170,21 +170,27 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     }
 
     private notifyPrepare(currentAction: IWorkoutPlanAction): void {
-        audioPlayer.playPrepare();
         var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
-        window.setTimeout(
+        audioPlayer.play(audioPlayer.getFiles().prepare)
+            .then(() => {
+                speechSynthesiser.say(
+                    this.props.workout.isActionRest(currentAction)
+                        ? next["excercise"].name
+                        : currentAction["excercise"].name);
+            });
+        /*window.setTimeout(
             () => {
                 speechSynthesiser.say(
                     this.props.workout.isActionRest(currentAction)
                         ? next["excercise"].name
                         : currentAction["excercise"].name);
             },
-            1000);
+            1500);*/
         this.notifications.filter(n => n.action === currentAction)[0].preparePlayed = true;
     }
 
     private notifyStart(currentAction: IWorkoutPlanAction): void {
-        audioPlayer.playStart();
+        audioPlayer.play(audioPlayer.getFiles().start);
         var isRest: boolean = this.props.workout.isActionRest(currentAction);
         if (isRest) {
             var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
@@ -195,7 +201,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     }
 
     private notifyFinish(currentAction: IWorkoutPlanAction): void {
-        audioPlayer.playFinish();
+        audioPlayer.play(audioPlayer.getFiles().finish);
         var isRest: boolean = this.props.workout.isActionRest(currentAction);
         if (isRest) {
             var prev: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) - 1];
