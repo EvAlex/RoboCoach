@@ -19,7 +19,7 @@ export default class Workout implements IWorkout {
         return this.workout.planDescription;
     }
 
-    public get actions(): (IExcercisePlanAction | IRestPlanAction)[] {
+    public get actions(): (IExercisePlanAction | IRestPlanAction)[] {
         return this.workout.actions;
     }
 
@@ -35,10 +35,10 @@ export default class Workout implements IWorkout {
         return this.actions.reduce((p, c) => p + c.duration, 0);
     }
 
-    public getAction(time: Date = new Date()): IExcercisePlanAction | IRestPlanAction {
+    public getAction(time: Date = new Date()): IExercisePlanAction | IRestPlanAction {
         var curWorkoutTime: number = this.workout.startTime.getTime(),
             curTime: number = time.getTime(),
-            res: IExcercisePlanAction | IRestPlanAction = null;
+            res: IExercisePlanAction | IRestPlanAction = null;
         if (curWorkoutTime < curTime) {
             for (let i: number = 0; i < this.workout.actions.length && !res; i++) {
                 if ((curWorkoutTime += this.workout.actions[i].duration) > curTime) {
@@ -49,8 +49,8 @@ export default class Workout implements IWorkout {
         return res;
     }
 
-    public isActionRest(action: IExcercisePlanAction | IRestPlanAction): boolean {
-        return !("excercise" in action);
+    public isActionRest(action: IExercisePlanAction | IRestPlanAction): boolean {
+        return !("exercise" in action);
     }
 
     public getActionStartTime(action: IWorkoutPlanAction): Date {

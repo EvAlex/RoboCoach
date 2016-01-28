@@ -7,7 +7,7 @@ export default class WorkoutPlan implements IWorkoutPlan {
 
     public description: string;
 
-    public actions: (IExcercisePlanAction | IRestPlanAction)[];
+    public actions: (IExercisePlanAction | IRestPlanAction)[];
 
     /*
     public toJson(): string {

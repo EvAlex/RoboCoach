@@ -104,8 +104,8 @@
     <TypeScriptCompile Include="js\Errors\RoboCoachError.ts" />
     <TypeScriptCompile Include="js\Log\ActionLogEntry.ts" />
     <TypeScriptCompile Include="js\Log\ActionLogger.ts" />
-    <TypeScriptCompile Include="js\Models\IExcercise.d.ts" />
-    <TypeScriptCompile Include="js\Models\IExcercisePlanAction.d.ts" />
+    <TypeScriptCompile Include="js\Models\IExercise.d.ts" />
+    <TypeScriptCompile Include="js\Models\IExercisePlanAction.d.ts" />
     <TypeScriptCompile Include="js\Models\IRestPlanAction.d.ts" />
     <TypeScriptCompile Include="js\Models\IWorkout.d.ts" />
     <TypeScriptCompile Include="js\Models\IWorkoutPlan.d.ts" />

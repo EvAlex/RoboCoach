@@ -72,17 +72,17 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     }
 
     private renderProgress(): React.ReactElement<{}> {
-        let action: IExcercisePlanAction | IRestPlanAction = this.props.workout.getAction(new Date());
+        let action: IExercisePlanAction | IRestPlanAction = this.props.workout.getAction(new Date());
         return this.props.workout.isActionRest(action)
             ? this.renderRestProgress(action)
-            : this.renderExcerciseProgress(action);
+            : this.renderExerciseProgress(action);
     }
 
-    private renderRestProgress(action: IExcercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
+    private renderRestProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
             i: number = this.props.workout.actions.indexOf(action),
-            prev: IExcercisePlanAction | IRestPlanAction = this.props.workout.actions[i - 1],
-            next: IExcercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
+            prev: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i - 1],
+            next: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
         if (this.shouldNotifyFinish(action)) {
             this.notifyFinish(prev);
         } else if (this.shouldNotifyPrepare(action)) {
@@ -94,24 +94,24 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
             <div className={styles["rest-progress"]}>
                 { this.renderTimeLeft(left) }
                 { next
-                    ? <h1 className={styles["action-name"]}>{next["excercise"].name}</h1>
+                    ? <h1 className={styles["action-name"]}>{next["exercise"].name}</h1>
                     : <h1>Workout complete!</h1> }
             </div>
         );
     }
 
-    private renderExcerciseProgress(action: IExcercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
+    private renderExerciseProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
-            excercise: IExcercise = action["excercise"];
+            exercise: IExercise = action["exercise"];
         if (this.shouldNotifyStart(action)) {
             this.notifyStart(action);
         } else if (this.shouldNotifyFinish(action)) {
             this.notifyFinish(action);
         }
         return (
-            <div className={styles["excercise-progress"]}>
+            <div className={styles["exercise-progress"]}>
                 { this.renderTimeLeft(left) }
-                <h1 className={styles["action-name"]}>{excercise.name}</h1>
+                <h1 className={styles["action-name"]}>{exercise.name}</h1>
             </div>
         );
     }
@@ -175,15 +175,15 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
             .then(() => {
                 speechSynthesiser.say(
                     this.props.workout.isActionRest(currentAction)
-                        ? next["excercise"].name
-                        : currentAction["excercise"].name);
+                        ? next["exercise"].name
+                        : currentAction["exercise"].name);
             });
         /*window.setTimeout(
             () => {
                 speechSynthesiser.say(
                     this.props.workout.isActionRest(currentAction)
-                        ? next["excercise"].name
-                        : currentAction["excercise"].name);
+                        ? next["exercise"].name
+                        : currentAction["exercise"].name);
             },
             1500);*/
         this.notifications.filter(n => n.action === currentAction)[0].preparePlayed = true;

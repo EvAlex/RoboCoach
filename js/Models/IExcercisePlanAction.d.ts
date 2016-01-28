@@ -1,4 +1,4 @@
 
-interface IExcercisePlanAction extends IWorkoutPlanAction {
-    excercise: IExcercise;
+interface IExercisePlanAction extends IWorkoutPlanAction {
+    exercise: IExercise;
 }

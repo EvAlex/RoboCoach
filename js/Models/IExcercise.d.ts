@@ -1,4 +1,4 @@
 
-interface IExcercise {
+interface IExercise {
     name: string;
 }

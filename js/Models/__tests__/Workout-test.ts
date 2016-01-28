@@ -18,8 +18,8 @@ describe("Workout", () => {
         expect(workout.actions.length).toEqual(wrapped.actions.length);
         workout.actions.forEach((a, i) => {
             expect(a.duration).toEqual(wrapped.actions[i].duration);
-            if ("excercise" in a) {
-                expect(a["excercise"]).toEqual(wrapped.actions[i]["excercise"]);
+            if ("exercise" in a) {
+                expect(a["exercise"]).toEqual(wrapped.actions[i]["exercise"]);
             }
         });
     });
@@ -54,19 +54,19 @@ describe("Workout", () => {
 
             // Act
 
-            var action1: IExcercisePlanAction = <IExcercisePlanAction>workout.getAction(now),
-                action2: IRestPlanAction = <IExcercisePlanAction>workout.getAction(in35sec),
-                action3: IExcercisePlanAction = <IExcercisePlanAction>workout.getAction(in50sec),
-                action4: IExcercisePlanAction = <IExcercisePlanAction>workout.getAction(in215sec);
+            var action1: IExercisePlanAction = <IExercisePlanAction>workout.getAction(now),
+                action2: IRestPlanAction = <IExercisePlanAction>workout.getAction(in35sec),
+                action3: IExercisePlanAction = <IExercisePlanAction>workout.getAction(in50sec),
+                action4: IExercisePlanAction = <IExercisePlanAction>workout.getAction(in215sec);
 
             // Assert
-            expect("excercise" in action1).toBeTruthy();
-            expect(action1.excercise.name).toEqual("Shadowboxing");
-            expect("excercise" in action2).toBeFalsy();
-            expect("excercise" in action3).toBeTruthy();
-            expect(action3.excercise.name).toEqual("Lunge");
-            expect("excercise" in action4).toBeTruthy();
-            expect(action4.excercise.name).toEqual("Sprint in place");
+            expect("exercise" in action1).toBeTruthy();
+            expect(action1.exercise.name).toEqual("Shadowboxing");
+            expect("exercise" in action2).toBeFalsy();
+            expect("exercise" in action3).toBeTruthy();
+            expect(action3.exercise.name).toEqual("Lunge");
+            expect("exercise" in action4).toBeTruthy();
+            expect(action4.exercise.name).toEqual("Sprint in place");
         });
 
         it("Should return null if specified time is either before Workout starts or after it completes.", () => {
@@ -137,28 +137,28 @@ function getWorkout(): IWorkout {
     return {
         id: "-JRHTHaIs-jNPLXOQivY",
         planName: "7 Минут на фитнес - Красный 5",
-        planDescription: "Set of 30 sec excercises with 10 sec intervals",
+        planDescription: "Set of 30 sec exercises with 10 sec intervals",
         startTime: new Date(),
         actions: [
-            { duration: 30000, excercise: { name: "Shadowboxing" } },
+            { duration: 30000, exercise: { name: "Shadowboxing" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Lunge" } },
+            { duration: 30000, exercise: { name: "Lunge" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Squat" } },
+            { duration: 30000, exercise: { name: "Squat" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Bicycle crunch" } },
+            { duration: 30000, exercise: { name: "Bicycle crunch" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Pushups" } },
+            { duration: 30000, exercise: { name: "Pushups" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Sprint in place" } },
+            { duration: 30000, exercise: { name: "Sprint in place" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Burpee" } },
+            { duration: 30000, exercise: { name: "Burpee" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Circle running" } },
+            { duration: 30000, exercise: { name: "Circle running" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Jumping" } },
+            { duration: 30000, exercise: { name: "Jumping" } },
             { duration: 10000 },
-            { duration: 30000, excercise: { name: "Hyperextension on floor" } },
+            { duration: 30000, exercise: { name: "Hyperextension on floor" } },
             { duration: 10000 },
         ]
     };
