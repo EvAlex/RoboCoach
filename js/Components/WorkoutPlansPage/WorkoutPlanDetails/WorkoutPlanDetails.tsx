@@ -7,6 +7,8 @@ const styles: any = require("./WorkoutPlanDetails.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
 
+import Duration from "../../Duration/Duration";
+
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import * as WorkoutPlansStore from "../../../Stores/WorkoutPlansStore";
 import WorkoutPlan from "../../../Models/WorkoutPlan";
@@ -77,10 +79,46 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
                     </button>
                 </h2>
 
-                { this.state.planRequestError
-                    ? <div className="alert alert-danger">{this.state.planRequestError.toString()}</div>
-                    : <p>{this.state.plan.name}</p> }
+                <p>{this.state.plan.description}</p>
 
+                {this.renderPlanActions(this.state.plan)}
+
+            </div>
+        );
+    }
+
+    private renderPlanActions(plan: IWorkoutPlan): React.ReactElement<{}> {
+        return (
+            <div>
+                {
+                    plan.actions
+                        ? plan.actions.map((a: any, i: number) => {
+                            return "exercise" in a
+                                ? this.renderExerciseAction(a, i)
+                                : this.renderRestAction(a, i);
+                        })
+                        : ""
+                }
+            </div>
+        );
+    }
+
+    private renderRestAction(action: IRestPlanAction, index: number): React.ReactElement<{}> {
+        return (
+            <div className={styles["plan-action"]} key={index}>
+                <span className="glyphicon glyphicon-time"></span>
+                <Duration ms={action.duration}/>
+                <span className={styles["plan-action-name"]}></span>
+            </div>
+        );
+    }
+
+    private renderExerciseAction(action: IExercisePlanAction, index: number): React.ReactElement<{}> {
+        return (
+            <div className={styles["plan-action"]} key={index}>
+                <span className="glyphicon glyphicon-time"></span>
+                <Duration ms={action.duration}/>
+                <span className={styles["plan-action-name"]}>{action.exercise.name}</span>
             </div>
         );
     }
