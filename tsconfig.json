@@ -51,13 +51,13 @@
         "./js/Stores/CommonStore.ts",
         "./js/Stores/WorkoutPlansStore.ts",
         "./js/Stores/WorkoutStore.ts",
-        "./js/Utils.ts",
         "./js/App.tsx",
         "./js/Components/ContentPage/__tests__/ContentPage-test.tsx",
         "./js/Components/ContentPage/ContentBody/ContentBody.tsx",
         "./js/Components/ContentPage/ContentHeader/ContentHeader.tsx",
         "./js/Components/ContentPage/ContentPage.tsx",
         "./js/Components/CreateWorkoutPlan/CreateWorkoutPlan.tsx",
+        "./js/Components/Duration/Duration.tsx",
         "./js/Components/HelloWorld/HelloWorld.tsx",
         "./js/Components/Navbar/Navbar.tsx",
         "./js/Components/Navbar/NavbarLink/NavbarLink.tsx",
@@ -68,6 +68,7 @@
         "./js/Components/WorkoutPlansPage/WorkoutPlansPage.tsx",
         "./js/Components/WorkoutPlayer/WorkoutPlayer.tsx",
         "./js/Index.tsx",
+        "./js/Utils.tsx",
         "./typings/tsd.d.ts"
     ],
     "filesGlob": [
