@@ -56,6 +56,7 @@ $ apm install atom-typescript atom-beautify file-icons linter minimap
 ### Using Visual Studio 2015 for development
 1. Install [Node Tools for Visual Studio](https://github.com/Microsoft/nodejstools/releases) extension
 2. Install [NPM Scripts Task Runner](https://visualstudiogallery.msdn.microsoft.com/8f2f2cbc-4da5-43ba-9de2-c9d08ade4941?SRC=VSIDE) extension
+3. Install [WebPack Task Runner](https://visualstudiogallery.msdn.microsoft.com/5497fd10-b1ba-474c-8991-1438ae47012a?SRC=VSIDE) extension
 
 ### Using Visual Studio Code for development
 #### Show tslint errors only in VS Code

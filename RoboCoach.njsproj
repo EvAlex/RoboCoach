@@ -38,6 +38,10 @@
     <Content Include="js\Components\CreateWorkoutPlan\CreateWorkoutPlan.module.less" />
     <Content Include="js\Components\CreateWorkoutPlan\CreateWorkoutPlan.tsx" />
     <Content Include="js\Components\HelloWorld\HelloWorld.tsx" />
+    <Content Include="js\Components\Navbar\Navbar.module.less" />
+    <Content Include="js\Components\Navbar\Navbar.tsx" />
+    <Content Include="js\Components\Navbar\NavbarLink\NavbarLink.module.less" />
+    <Content Include="js\Components\Navbar\NavbarLink\NavbarLink.tsx" />
     <Content Include="js\Components\NotFoundPage\NotFoundPage.module.less" />
     <Content Include="js\Components\NotFoundPage\NotFoundPage.tsx" />
     <Content Include="js\Components\WorkoutDetails\WorkoutDetails.module.less" />
@@ -148,6 +152,8 @@
     <Folder Include="js\Components\ContentPage\ContentHeader" />
     <Folder Include="js\Components\CreateWorkoutPlan" />
     <Folder Include="js\Components\HelloWorld" />
+    <Folder Include="js\Components\Navbar\" />
+    <Folder Include="js\Components\Navbar\NavbarLink\" />
     <Folder Include="js\Components\NotFoundPage" />
     <Folder Include="js\Components\WorkoutDetails" />
     <Folder Include="js\Components\WorkoutPage" />
@@ -174,6 +180,19 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
   <ProjectExtensions>

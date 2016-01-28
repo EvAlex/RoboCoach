@@ -1,4 +1,6 @@
 
+import * as Utils from "../Utils";
+
 interface IResource<T> {
     url: string;
     data: T;
@@ -136,7 +138,7 @@ class AudioFilePlayer implements IAudioFilePlayer {
             this.source.start(
                 this.context.currentTime,
                 this.file.audioMetadata.playbackStart / 1000,
-                this.file.audioMetadata.duration / 1000);
+                (this.file.audioMetadata.playbackEnd - this.file.audioMetadata.playbackStart) / 1000);
 
             this.source.onended = e => {
                 if (this.playResolver !== null) {
