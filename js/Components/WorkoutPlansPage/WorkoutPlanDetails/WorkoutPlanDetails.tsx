@@ -42,16 +42,11 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     componentDidMount(): void {
         this.store.addListener(this.onStoreChangeListener);
         this.registrationId = dispatcher.register(a => this.processAction(a));
-        var plan: WorkoutPlan = this.store.findWorkoutPlan(this.props.params.planId);
-        if (plan !== null) {
-            this.setState({
-                plan: plan,
-                planRequestError: null,
-                workoutStartError: null
-            });
-        } else {
-            CommonActionCreators.requestWorkoutPlan(this.props.params.planId);
-        }
+        this.setOrRequestPlan(this.props.params.planId);
+    }
+
+    componentWillReceiveProps(nextProps: IWorkoutDetailsProps): void {
+        this.setOrRequestPlan(nextProps.params.planId);
     }
 
     componentWillUnmount(): void {
@@ -92,6 +87,19 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
 
     private onStartWorkoutClicked(): void {
         CommonActionCreators.startWorkout(this.state.plan);
+    }
+
+    private setOrRequestPlan(planId: string): void {
+        var plan: WorkoutPlan = this.store.findWorkoutPlan(planId);
+        if (plan !== null) {
+            this.setState({
+                plan: plan,
+                planRequestError: null,
+                workoutStartError: null
+            });
+        } else {
+            CommonActionCreators.requestWorkoutPlan(this.props.params.planId);
+        }
     }
 
     private onStoreChange(): void {

@@ -1,6 +1,4 @@
 
-import * as Utils from "../Utils";
-
 interface IResource<T> {
     url: string;
     data: T;
