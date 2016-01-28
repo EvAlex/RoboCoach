@@ -9,4 +9,5 @@ script:
   - npm run build
   - npm run test
 after_success:
-  - firebase deploy --email ${FIREBASE_EMAIL} --password ${FIREBASE_PASSWORD}
+  - mkdir /home/travis/tmp
+  - echo -e "${FIREBASE_EMAIL}\n${FIREBASE_PASSWORD}" | firebase deploy
