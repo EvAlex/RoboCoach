@@ -32,6 +32,8 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     private onStoreChangeListener: () => void = () => this.onStoreChange();
     private registrationId: string;
 
+    private minActionHeight: number = 50;
+
     constructor() {
         super();
         this.state = {
@@ -88,37 +90,69 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private renderPlanActions(plan: IWorkoutPlan): React.ReactElement<{}> {
+        if (!plan.actions) {
+            return <div></div>;
+        }
+
+        let planDuration: number = plan.actions.reduce((p, c) => p + c.duration, 0),
+            minActionDuration: number = plan.actions.slice().sort((a, b) => a.duration - b.duration)[0].duration;
         return (
             <div>
                 {
-                    plan.actions
-                        ? plan.actions.map((a: any, i: number) => {
-                            return "exercise" in a
-                                ? this.renderExerciseAction(a, i)
-                                : this.renderRestAction(a, i);
-                        })
-                        : ""
+                    plan.actions.map((a: any, i: number) => {
+                        return "exercise" in a
+                            ? this.renderExerciseAction(a, i, planDuration, minActionDuration)
+                            : this.renderRestAction(a, i, planDuration, minActionDuration);
+                    })
                 }
             </div>
         );
     }
 
-    private renderRestAction(action: IRestPlanAction, index: number): React.ReactElement<{}> {
+    private renderRestAction(
+        action: IRestPlanAction,
+        index: number,
+        planDuration: number,
+        minActionDuration: number): React.ReactElement<{}> {
+        let height: number = this.minActionHeight / minActionDuration * action.duration,
+            style: { [key: string]: string} = {
+                height: height + "px"
+            };
         return (
-            <div className={styles["plan-action"]} key={index}>
-                <span className="glyphicon glyphicon-time"></span>
-                <Duration ms={action.duration}/>
-                <span className={styles["plan-action-name"]}></span>
+            <div className={styles.planActionRest}
+                 key={index}
+                 style={style}>
+                <div className={styles.planActionDurationWrap}>
+                    <span className="glyphicon glyphicon-time"></span>
+                    <Duration ms={action.duration}/>
+                </div>
+                <div className={styles.planActionDetailsWrap}>
+                    <span className={styles.planActionName}></span>
+                </div>
             </div>
         );
     }
 
-    private renderExerciseAction(action: IExercisePlanAction, index: number): React.ReactElement<{}> {
+    private renderExerciseAction(
+        action: IExercisePlanAction,
+        index: number,
+        planDuration: number,
+        minActionDuration: number): React.ReactElement<{}> {
+        let height: number = this.minActionHeight / minActionDuration * action.duration,
+            style: { [key: string]: string} = {
+                height: height + "px"
+            };
         return (
-            <div className={styles["plan-action"]} key={index}>
-                <span className="glyphicon glyphicon-time"></span>
-                <Duration ms={action.duration}/>
-                <span className={styles["plan-action-name"]}>{action.exercise.name}</span>
+            <div className={styles.planActionExercise}
+                 key={index}
+                 style={style}>
+                <div className={styles.planActionDurationWrap}>
+                    <span className="glyphicon glyphicon-time"></span>
+                    <Duration ms={action.duration}/>
+                </div>
+                <div className={styles.planActionDetailsWrap}>
+                    <span className={styles.planActionName}>{action.exercise.name}</span>
+                </div>
             </div>
         );
     }
