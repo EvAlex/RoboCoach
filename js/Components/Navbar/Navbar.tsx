@@ -1,6 +1,6 @@
 ﻿
 import React = require("react");
-import {Link, IndexLink} from "react-router";
+import {IndexLink} from "react-router";
 import NavbarLink from "./NavbarLink/NavbarLink";
 
 /* tslint:disable:no-unused-variable */
@@ -29,12 +29,9 @@ export default class Navbar extends React.Component<{}, {}> {
                     {/* Collect the nav links, forms, and other content for toggling */}
                     <div className="collapse navbar-collapse" id="navbar-collapse">
                         <ul className="nav navbar-nav">
-                            <NavbarLink to="/workout-plans" />
-                            <li className="active">
-                                <Link to="/workout-plans">
-                                    <span>Workout Plans</span>
-                                </Link>
-                            </li>
+                            <NavbarLink to="/workout-plans">
+                                <span>Workout Plans</span>
+                            </NavbarLink>
                         </ul>
                     </div>{/* /.navbar-collapse */}
                 </div>{/* /.container-fluid */}

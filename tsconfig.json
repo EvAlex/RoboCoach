@@ -59,6 +59,8 @@
         "./js/Components/ContentPage/ContentPage.tsx",
         "./js/Components/CreateWorkoutPlan/CreateWorkoutPlan.tsx",
         "./js/Components/HelloWorld/HelloWorld.tsx",
+        "./js/Components/Navbar/Navbar.tsx",
+        "./js/Components/Navbar/NavbarLink/NavbarLink.tsx",
         "./js/Components/NotFoundPage/NotFoundPage.tsx",
         "./js/Components/WorkoutDetails/WorkoutDetails.tsx",
         "./js/Components/WorkoutPage/WorkoutPage.tsx",

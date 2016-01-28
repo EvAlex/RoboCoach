@@ -1,4 +1,5 @@
 import React = require("react");
+import Navbar from "./Components/Navbar/Navbar";
 import CommonActionCreators from "./ActionCreators/CommonActionCreators";
 require("./Log/ActionLogger");
 /* tslint:disable:no-unused-variable */
@@ -18,9 +19,14 @@ interface IAppProps {
 
 export default class App extends React.Component<IAppProps, {}> {
     render(): React.ReactElement<{}> {
-        return  <div className="container">
+        return (
+            <div>
+                <Navbar />
+                <div className="container">
                     {this.props.children}
-                </div>;
+                </div>
+            </div>
+        );
     }
 
     componentDidMount(): void {
