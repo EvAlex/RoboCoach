@@ -35,6 +35,7 @@
         "./js/Errors/IRoboCoachError.d.ts",
         "./js/Errors/RoboCoachDbError.ts",
         "./js/Errors/RoboCoachError.ts",
+        "./js/IRoboCoachConfig.d.ts",
         "./js/Log/ActionLogEntry.ts",
         "./js/Log/ActionLogger.ts",
         "./js/Models/__tests__/Workout-test.ts",

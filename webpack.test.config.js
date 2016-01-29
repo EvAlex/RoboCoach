@@ -6,6 +6,8 @@ var mainConfig = new WebpackConfig().extend("webpack.config");
 
 webpackShared.removeObjectProperties(mainConfig.resolve.alias, ['react']);
 
+mainConfig.resolve.alias["RoboCoachConfig"] = path.join(__dirname, 'js', 'RoboCoachConfig.test.json');
+
 var config = {
   resolve: {
     extensions: mainConfig.resolve.extensions,

@@ -1,5 +1,6 @@
 
 import * as Firebase from "firebase";
+const config: IRoboCoachConfig = require("RoboCoachConfig");
 import IAction from "./../Actions/IAction";
 import Dispatcher from "../Dispatcher/Dispatcher";
 import WorkoutPlan from "../Models/WorkoutPlan";
@@ -19,7 +20,7 @@ export class RoboCoachDb {
     private testWorkouts: IWorkout[];
 
     constructor() {
-        this.firebase = new Firebase("https://robocoach-dev.firebaseio.com/");
+        this.firebase = new Firebase(config.firebaseUrl);
         Dispatcher.register((action: IAction) => this.processAction(action));
         this.testWorkoutPlans = this.createTestWorkoutPlans();
         this.testWorkouts = [];

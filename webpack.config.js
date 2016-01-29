@@ -42,7 +42,8 @@ var config = {
       'flux': path.join(nodeModulesPath, 'flux', 'index.js'),
       'jquery': path.join(nodeModulesPath, 'jquery', 'dist', 'jquery.js'),
       'bootstrap-js': path.join(nodeModulesPath, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'),
-      'bootstrap-css': path.join(nodeModulesPath, 'bootstrap', 'dist', 'css', 'bootstrap.min.css')
+      'bootstrap-css': path.join(nodeModulesPath, 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
+      'RoboCoachConfig': path.join(__dirname, 'js', 'RoboCoachConfig.prod.json')
     }
   },
 
