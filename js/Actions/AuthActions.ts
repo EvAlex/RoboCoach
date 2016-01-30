@@ -28,3 +28,23 @@ export class ProcessUserLoggedOutAction extends ActionBase {
             LogLevel.Info);
     }
 }
+
+export class LogOutAction extends ActionBase {
+    private user: IUser;
+
+    constructor(user: IUser) {
+        super();
+        this.user = user;
+    }
+
+    public getUser(): IUser {
+        return this.user;
+    }
+
+    toLogEntry(): ActionLogEntry {
+        return new ActionLogEntry(
+            "LogOutAction",
+            LogLevel.Info,
+            { userId: this.user.id });
+    }
+}

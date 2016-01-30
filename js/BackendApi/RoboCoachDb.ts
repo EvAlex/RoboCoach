@@ -51,6 +51,8 @@ export class RoboCoachDb {
             this.processStartWorkoutAction(action);
         } else if (action instanceof RequestWorkoutAction) {
             this.processRequestWorkoutAction(action);
+        } else if (action instanceof AuthActions.LogOutAction) {
+            this.firebase.unauth();
         }
     }
 
