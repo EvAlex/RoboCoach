@@ -18,8 +18,10 @@ export class UserStore extends BaseStore {
 
     private processActions(action: IAction): void {
         if (action instanceof AuthActions.ProcessUserLoggedInAction) {
-            debugger;
-            this.currentUser = { id: action.getAuthData().uid };
+            this.currentUser = {
+                id: action.getAuthData().uid,
+                authData: action.getAuthData()
+            };
             this.emitChange();
         } else if (action instanceof AuthActions.ProcessUserLoggedOutAction) {
             this.currentUser = null;

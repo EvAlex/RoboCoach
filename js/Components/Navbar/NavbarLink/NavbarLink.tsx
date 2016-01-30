@@ -9,6 +9,7 @@ const styles: any = require("./NavbarLink.module.less");
 
 export interface INavbarLinkProps extends ReactRouter.RouteComponentProps<{}, {}> {
     to: string;
+    className?: string;
     children?: React.ReactElement<{}>[];
 }
 
@@ -25,7 +26,7 @@ export default class NavbarLink extends React.Component<INavbarLinkProps, INavba
 
     render(): React.ReactElement<{}> {
         return (
-            <li className={ this.state.active ? "active" : "" }>
+            <li className={ this.getClassName() }>
                 <Link to={this.props.to} activeClassName="bs-link-active">
                     {this.props.children}
                 </Link>
@@ -48,5 +49,11 @@ export default class NavbarLink extends React.Component<INavbarLinkProps, INavba
         if (isActive !== this.state.active) {
             this.setState({ active: isActive });
         }
+    }
+
+    private getClassName(): string {
+        return  this.state.active
+            ? `active ${this.props.className}`
+            : this.props.className || "";
     }
 }

@@ -32,12 +32,20 @@ export class RoboCoachDb {
 
     private handleAuth(): void {
         this.firebase.onAuth(authData => {
-            if (authData) {
-                dispatcher.dispatch(new AuthActions.ProcessUserLoggedInAction(authData));
+            if (dispatcher.isDispatching) {
+                window.setTimeout(() => this.onAuthChanged(authData));
             } else {
-                dispatcher.dispatch(new AuthActions.ProcessUserLoggedOutAction());
+                this.onAuthChanged(authData);
             }
         });
+    }
+
+    private onAuthChanged(authData: IFirebaseAuthData): void {
+        if (authData) {
+            dispatcher.dispatch(new AuthActions.ProcessUserLoggedInAction(authData));
+        } else {
+            dispatcher.dispatch(new AuthActions.ProcessUserLoggedOutAction());
+        }
     }
 
     private processAction(action: IAction): void {
@@ -51,6 +59,8 @@ export class RoboCoachDb {
             this.processStartWorkoutAction(action);
         } else if (action instanceof RequestWorkoutAction) {
             this.processRequestWorkoutAction(action);
+        } else if (action instanceof AuthActions.LogInAction) {
+            this.processLogInAction(action);
         } else if (action instanceof AuthActions.LogOutAction) {
             this.firebase.unauth();
         }
@@ -130,6 +140,38 @@ export class RoboCoachDb {
                     new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
                     action);
             }
+        });
+    }
+
+    private processLogInAction(action: AuthActions.LogInAction): void {
+        var provider: string = action.getProvider() === AuthActions.AuthProvider.Facebook
+            ? "facebook"
+            : null;
+        if (!provider) {
+            throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);
+        }
+        // Prefer pop-ups, so we don't navigate away from the page
+        this.firebase.authWithOAuthPopup(provider, (error, authData) => {
+          if (error) {
+            if (error.code === "TRANSPORT_UNAVAILABLE") {
+              /* Fall-back to browser redirects, and pick up the session
+                 automatically when we come back to the origin page */
+              this.firebase.authWithOAuthRedirect(provider, (error) => {
+                  dispatcher.dispatch(
+                      new AuthActions.ProcessLogInFailedAction(
+                          action,
+                          new RoboCoachDbError(error)));
+              });
+          } else {
+              dispatcher.dispatch(
+                  new AuthActions.ProcessLogInFailedAction(
+                      action,
+                      new RoboCoachDbError(error)));
+          }
+          } else if (authData) {
+            // User authenticated with Firebase
+            // No need to dispatch - Firebase will emit event for us.
+          }
         });
     }
 

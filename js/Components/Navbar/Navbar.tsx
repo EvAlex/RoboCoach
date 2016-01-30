@@ -65,13 +65,16 @@ export default class Navbar extends React.Component<{}, INavbarState> {
     private renderAuthPartForLoggedIn(): React.ReactElement<{}> {
         return (
             <ul className="nav navbar-nav navbar-right">
-                <NavbarLink to="/account">
-                    <span>View Profile</span>
+                <NavbarLink to="/account" className={styles.accountLink}>
+                    <div className={styles.profileImageWrap}>
+                        <img className={styles.profileImage} src={this.getProfileImageUrl()} />
+                    </div>
+                    <span className={styles.profileDisplayName}>{this.getProfileDisplayName()}</span>
                 </NavbarLink>
                 <li>
                     <a href="javascript:void(0);" onClick={() => this.onLogoutClicked() }>
                         <span className="glyphicon glyphicon-log-out"></span>
-                        <span>Log out</span>
+                        <span> Log out</span>
                     </a>
                 </li>
             </ul>
@@ -87,6 +90,24 @@ export default class Navbar extends React.Component<{}, INavbarState> {
                 </NavbarLink>
             </ul>
         );
+    }
+
+    private getProfileImageUrl(): string {
+        var res: string,
+            authData: IFirebaseAuthData = this.state.user.authData;
+        if (authData.facebook) {
+            res = authData.facebook.profileImageURL;
+        }
+        return res;
+    }
+
+    private getProfileDisplayName(): string {
+        var res: string,
+            authData: IFirebaseAuthData = this.state.user.authData;
+        if (authData.facebook) {
+            res = authData.facebook.displayName;
+        }
+        return res;
     }
 
     private onLogoutClicked(): void {

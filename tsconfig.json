@@ -42,6 +42,7 @@
         "./js/Models/__tests__/Workout-test.ts",
         "./js/Models/IExcercise.d.ts",
         "./js/Models/IExcercisePlanAction.d.ts",
+        "./js/Models/IFirebaseAuthData.d.ts",
         "./js/Models/IRestPlanAction.d.ts",
         "./js/Models/IUser.d.ts",
         "./js/Models/IWorkout.d.ts",
