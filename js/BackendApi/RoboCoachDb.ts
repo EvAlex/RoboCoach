@@ -2,7 +2,7 @@
 import * as Firebase from "firebase";
 const config: IRoboCoachConfig = require("RoboCoachConfig");
 import IAction from "./../Actions/IAction";
-import Dispatcher from "../Dispatcher/Dispatcher";
+import dispatcher from "../Dispatcher/Dispatcher";
 import WorkoutPlan from "../Models/WorkoutPlan";
 
 import CommonActionCreators from "../ActionCreators/CommonActionCreators";
@@ -11,6 +11,7 @@ import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import CreateWorkoutPlanAction  from "../Actions/CreateWorkoutPlanAction";
 import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
+import * as AuthActions from "../Actions/AuthActions";
 
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
@@ -21,9 +22,22 @@ export class RoboCoachDb {
 
     constructor() {
         this.firebase = new Firebase(config.firebaseUrl);
-        Dispatcher.register((action: IAction) => this.processAction(action));
+        dispatcher.register((action: IAction) => this.processAction(action));
+
+        this.handleAuth();
+
         this.testWorkoutPlans = this.createTestWorkoutPlans();
         this.testWorkouts = [];
+    }
+
+    private handleAuth(): void {
+        this.firebase.onAuth(authData => {
+            if (authData) {
+                dispatcher.dispatch(new AuthActions.ProcessUserLoggedInAction(authData));
+            } else {
+                dispatcher.dispatch(new AuthActions.ProcessUserLoggedOutAction());
+            }
+        });
     }
 
     private processAction(action: IAction): void {
