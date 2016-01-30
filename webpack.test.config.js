@@ -18,7 +18,8 @@ var config = {
   module: {
     loaders: [
       { test: /\.ts(x?)$/, loader: 'ts-loader?instance=jsx' },
-      { test: /\.less$/, loader: 'null-loader' }
+      { test: /\.less$/, loader: 'null-loader' },
+      { test: /\.json/, loader: "json-loader" },
     ]
   }
 }
