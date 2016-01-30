@@ -10,3 +10,5 @@ script:
   - npm run test
 after_success:
   - firebase deploy --token "$FIREBASE_TOKEN"
+after_failure:
+  - cat ./npm-debug.log
