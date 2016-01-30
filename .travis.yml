@@ -6,7 +6,7 @@ before_script:
   - npm install
   - tsd install
 script:
-  - npm run build
+  - webpack
   - npm run test
   - cat ./npm-debug.log
 after_success:
