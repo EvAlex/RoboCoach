@@ -66,6 +66,7 @@ var config = {
         loader: ExtractTextPlugin.extract("style-loader","css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader?-compress"),
         include: path.resolve(__dirname, "js") },
       { test: /\.(jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name]_[hash].[ext]", include: path.resolve(__dirname, "js") },
+      { test: /\.json/, loader: "json-loader" },
 
       //    for bootstrap-webpack
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
