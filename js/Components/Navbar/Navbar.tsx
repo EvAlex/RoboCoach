@@ -17,6 +17,11 @@ interface INavbarState {
 
 export default class Navbar extends React.Component<{}, INavbarState> {
 
+    constructor() {
+        super();
+        this.state = { user: null };
+    }
+
     componentDidMount(): void {
         UserStore.addListener(() => this.onUserStoreChanged());
         this.onUserStoreChanged();
@@ -25,7 +30,7 @@ export default class Navbar extends React.Component<{}, INavbarState> {
     render(): React.ReactElement<{}> {
         return (
             <nav className="navbar navbar-default navbar-static-top">
-                <div className="container-fluid">
+                <div className="container">
                     {/* Brand and toggle get grouped for better mobile display */}
                     <div className="navbar-header">
                         <button type="button"
@@ -75,10 +80,12 @@ export default class Navbar extends React.Component<{}, INavbarState> {
 
     private renderAuthPartForNotLoggedIn(): React.ReactElement<{}> {
         return (
-            <NavbarLink to="/login">
-                <span className="glyphicon glyphicon-log-in"></span>
-                <span>Log in</span>
-            </NavbarLink>
+            <ul className="nav navbar-nav navbar-right">
+                <NavbarLink to="/login">
+                    <span className="glyphicon glyphicon-log-in"></span>
+                    <span> Log in</span>
+                </NavbarLink>
+            </ul>
         );
     }
 
