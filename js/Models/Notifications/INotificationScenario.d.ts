@@ -1,3 +1,3 @@
 interface INotificationScenario {
-    createNotifications(workout: IWorkout): INotification
+    createNotifications(workout: IWorkout): INotification[]
 }

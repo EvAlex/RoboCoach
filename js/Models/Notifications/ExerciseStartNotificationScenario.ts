@@ -3,16 +3,25 @@
 /// <reference path="../IWorkoutPlanAction.d.ts" />
 /// <reference path="../IExcercisePlanAction.d.ts"/>
 
+import Workout from "../../Models/Workout";
+import SoundNotification from "./SoundNotification";
+import audioPlayer from "../../AudioPlayer/AudioPlayer";
 
 export default class ExerciseStartNotificationScenario implements INotificationScenario {
 
-    public createNotifications(workout: IWorkout): INotification {
+    public createNotifications(workout: Workout): INotification[] {
+        let notifications: INotification[] = [];
+
         for(var i in workout.actions) {
-            action: IWorkoutPlanAction = workout.actions[i];
+            let action: IWorkoutPlanAction = workout.actions[i];
 
-            if(action instanceof IExercisePlanAction) {
-
+            if(!workout.isActionRest(action)) {
+                notifications.push(new SoundNotification(
+                    workout.getRelativeActionStartTime(action),
+                    audioPlayer.getFiles().start))
             }
         }
+
+        return notifications;
     }
 }
