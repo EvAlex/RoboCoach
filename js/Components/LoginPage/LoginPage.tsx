@@ -16,6 +16,14 @@ export default class LoginPage extends React.Component<{}, {}> {
                                 onClick={() => this.onLoginWithFacebookClicked()}>
                             Log in with Facebook
                         </button>
+                        <button className="btn btn-lg btn-default"
+                                onClick={() => this.onLoginWithGoogleClicked()}>
+                            Log in with Google
+                        </button>
+                        <button className="btn btn-lg btn-default"
+                                onClick={() => this.onLoginWithGithubClicked()}>
+                            Log in with Github
+                        </button>
                     </div>
                 </div>
             </div>
@@ -24,5 +32,13 @@ export default class LoginPage extends React.Component<{}, {}> {
 
     private onLoginWithFacebookClicked(): void {
         dispatcher.dispatch(new AuthActions.LogInAction(AuthActions.AuthProvider.Facebook));
+    }
+
+    private onLoginWithGoogleClicked(): void {
+        dispatcher.dispatch(new AuthActions.LogInAction(AuthActions.AuthProvider.Google));
+    }
+
+    private onLoginWithGithubClicked(): void {
+        dispatcher.dispatch(new AuthActions.LogInAction(AuthActions.AuthProvider.Github));
     }
 }

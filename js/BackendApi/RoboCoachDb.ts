@@ -146,7 +146,11 @@ export class RoboCoachDb {
     private processLogInAction(action: AuthActions.LogInAction): void {
         var provider: string = action.getProvider() === AuthActions.AuthProvider.Facebook
             ? "facebook"
-            : null;
+            : action.getProvider() === AuthActions.AuthProvider.Google
+                ? "google"
+                : action.getProvider() === AuthActions.AuthProvider.Github
+                    ? "github"
+                    : null;
         if (!provider) {
             throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);
         }

@@ -97,6 +97,10 @@ export default class Navbar extends React.Component<{}, INavbarState> {
             authData: IFirebaseAuthData = this.state.user.authData;
         if (authData.facebook) {
             res = authData.facebook.profileImageURL;
+        } else if (authData.google) {
+            res = authData.google.profileImageURL;
+        } else if (authData.github) {
+            res = authData.github.profileImageURL;
         }
         return res;
     }
@@ -106,6 +110,10 @@ export default class Navbar extends React.Component<{}, INavbarState> {
             authData: IFirebaseAuthData = this.state.user.authData;
         if (authData.facebook) {
             res = authData.facebook.displayName;
+        } else if (authData.google) {
+            res = authData.google.displayName;
+        } else if (authData.github) {
+            res = authData.github.displayName;
         }
         return res;
     }
