@@ -1,3 +1,4 @@
+import * as Promise from "bluebird";
 
 interface IResource<T> {
     url: string;
