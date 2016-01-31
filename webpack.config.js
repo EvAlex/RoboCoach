@@ -88,6 +88,8 @@ var config = {
     function() {
         this.plugin("done", function(stats) {
             if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
+                console.log("================> Errors count: ", stats.compilation.errors.length);
+                console.log("================> Errors: ", stats.compilation.errors);
                 process.exit(1);
             }
         });
