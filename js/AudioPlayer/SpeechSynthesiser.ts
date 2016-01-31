@@ -1,5 +1,9 @@
 
-export class SpeechSynthesiser {
+export interface ISpeechSynthesiser {
+    say(text: string): void;
+}
+
+export class SpeechSynthesiser implements ISpeechSynthesiser {
     constructor () {
         window.speechSynthesis.getVoices();
     }
@@ -24,6 +28,15 @@ export class SpeechSynthesiser {
     }
 }
 
-window["SpeechSynthesiser"] = new SpeechSynthesiser();
+export class FallbackSpeechSynthesiser implements ISpeechSynthesiser {
+    public say(text: string): void {
+        console.log("FallbackSpeechSynthesiser: ", text);
+    }
+}
 
-export default new SpeechSynthesiser();
+const speechSynthesiser: ISpeechSynthesiser = "speechSynthesis" in window
+    ? new SpeechSynthesiser()
+    : new FallbackSpeechSynthesiser();
+// Debug: window["SpeechSynthesiser"] = speechSynthesiser;
+
+export default speechSynthesiser;
