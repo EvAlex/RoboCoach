@@ -29,7 +29,7 @@ interface IWorkoutDetailsState {
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutPlansStore.WorkoutPlansStore = WorkoutPlansStore.default;
-    private onStoreChangeListener: () => void = () => this.onStoreChange();
+    private storeListenerId: string;
     private registrationId: string;
 
     private minActionHeight: number = 50;
@@ -44,7 +44,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentDidMount(): void {
-        this.store.addListener(this.onStoreChangeListener);
+        this.storeListenerId = this.store.addListener(() => this.onStoreChange());
         this.registrationId = dispatcher.register(a => this.processAction(a));
         this.setOrRequestPlan(this.props.params.planId);
     }
@@ -54,7 +54,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.onStoreChangeListener);
+        this.store.removeListener(this.storeListenerId);
         dispatcher.unregister(this.registrationId);
     }
 

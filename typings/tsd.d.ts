@@ -15,3 +15,6 @@
 /// <reference path="firebase/firebase.d.ts" />
 /// <reference path="lodash/lodash.d.ts" />
 /// <reference path="webspeechapi/webspeechapi.d.ts" />
+/// <reference path="node-uuid/node-uuid-base.d.ts" />
+/// <reference path="node-uuid/node-uuid-cjs.d.ts" />
+/// <reference path="node-uuid/node-uuid.d.ts" />

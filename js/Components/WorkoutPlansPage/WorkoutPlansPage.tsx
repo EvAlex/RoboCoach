@@ -24,9 +24,9 @@ interface IWorkoutPlansPageState {
 
 export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageProps, IWorkoutPlansPageState> {
     private workoutPlansStore: WorkoutPlansStore.WorkoutPlansStore = WorkoutPlansStore.default;
-    private workoutPlansStoreChangedListener: () => void = () => this.onWorkoutPlansStoreChanged();
+    private workoutPlansStoreListenerId: string;
     private workoutStore: WorkoutStore.WorkoutStore = WorkoutStore.default;
-    private workoutStoreChangedListener: () => void = () => this.onWorkoutStoreChanged();
+    private workoutStoreListenerId: string;
 
     constructor() {
         super();
@@ -36,14 +36,14 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
     }
 
     componentDidMount(): void {
-        this.workoutPlansStore.addListener(this.workoutPlansStoreChangedListener);
-        this.workoutStore.addListener(this.workoutStoreChangedListener);
+        this.workoutPlansStoreListenerId = this.workoutPlansStore.addListener(() => this.onWorkoutPlansStoreChanged());
+        this.workoutStoreListenerId = this.workoutStore.addListener(() => this.onWorkoutStoreChanged());
         CommonActionCreators.requestWorkoutPlans();
     }
 
     componentWillUnmount(): void {
-        this.workoutPlansStore.removeListener(this.workoutPlansStoreChangedListener);
-        this.workoutStore.removeListener(this.workoutStoreChangedListener);
+        this.workoutPlansStore.removeListener(this.workoutPlansStoreListenerId);
+        this.workoutStore.removeListener(this.workoutStoreListenerId);
     }
 
     render(): React.ReactElement<{}> {

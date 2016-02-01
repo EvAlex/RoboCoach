@@ -17,6 +17,8 @@ interface IContentPageState {
 }
 
 export default class ContentPage extends React.Component<{}, IContentPageState> {
+    private changeListenerId: string;
+
     private onChange: () => void = () => {
         this.setState(this.getStateFromStores());
     };
@@ -41,11 +43,11 @@ export default class ContentPage extends React.Component<{}, IContentPageState> 
     }
 
     componentDidMount(): void {
-        CommonStore.addListener(this.onChange);
+        this.changeListenerId = CommonStore.addListener(this.onChange);
     }
 
-    componentWillUnmount(): void {
-        CommonStore.removeListener(this.onChange);
+    componentWillUnmount(): void { 
+        CommonStore.removeListener(this.changeListenerId);
     }
 
     private onButtonClick(): void {

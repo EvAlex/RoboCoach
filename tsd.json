@@ -33,7 +33,7 @@
       "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
     },
     "node/node.d.ts": {
-      "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
     },
     "jasmine/jasmine.d.ts": {
       "commit": "d1f6bde13f2209be42e86c3686761e8bfcbb50a5"
@@ -52,6 +52,18 @@
     },
     "lodash/lodash.d.ts": {
       "commit": "93bae1bb4c887c1375a4c1f0c3bb849ff06b8ac6"
+    },
+    "uuid/UUID.d.ts": {
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
+    },
+    "node-uuid/node-uuid-base.d.ts": {
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
+    },
+    "node-uuid/node-uuid.d.ts": {
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
+    },
+    "node-uuid/node-uuid-cjs.d.ts": {
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
     }
   }
 }

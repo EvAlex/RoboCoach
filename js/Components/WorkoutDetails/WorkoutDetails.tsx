@@ -25,7 +25,7 @@ interface IWorkoutDetailsState {
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutStore.WorkoutStore = WorkoutStore.default;
-    private onStoreChangeListener: () => void = () => this.onStoreChange();
+    private storeListenerId: string;
     private registrationId: string;
 
     constructor() {
@@ -37,7 +37,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentDidMount(): void {
-        this.store.addListener(this.onStoreChangeListener);
+        this.storeListenerId = this.store.addListener(() => this.onStoreChanged());
         this.registrationId = dispatcher.register(a => this.processAction(a));
         var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
         if (workout !== null) {
@@ -51,7 +51,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.onStoreChangeListener);
+        this.store.removeListener(this.storeListenerId);
         dispatcher.unregister(this.registrationId);
     }
 
@@ -107,7 +107,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         );
     }
 
-    private onStoreChange(): void {
+    private onStoreChanged(): void {
         var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
         if (workout !== null) {
             this.setState({

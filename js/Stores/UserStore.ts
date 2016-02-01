@@ -16,6 +16,22 @@ export class UserStore extends BaseStore {
         return this.currentUser;
     }
 
+    public isLoggedInWith(provider: AuthActions.AuthProvider): boolean {
+        if (!this.currentUser) {
+            return false;
+        }
+        switch (provider) {
+            case AuthActions.AuthProvider.Facebook:
+                return !!this.currentUser.authData.facebook;
+            case AuthActions.AuthProvider.Google:
+                return !!this.currentUser.authData.google;
+            case AuthActions.AuthProvider.Github:
+                return !!this.currentUser.authData.github;
+            default:
+                throw new Error(`Unexpected AuthProvider: ${AuthActions.AuthProvider[provider]}.`);
+        }
+    }
+
     private processActions(action: IAction): void {
         if (action instanceof AuthActions.ProcessUserLoggedInAction) {
             this.currentUser = {

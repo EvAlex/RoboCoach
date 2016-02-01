@@ -348,6 +348,54 @@ export class RoboCoachDb {
         ];
         res.push(plan);
 
+        plan = new WorkoutPlan();
+        plan.id = "-JRHTHaKuITFIhnj02FG";
+        plan.name = "7 минут на фитнес - красная 24, 25";
+        plan.actions = [
+            { duration: 15000 },
+            { duration: 30000, exercise: { name: "Паучьи отжимания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания с выпрыгиванием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Шаги на руках" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Велосипед" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Обратные отжимания с поворотом" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпад-реверанс" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бег в упоре лёжа" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Диагональные скручивания с подъёмом ног" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бой с тенью" } },
+            { duration: 60000 },
+            { duration: 30000, exercise: { name: "Шаги на руках" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Спринт на месте" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Гиперэкстензия на полу" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады с наклонами" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Круги на скорость" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Велосипед" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Сёрферские выпрыгивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Обратные отжамания с поворотом" } },
+            { duration: 10000 },
+        ];
+        res.push(plan);
+
         return res;
     }
 
