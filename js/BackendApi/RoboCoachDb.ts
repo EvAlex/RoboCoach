@@ -150,7 +150,9 @@ export class RoboCoachDb {
                 ? "google"
                 : action.getProvider() === AuthActions.AuthProvider.Github
                     ? "github"
-                    : null;
+                    : action.getProvider() === AuthActions.AuthProvider.Twitter
+                        ? "twitter"
+                        : null;
         if (!provider) {
             throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);
         }

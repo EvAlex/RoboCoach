@@ -55,6 +55,18 @@ export default class LoginPage extends React.Component<{}, ILoginPageState> {
                 </div>
                 <div className="row">
                     <div className="col-md-6 col-md-offset-3">
+                        { this.isLoggedInWithTwitter()
+                            ? (
+                                <h3>You are logged in with Twitter.</h3>)
+                            : (
+                                <button className="btn btn-lg btn-default"
+                                    onClick={() => this.onLoginWithTwitterClicked() }>
+                                    Log in with Twitter
+                                </button>) }
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6 col-md-offset-3">
                         { this.isLoggedInWithGithub()
                             ? (
                                 <h3>You are logged in with Github.</h3>)
@@ -87,6 +99,14 @@ export default class LoginPage extends React.Component<{}, ILoginPageState> {
 
     private isLoggedInWithGoogle(): boolean {
         return UserStore.isLoggedInWith(AuthActions.AuthProvider.Google);
+    }
+
+    private onLoginWithTwitterClicked(): void {
+        dispatcher.dispatch(new AuthActions.LogInAction(AuthActions.AuthProvider.Twitter));
+    }
+
+    private isLoggedInWithTwitter(): boolean {
+        return UserStore.isLoggedInWith(AuthActions.AuthProvider.Twitter);
     }
 
     private onLoginWithGithubClicked(): void {

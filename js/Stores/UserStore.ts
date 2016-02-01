@@ -27,6 +27,8 @@ export class UserStore extends BaseStore {
                 return !!this.currentUser.authData.google;
             case AuthActions.AuthProvider.Github:
                 return !!this.currentUser.authData.github;
+            case AuthActions.AuthProvider.Twitter:
+                return !!this.currentUser.authData.twitter;
             default:
                 throw new Error(`Unexpected AuthProvider: ${AuthActions.AuthProvider[provider]}.`);
         }

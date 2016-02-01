@@ -90,5 +90,6 @@ export class ProcessLogInFailedAction extends ResponseActionBase {
 export enum AuthProvider {
     Facebook,
     Google,
-    Github
+    Github,
+    Twitter
 }

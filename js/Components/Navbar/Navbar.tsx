@@ -101,6 +101,8 @@ export default class Navbar extends React.Component<{}, INavbarState> {
             res = authData.google.profileImageURL;
         } else if (authData.github) {
             res = authData.github.profileImageURL;
+        } else if (authData.twitter) {
+            res = authData.twitter.profileImageURL;
         }
         return res;
     }
@@ -114,6 +116,8 @@ export default class Navbar extends React.Component<{}, INavbarState> {
             res = authData.google.displayName;
         } else if (authData.github) {
             res = authData.github.displayName;
+        } else if (authData.twitter) {
+            res = authData.twitter.displayName;
         }
         return res;
     }
