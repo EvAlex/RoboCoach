@@ -5,7 +5,6 @@ import React = require("react");
 const styles: any = require("./WorkoutPage.module.less");
 /* tslint:enable:no-any */
 
-import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
 
 interface IWorkoutPageProps extends ReactRouter.RouteComponentProps<{}, {}> {
@@ -36,46 +35,9 @@ export default class WorkoutPage extends React.Component<IWorkoutPageProps, IWor
     }
 
     render(): React.ReactElement<{}> {
-        /*
-        var content: React.ReactElement<{}>;
-        switch (this.state.workoutStatus) {
-            case WorkoutStore.CurrentWorkoutStatus.Loading:
-                content = <span>Workout is loading...</span>;
-                break;
-            case WorkoutStore.CurrentWorkoutStatus.LoadFailed:
-                content = <span>Workout load failed.</span>;
-                break;
-            case WorkoutStore.CurrentWorkoutStatus.NotStarted:
-                content =
-                    <button className="btn btn-lg btn-success" onClick={() => this.onStartWorkoutClick()}>
-                        <span className="glyphicon glyphicon-fire"></span> Start Workout
-                    </button>;
-                break;
-            case WorkoutStore.CurrentWorkoutStatus.Started:
-                content = <span>Workout is started.</span>;
-                break;
-            case WorkoutStore.CurrentWorkoutStatus.Finished:
-                content = <span>Workout is finished.</span>;
-                break;
-            default:
-                content =
-                    <span>
-                        I'm sorry, but something went wrong.
-                        I've faced unexpected CurrentWorkoutStatus enum value if you are interested.
-                    </span>;
-                break;
-        }
-        var plan: WorkoutPlan = this.store.getCurrentWorkoutPlan();
-        if (!plan || !plan.id) {
-            content = <Link to="workout-plans">Choose Workout Plan to start.</Link>;
-        }*/
         return      <div className={styles.container}>
                         {this.props.children}
                     </div>;
-    }
-
-    onStartWorkoutClick(): void {
-        CommonActionCreators.startWorkout(this.store.getCurrentWorkoutPlan());
     }
 
     onStoreChanged(): void {

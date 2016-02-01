@@ -9,6 +9,7 @@ const styles: any = require("./WorkoutDetails.module.less");
 
 import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
+import UserStore from "../../Stores/UserStore";
 import dispatcher from "../../Dispatcher/Dispatcher";
 import IAction from "../../Actions/IAction";
 import ProcessRequestWorkoutFailedAction from "../../Actions/ProcessRequestWorkoutFailedAction";
@@ -46,7 +47,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
                 workoutRequestError: null
             });
         } else {
-            CommonActionCreators.requestWorkout(this.props.params.workoutId);
+            CommonActionCreators.requestWorkout(this.props.params.workoutId, UserStore.getCurrentUser());
         }
     }
 

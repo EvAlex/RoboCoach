@@ -18,7 +18,6 @@ import RoboCoachDbError from "../Errors/RoboCoachDbError";
 export class RoboCoachDb {
     private firebase: Firebase;
     private testWorkoutPlans: WorkoutPlan[];
-    private testWorkouts: IWorkout[];
 
     constructor() {
         this.firebase = new Firebase(config.firebaseUrl);
@@ -27,7 +26,6 @@ export class RoboCoachDb {
         this.handleAuth();
 
         this.testWorkoutPlans = this.createTestWorkoutPlans();
-        this.testWorkouts = [];
     }
 
     private handleAuth(): void {
@@ -114,7 +112,7 @@ export class RoboCoachDb {
         var workout: IWorkout = {
             id: action.WorkoutPlan.id + "w",
             planName: action.WorkoutPlan.name,
-            planDescription: action.WorkoutPlan.description,
+            planDescription: action.WorkoutPlan.description || "",
             actions: action.WorkoutPlan.actions.map(a => {
                 var ex: IExercise = a["exercise"],
                     exCopy: IExercise = ex
@@ -126,21 +124,38 @@ export class RoboCoachDb {
             }),
             startTime: new Date()
         };
-        this.testWorkouts.push(workout);
-        window.setTimeout(() => CommonActionCreators.processWorkoutStarted(workout, action));
+        this.firebase.child(`users/${action.User.id}/workouts`)
+            .push()
+            .set(workout, error => {
+                if (error) {
+                    CommonActionCreators.processWorkoutStartFailed(
+                        new RoboCoachDbError(error),
+                        action);
+                } else {
+                    CommonActionCreators.processWorkoutStarted(workout, action);
+                }
+            });
     }
 
     private processRequestWorkoutAction(action: RequestWorkoutAction): void {
-        var workout: IWorkout = this.testWorkouts.filter(w => w.id === action.WorkoutId)[0];
-        window.setTimeout(() => {
-            if (workout) {
-                CommonActionCreators.receiveWorkout(workout, action);
-            } else {
-                CommonActionCreators.processRequestWorkoutFailed(
-                    new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
-                    action);
-            }
-        });
+        this.firebase
+            .child(`users/${action.User.id}/workouts/${action.WorkoutId}`)
+            .once(
+                "value",
+                dataSnapshot => {
+                    if (dataSnapshot.exists()) {
+                        CommonActionCreators.receiveWorkout(dataSnapshot.val(), action);
+                    } else {
+                        CommonActionCreators.processRequestWorkoutFailed(
+                            new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
+                            action);
+                    }
+                },
+                error => {
+                    CommonActionCreators.processRequestWorkoutFailed(
+                        new RoboCoachDbError(error),
+                        action);
+                });
     }
 
     private processLogInAction(action: AuthActions.LogInAction): void {

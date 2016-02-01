@@ -11,6 +11,7 @@ import Duration from "../../Duration/Duration";
 
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import * as WorkoutPlansStore from "../../../Stores/WorkoutPlansStore";
+import UserStore from "../../../Stores/UserStore";
 import WorkoutPlan from "../../../Models/WorkoutPlan";
 import dispatcher from "../../../Dispatcher/Dispatcher";
 import IAction from "../../../Actions/IAction";
@@ -158,7 +159,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private onStartWorkoutClicked(): void {
-        CommonActionCreators.startWorkout(this.state.plan);
+        CommonActionCreators.startWorkout(this.state.plan, UserStore.getCurrentUser());
     }
 
     private setOrRequestPlan(planId: string): void {
