@@ -5,6 +5,7 @@ import ExerciseStartNotificationScenario from "../Notifications/ExerciseStartNot
 import ExerciseEndNotificationScenario from "../Notifications/ExerciseEndNotificationScenario";
 import PrepareToExerciseNotificationScenario from "../Notifications/PrepareToExerciseNotificationScenario";
 import NotificationsBuilder from "../Notifications/NotificationsBuilder";
+import NotificationsPlayer from "../Notifications/NotificationsPlayer";
 
 describe("ExerciseStartNotificationScenario", () => {
     it("Should gererate notifications for every training start", () => {
@@ -17,9 +18,14 @@ describe("ExerciseStartNotificationScenario", () => {
 
         // Assert
         expect(notifications.length).toEqual(3);
+
         expect(notifications[0].time).toEqual(15000);
         expect(notifications[1].time).toEqual(15000+30000+25000);
         expect(notifications[2].time).toEqual(15000+30000+25000+30000+35000);
+
+        notifications.forEach((n, i) => {
+            expect(n.isCompleted).toBeFalsy();
+        });
     });
 });
 
@@ -34,9 +40,14 @@ describe("ExerciseEndNotificationScenario", () => {
 
         // Assert
         expect(notifications.length).toEqual(3);
+
         expect(notifications[0].time).toEqual(15000+30000);
         expect(notifications[1].time).toEqual(15000+30000+25000+30000);
         expect(notifications[2].time).toEqual(15000+30000+25000+30000+35000+30000);
+
+        notifications.forEach((n, i) => {
+            expect(n.isCompleted).toBeFalsy();
+        });
     });
 });
 
@@ -51,9 +62,14 @@ describe("PrepareToExerciseNotificationScenario", () => {
 
         // Assert
         expect(notifications.length).toEqual(3);
+
         expect(notifications[0].time).toEqual(15000-5000);
         expect(notifications[1].time).toEqual(15000+30000+25000-5000);
         expect(notifications[2].time).toEqual(15000+30000+25000+30000+35000-5000);
+
+        notifications.forEach((n, i) => {
+            expect(n.isCompleted).toBeFalsy();
+        });
     });
 });
 
@@ -82,6 +98,43 @@ describe("NotificationsBuilder", () => {
         expect(notifications[6].time).toEqual(15000+30000+25000+30000+35000-5000); //prepare
         expect(notifications[7].time).toEqual(15000+30000+25000+30000+35000); //start
         expect(notifications[8].time).toEqual(15000+30000+25000+30000+35000+30000); //end
+
+        notifications.forEach((n, i) => {
+            expect(n.isCompleted).toBeFalsy();
+        });
+    });
+});
+
+describe("NotificationsPlayer", () => {
+    it("Should mark as played notifications before provided time", () => {
+        // Arrange
+        var workout: Workout = getWorkout();
+        var builder: NotificationsBuilder = new NotificationsBuilder;
+        var scenarios = [
+            new PrepareToExerciseNotificationScenario(),
+            new ExerciseEndNotificationScenario(),
+            new ExerciseStartNotificationScenario()];
+
+        var notifications = builder.createNotifications(workout, scenarios);
+
+        var player = new NotificationsPlayer(notifications);
+
+        // Act
+        player.markAsPlayed(15000+30000);
+
+        // Assert
+        expect(notifications.length).toEqual(9);
+
+        expect(notifications[0].isCompleted).toBeTruthy(); // .toEqual(15000-5000); //prepare
+        expect(notifications[1].isCompleted).toBeTruthy();// .toEqual(15000); //start
+        expect(notifications[2].isCompleted).toBeTruthy();// .toEqual(15000+30000); //end
+
+        expect(notifications[3].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000-5000); //prepare
+        expect(notifications[4].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000); //start
+        expect(notifications[5].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000+30000); //end
+        expect(notifications[6].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000+30000+35000-5000); //prepare
+        expect(notifications[7].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000+30000+35000); //start
+        expect(notifications[8].isCompleted).toBeFalsy(); // .toEqual(15000+30000+25000+30000+35000+30000); //end
     });
 });
 
