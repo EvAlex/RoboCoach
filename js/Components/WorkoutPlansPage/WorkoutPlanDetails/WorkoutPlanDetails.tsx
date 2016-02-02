@@ -91,10 +91,9 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private renderPlanActions(plan: IWorkoutPlan): React.ReactElement<{}> {
-        if (!plan.actions) {
+        if (!plan.actions || !plan.actions.length) {
             return <div></div>;
         }
-
         let planDuration: number = plan.actions.reduce((p, c) => p + c.duration, 0),
             minActionDuration: number = plan.actions.slice().sort((a, b) => a.duration - b.duration)[0].duration;
         return (
