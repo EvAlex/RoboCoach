@@ -3,26 +3,26 @@ import audioPlayer from "../../AudioPlayer/AudioPlayer";
 import {IAudioFile} from "../../AudioPlayer/AudioPlayer";
 
 export default class SoundNotification implements INotification {
-    private _time: number;
-    private _isCompleted: boolean;
+    private pTime: number;
+    private pIsCompleted: boolean;
     private audioFile: IAudioFile;
 
     constructor(time: number, audioFile: IAudioFile) {
-        this._time = time;
+        this.pTime = time;
         this.audioFile = audioFile;
-        this._isCompleted = false;
+        this.pIsCompleted = false;
     }
 
     public get time(): number {
-        return this._time;
+        return this.pTime;
     }
 
-    public get isCompleted():boolean {
-        return this._isCompleted;
+    public get isCompleted(): boolean {
+        return this.pIsCompleted;
     }
 
     public set isCompleted(isCompleted: boolean){
-        this._isCompleted = isCompleted;
+        this.pIsCompleted = isCompleted;
     }
 
     public play(): void {

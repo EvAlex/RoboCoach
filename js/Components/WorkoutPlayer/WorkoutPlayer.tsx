@@ -6,8 +6,13 @@ const styles: any = require("./WorkoutPlayer.module.less");
 
 import * as Utils from "../../Utils";
 import Workout from "../../Models/Workout";
-import audioPlayer from "../../AudioPlayer/AudioPlayer";
-import speechSynthesiser from "../../AudioPlayer/SpeechSynthesiser";
+//import audioPlayer from "../../AudioPlayer/AudioPlayer";
+//import speechSynthesiser from "../../AudioPlayer/SpeechSynthesiser";
+import NotificationsBuilder from "../../Models/Notifications/NotificationsBuilder";
+import PrepareToExerciseNotificationScenario from "../../Models/Notifications/PrepareToExerciseNotificationScenario";
+import ExerciseEndNotificationScenario from "../../Models/Notifications/ExerciseEndNotificationScenario";
+import ExerciseStartNotificationScenario from "../../Models/Notifications/ExerciseStartNotificationScenario";
+import NotificationsPlayer from "../../Models/Notifications/NotificationsPlayer";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -23,17 +28,28 @@ interface IActionNotifications {
 export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, {}> {
     private shouldTimerWork: boolean = false;
     private fps: number = 60;
-    private timeToPrepare: number = 5000;
+    //private timeToPrepare: number = 5000;
     private lastRenderTime: number = new Date().getTime();
-    private notifications: IActionNotifications[];
+    //private notifications: IActionNotifications[];
+    private notifications: INotification[];
+    private notificationsPlayer: NotificationsPlayer;
 
     componentWillMount(): void {
-        this.notifications = this.props.workout.actions.map(a => ({
-            action: a,
-            preparePlayed: false,
-            startPlayed: false,
-            finishPlayed: false,
-        }));
+        // this.notifications = this.props.workout.actions.map(a => ({
+        //     action: a,
+        //     preparePlayed: false,
+        //     startPlayed: false,
+        //     finishPlayed: false,
+        // }));
+
+        var builder: NotificationsBuilder = new NotificationsBuilder;
+        var scenarios: INotificationScenario[] = [
+            new PrepareToExerciseNotificationScenario(),
+            new ExerciseEndNotificationScenario(),
+            new ExerciseStartNotificationScenario()];
+
+        this.notifications = builder.createNotifications(this.props.workout, scenarios);
+        this.notificationsPlayer = new NotificationsPlayer(this.notifications);
     }
 
     componentDidMount(): void {
@@ -73,6 +89,8 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
 
     private renderProgress(): React.ReactElement<{}> {
         let action: IExercisePlanAction | IRestPlanAction = this.props.workout.getAction(new Date());
+        let elapsedMiliseconds: number = new Date().getTime() - this.props.workout.startTime.getTime();
+        this.notificationsPlayer.play(elapsedMiliseconds);
         return this.props.workout.isActionRest(action)
             ? this.renderRestProgress(action)
             : this.renderExerciseProgress(action);
@@ -81,15 +99,15 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private renderRestProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
             i: number = this.props.workout.actions.indexOf(action),
-            prev: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i - 1],
+            //prev: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i - 1],
             next: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
-        if (this.shouldNotifyFinish(action)) {
-            this.notifyFinish(prev);
-        } else if (this.shouldNotifyPrepare(action)) {
-            this.notifyPrepare(action);
-        } else if (this.shouldNotifyStart(action)) {
-            this.notifyStart(action);
-        }
+        // if (this.shouldNotifyFinish(action)) {
+        //     this.notifyFinish(prev);
+        // } else if (this.shouldNotifyPrepare(action)) {
+        //     this.notifyPrepare(action);
+        // } else if (this.shouldNotifyStart(action)) {
+        //     this.notifyStart(action);
+        // }
         return (
             <div className={styles["rest-progress"]}>
                 { this.renderTimeLeft(left) }
@@ -103,11 +121,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private renderExerciseProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
             exercise: IExercise = action["exercise"];
-        if (this.shouldNotifyStart(action)) {
-            this.notifyStart(action);
-        } else if (this.shouldNotifyFinish(action)) {
-            this.notifyFinish(action);
-        }
+        // if (this.shouldNotifyStart(action)) {
+        //     this.notifyStart(action);
+        // } else if (this.shouldNotifyFinish(action)) {
+        //     this.notifyFinish(action);
+        // }
         return (
             <div className={styles["exercise-progress"]}>
                 { this.renderTimeLeft(left) }
@@ -139,76 +157,76 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         );
     }
 
-    private shouldNotifyPrepare(action: IWorkoutPlanAction): boolean {
-        var played: boolean = this.notifications.filter(n => n.action === action)[0].preparePlayed;
-        return !played &&
-            this.props.workout.getTimeLeftForAction(action) < this.timeToPrepare + 1000 / this.fps;
-    }
-
-    private shouldNotifyStart(currentAction: IWorkoutPlanAction): boolean {
-        var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1],
-            isRest: boolean = this.props.workout.isActionRest(currentAction),
-            played: boolean = isRest
-                ? next && this.notifications.filter(n => n.action === next)[0].startPlayed
-                : this.notifications.filter(n => n.action === currentAction)[0].startPlayed,
-            timeToPlay: boolean = isRest
-                ? next && this.props.workout.getTimeLeftForAction(currentAction) < 1000 / this.fps
-                : true;
-        return !played && timeToPlay;
-    }
-
-    private shouldNotifyFinish(currentAction: IWorkoutPlanAction): boolean {
-        var prev: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) - 1],
-            isRest: boolean = this.props.workout.isActionRest(currentAction),
-            played: boolean = isRest
-                ? prev && this.notifications.filter(n => n.action === prev)[0].finishPlayed
-                : this.notifications.filter(n => n.action === currentAction)[0].finishPlayed,
-            timeToPlay: boolean = isRest
-                ? !!prev
-                : this.props.workout.getTimeLeftForAction(currentAction) < 1000 / this.fps;
-        return !played && timeToPlay;
-    }
-
-    private notifyPrepare(currentAction: IWorkoutPlanAction): void {
-        var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
-        audioPlayer.play(audioPlayer.getFiles().prepare)
-            .then(() => {
-                speechSynthesiser.say(
-                    this.props.workout.isActionRest(currentAction)
-                        ? next["exercise"].name
-                        : currentAction["exercise"].name);
-            });
-        /*window.setTimeout(
-            () => {
-                speechSynthesiser.say(
-                    this.props.workout.isActionRest(currentAction)
-                        ? next["exercise"].name
-                        : currentAction["exercise"].name);
-            },
-            1500);*/
-        this.notifications.filter(n => n.action === currentAction)[0].preparePlayed = true;
-    }
-
-    private notifyStart(currentAction: IWorkoutPlanAction): void {
-        audioPlayer.play(audioPlayer.getFiles().start);
-        var isRest: boolean = this.props.workout.isActionRest(currentAction);
-        if (isRest) {
-            var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
-            this.notifications.filter(n => n.action === next)[0].startPlayed = true;
-        } else {
-            this.notifications.filter(n => n.action === currentAction)[0].startPlayed = true;
-        }
-    }
-
-    private notifyFinish(currentAction: IWorkoutPlanAction): void {
-        audioPlayer.play(audioPlayer.getFiles().finish);
-        var isRest: boolean = this.props.workout.isActionRest(currentAction);
-        if (isRest) {
-            var prev: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) - 1];
-            this.notifications.filter(n => n.action === prev)[0].finishPlayed = true;
-        } else {
-            this.notifications.filter(n => n.action === currentAction)[0].finishPlayed = true;
-        }
-    }
+    // private shouldNotifyPrepare(action: IWorkoutPlanAction): boolean {
+    //     var played: boolean = this.notifications.filter(n => n.action === action)[0].preparePlayed;
+    //     return !played &&
+    //         this.props.workout.getTimeLeftForAction(action) < this.timeToPrepare + 1000 / this.fps;
+    // }
+    //
+    // private shouldNotifyStart(currentAction: IWorkoutPlanAction): boolean {
+    //     var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1],
+    //         isRest: boolean = this.props.workout.isActionRest(currentAction),
+    //         played: boolean = isRest
+    //             ? next && this.notifications.filter(n => n.action === next)[0].startPlayed
+    //             : this.notifications.filter(n => n.action === currentAction)[0].startPlayed,
+    //         timeToPlay: boolean = isRest
+    //             ? next && this.props.workout.getTimeLeftForAction(currentAction) < 1000 / this.fps
+    //             : true;
+    //     return !played && timeToPlay;
+    // }
+    //
+    // private shouldNotifyFinish(currentAction: IWorkoutPlanAction): boolean {
+    //     var prev: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) - 1],
+    //         isRest: boolean = this.props.workout.isActionRest(currentAction),
+    //         played: boolean = isRest
+    //             ? prev && this.notifications.filter(n => n.action === prev)[0].finishPlayed
+    //             : this.notifications.filter(n => n.action === currentAction)[0].finishPlayed,
+    //         timeToPlay: boolean = isRest
+    //             ? !!prev
+    //             : this.props.workout.getTimeLeftForAction(currentAction) < 1000 / this.fps;
+    //     return !played && timeToPlay;
+    // }
+    //
+    // private notifyPrepare(currentAction: IWorkoutPlanAction): void {
+    //     var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
+    //     audioPlayer.play(audioPlayer.getFiles().prepare)
+    //         .then(() => {
+    //             speechSynthesiser.say(
+    //                 this.props.workout.isActionRest(currentAction)
+    //                     ? next["exercise"].name
+    //                     : currentAction["exercise"].name);
+    //         });
+    //     /*window.setTimeout(
+    //         () => {
+    //             speechSynthesiser.say(
+    //                 this.props.workout.isActionRest(currentAction)
+    //                     ? next["exercise"].name
+    //                     : currentAction["exercise"].name);
+    //         },
+    //         1500);*/
+    //     this.notifications.filter(n => n.action === currentAction)[0].preparePlayed = true;
+    // }
+    //
+    // private notifyStart(currentAction: IWorkoutPlanAction): void {
+    //     audioPlayer.play(audioPlayer.getFiles().start);
+    //     var isRest: boolean = this.props.workout.isActionRest(currentAction);
+    //     if (isRest) {
+    //         var next: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) + 1];
+    //         this.notifications.filter(n => n.action === next)[0].startPlayed = true;
+    //     } else {
+    //         this.notifications.filter(n => n.action === currentAction)[0].startPlayed = true;
+    //     }
+    // }
+    //
+    // private notifyFinish(currentAction: IWorkoutPlanAction): void {
+    //     audioPlayer.play(audioPlayer.getFiles().finish);
+    //     var isRest: boolean = this.props.workout.isActionRest(currentAction);
+    //     if (isRest) {
+    //         var prev: IWorkoutPlanAction = this.props.workout.actions[this.props.workout.actions.indexOf(currentAction) - 1];
+    //         this.notifications.filter(n => n.action === prev)[0].finishPlayed = true;
+    //     } else {
+    //         this.notifications.filter(n => n.action === currentAction)[0].finishPlayed = true;
+    //     }
+    // }
 
 }

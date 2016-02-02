@@ -14,15 +14,14 @@ export default class PrepareToExerciseNotificationScenario implements INotificat
     public createNotifications(workout: Workout): INotification[] {
         let notifications: INotification[] = [];
 
-        for(var i in workout.actions) {
-            let action: IWorkoutPlanAction = workout.actions[i];
+        for (var action of workout.actions) { 
 
-            if(workout.isActionRest(action)) {
+            if (workout.isActionRest(action)) {
                 let minTime: number = Math.min(this.timeToPrepare, action.duration);
 
                 notifications.push(new SoundNotification(
                     workout.getRelativeActionStartTime(action) + action.duration - minTime,
-                    audioPlayer.getFiles().prepare))
+                    audioPlayer.getFiles().prepare));
             }
         }
 

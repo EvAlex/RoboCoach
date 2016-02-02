@@ -9,9 +9,9 @@ export default class NotificationsBuilder {
 
     public createNotifications(workout: Workout, scenarios: INotificationScenario[]): INotification[] {
         let notifications: INotification[] = [];
-
-        for(var i in scenarios) {
-            let scenarioNotifications: INotification[] = scenarios[i].createNotifications(workout);
+ 
+        for (var scenario of scenarios) {
+            let scenarioNotifications: INotification[] = scenario.createNotifications(workout);
             notifications = notifications.concat(scenarioNotifications);
         }
 

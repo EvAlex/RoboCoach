@@ -8,7 +8,7 @@ export default class NotificationsPlayer {
     }
 
     public play(relativeTime: number): void {
-        var unplayedNotifications = this.notifications.filter((n) => n.time <= relativeTime && !n.isCompleted);
+        var unplayedNotifications: INotification[] = this.notifications.filter((n) => n.time <= relativeTime && !n.isCompleted);
 
         unplayedNotifications.forEach((n) => {
             n.isCompleted = true;
@@ -17,7 +17,7 @@ export default class NotificationsPlayer {
     }
 
     public markAsPlayed(relativeTime: number): void {
-        var unplayedNotifications = this.notifications.filter((n) => n.time <= relativeTime && !n.isCompleted);
+        var unplayedNotifications: INotification[] = this.notifications.filter((n) => n.time <= relativeTime && !n.isCompleted);
 
         unplayedNotifications.forEach((n) => {
             n.isCompleted = true;
