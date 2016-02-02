@@ -1,5 +1,6 @@
 dist/
-js/**/*.js*
+js/**/*.js
+js/**/*.js.map
 typings/**/*.d.ts
 
 ## Ignore Visual Studio temporary files, build results, and
