@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9a710ec4-d25e-4725-b0c7-e3d326a7afde}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ProjectFiles</ProjectView>
+    <StartupFile>server.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <EnableTypeScript>true</EnableTypeScript>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
+    <Content Include=".travis.yml" />
+    <Content Include="bootstrap.config.less" />
+    <Content Include="css\style.less" />
+    <Content Include="index.html" />
+    <Content Include="firebase.json" />
+    <Content Include="js\App.tsx" />
+    <Content Include="js\AudioPlayer\finish.mp3" />
+    <Content Include="js\AudioPlayer\prepare.mp3" />
+    <Content Include="js\AudioPlayer\start.mp3" />
+    <Content Include="js\Components\ContentPage\ContentBody\ContentBody.module.less" />
+    <Content Include="js\Components\ContentPage\ContentBody\ContentBody.tsx" />
+    <Content Include="js\Components\ContentPage\ContentPage.module.less" />
+    <Content Include="js\Components\ContentPage\ContentPage.tsx" />
+    <Content Include="js\Components\ContentPage\__tests__\ContentPage-test.tsx" />
+    <Content Include="js\Components\CreateWorkoutPlan\CreateWorkoutPlan.module.less" />
+    <Content Include="js\Components\CreateWorkoutPlan\CreateWorkoutPlan.tsx" />
+    <Content Include="js\Components\HelloWorld\HelloWorld.tsx" />
+    <Content Include="js\Components\Navbar\Navbar.module.less" />
+    <Content Include="js\Components\Navbar\Navbar.tsx" />
+    <Content Include="js\Components\Navbar\NavbarLink\NavbarLink.module.less" />
+    <Content Include="js\Components\Navbar\NavbarLink\NavbarLink.tsx" />
+    <Content Include="js\Components\NotFoundPage\NotFoundPage.module.less" />
+    <Content Include="js\Components\NotFoundPage\NotFoundPage.tsx" />
+    <Content Include="js\Components\WorkoutDetails\WorkoutDetails.module.less" />
+    <Content Include="js\Components\WorkoutDetails\WorkoutDetails.tsx" />
+    <Content Include="js\Components\WorkoutPage\WorkoutPage.module.less" />
+    <Content Include="js\Components\WorkoutPage\WorkoutPage.tsx" />
+    <Content Include="js\Components\WorkoutPlansPage\WorkoutPlanDetails\WorkoutPlanDetails.module.less" />
+    <Content Include="js\Components\WorkoutPlansPage\WorkoutPlanDetails\WorkoutPlanDetails.tsx" />
+    <Content Include="js\Components\WorkoutPlansPage\WorkoutPlansPage.module.less" />
+    <Content Include="js\Components\WorkoutPlansPage\WorkoutPlansPage.tsx" />
+    <Content Include="js\Components\WorkoutPlayer\WorkoutPlayer.module.less" />
+    <Content Include="js\Components\WorkoutPlayer\WorkoutPlayer.tsx" />
+    <Content Include="js\Global\Styles\variables.less" />
+    <Content Include="js\Index.tsx" />
+    <Content Include="package.json" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tsd.json" />
+    <Content Include="tslint.json" />
+    <Content Include="README.md" />
+    <Compile Include="bootstrap.config.js" />
+    <Compile Include="karma.conf.js" />
+    <Compile Include="karma.tests.js" />
+    <Compile Include="resolver.js" />
+    <Compile Include="rt-loader.js" />
+    <Compile Include="server.js" />
+    <Compile Include="ts-loader.js" />
+    <Compile Include="webpack.config.js" />
+    <Compile Include="webpack.dev.config.js" />
+    <Compile Include="webpack.shared.js" />
+    <Compile Include="webpack.test.config.js" />
+    <TypeScriptCompile Include="js\AudioPlayer\AudioPlayer.ts" />
+    <TypeScriptCompile Include="js\AudioPlayer\SpeechSynthesiser.ts" />
+    <TypeScriptCompile Include="js\Utils.ts" />
+    <TypeScriptCompile Include="typings\tsd.d.ts" />
+    <TypeScriptCompile Include="js\ActionCreators\CommonActionCreators.ts" />
+    <TypeScriptCompile Include="js\Actions\ActionBase.ts" />
+    <TypeScriptCompile Include="js\Actions\AppLoadedAction.ts" />
+    <TypeScriptCompile Include="js\Actions\CreateWorkoutPlanAction.ts" />
+    <TypeScriptCompile Include="js\Actions\CreateWorkoutPlanFailAction.ts" />
+    <TypeScriptCompile Include="js\Actions\CreateWorkoutPlanSuccessAction.ts" />
+    <TypeScriptCompile Include="js\Actions\IAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ProcessRequestWorkoutFailedAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ProcessWorkoutStartedAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ProcessWorkoutStartFailedAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ReceiveWorkoutAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ReceiveWorkoutPlanAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ReceiveWorkoutPlanFailAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ReceiveWorkoutPlansAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ReceiveWorkoutPlansFailAction.ts" />
+    <TypeScriptCompile Include="js\Actions\RequestWorkoutAction.ts" />
+    <TypeScriptCompile Include="js\Actions\RequestWorkoutPlanAction.ts" />
+    <TypeScriptCompile Include="js\Actions\RequestWorkoutPlansAction.ts" />
+    <TypeScriptCompile Include="js\Actions\ResponseActionBase.ts" />
+    <TypeScriptCompile Include="js\Actions\SayHelloAction.ts" />
+    <TypeScriptCompile Include="js\Actions\StartWorkoutAction.ts" />
+    <TypeScriptCompile Include="js\BackendApi\RoboCoachDb.ts" />
+    <TypeScriptCompile Include="js\Dispatcher\Dispatcher.ts" />
+    <TypeScriptCompile Include="js\Errors\IRoboCoachError.d.ts" />
+    <TypeScriptCompile Include="js\Errors\RoboCoachDbError.ts" />
+    <TypeScriptCompile Include="js\Errors\RoboCoachError.ts" />
+    <TypeScriptCompile Include="js\Log\ActionLogEntry.ts" />
+    <TypeScriptCompile Include="js\Log\ActionLogger.ts" />
+    <TypeScriptCompile Include="js\Models\IExercise.d.ts" />
+    <TypeScriptCompile Include="js\Models\IExercisePlanAction.d.ts" />
+    <TypeScriptCompile Include="js\Models\IRestPlanAction.d.ts" />
+    <TypeScriptCompile Include="js\Models\IWorkout.d.ts" />
+    <TypeScriptCompile Include="js\Models\IWorkoutPlan.d.ts" />
+    <TypeScriptCompile Include="js\Models\IWorkoutPlanAction.d.ts" />
+    <TypeScriptCompile Include="js\Models\Workout.ts" />
+    <TypeScriptCompile Include="js\Models\WorkoutPlan.ts" />
+    <TypeScriptCompile Include="js\Models\WorkoutStatus.ts" />
+    <TypeScriptCompile Include="js\Stores\BaseStore.ts" />
+    <TypeScriptCompile Include="js\Stores\CommonStore.ts" />
+    <TypeScriptCompile Include="js\Stores\WorkoutPlansStore.ts" />
+    <TypeScriptCompile Include="js\Stores\WorkoutStore.ts" />
+    <Content Include="js\Components\NotFoundPage\NotFoundPage.rt.html" />
+    <TypeScriptCompile Include="js\Components\NotFoundPage\INotFoundPageState.ts" />
+    <Compile Include="js\Components\ContentPage\ContentHeader\ContentHeader.js" />
+    <TypeScriptCompile Include="js\Models\__tests__\Workout-test.ts" />
+    <TypeScriptCompile Include="typings\bluebird\bluebird.d.ts" />
+    <TypeScriptCompile Include="typings\firebase\firebase.d.ts" />
+    <TypeScriptCompile Include="typings\flux\flux.d.ts" />
+    <TypeScriptCompile Include="typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="typings\lodash\lodash.d.ts" />
+    <TypeScriptCompile Include="typings\node\node.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-css-transition-group.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-linked-state-mixin.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-perf.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-test-utils.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-transition-group.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-addons-update.d.ts" />
+    <TypeScriptCompile Include="typings\react\react-dom.d.ts" />
+    <TypeScriptCompile Include="typings\react\react.d.ts" />
+    <TypeScriptCompile Include="typings\react-router\history.d.ts" />
+    <TypeScriptCompile Include="typings\react-router\react-router.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="css" />
+    <Folder Include="js" />
+    <Folder Include="js\ActionCreators" />
+    <Folder Include="js\Actions" />
+    <Folder Include="js\AudioPlayer\" />
+    <Folder Include="js\BackendApi" />
+    <Folder Include="js\Components" />
+    <Folder Include="js\Components\ContentPage" />
+    <Folder Include="js\Components\ContentPage\__tests__" />
+    <Folder Include="js\Components\ContentPage\ContentBody" />
+    <Folder Include="js\Components\ContentPage\ContentHeader" />
+    <Folder Include="js\Components\CreateWorkoutPlan" />
+    <Folder Include="js\Components\HelloWorld" />
+    <Folder Include="js\Components\Navbar\" />
+    <Folder Include="js\Components\Navbar\NavbarLink\" />
+    <Folder Include="js\Components\NotFoundPage" />
+    <Folder Include="js\Components\WorkoutDetails" />
+    <Folder Include="js\Components\WorkoutPage" />
+    <Folder Include="js\Components\WorkoutPlansPage" />
+    <Folder Include="js\Components\WorkoutPlansPage\WorkoutPlanDetails" />
+    <Folder Include="js\Components\WorkoutPlayer" />
+    <Folder Include="js\Dispatcher" />
+    <Folder Include="js\Errors" />
+    <Folder Include="js\Global" />
+    <Folder Include="js\Global\Styles" />
+    <Folder Include="js\Log" />
+    <Folder Include="js\Models" />
+    <Folder Include="js\Models\__tests__" />
+    <Folder Include="js\Stores" />
+    <Folder Include="typings" />
+    <Folder Include="typings\bluebird" />
+    <Folder Include="typings\firebase" />
+    <Folder Include="typings\flux" />
+    <Folder Include="typings\jasmine" />
+    <Folder Include="typings\lodash" />
+    <Folder Include="typings\node" />
+    <Folder Include="typings\react" />
+    <Folder Include="typings\react-router" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

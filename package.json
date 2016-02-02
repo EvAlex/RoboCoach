@@ -33,17 +33,20 @@
     "imports-loader": "^0.6.5",
     "jasmine-core": "^2.4.1",
     "jquery": "^2.2.0",
+    "json-loader": "^0.5.4",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cli": "^0.1.2",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",
     "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "0.0.23",
     "karma-webpack": "^1.7.0",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "lodash": "^4.0.0",
     "node-libs-browser": "^0.5.3",
+    "node-uuid": "^1.4.7",
     "null-loader": "^0.1.1",
     "phantomjs": "^1.9.19",
     "phantomjs-polyfill": "0.0.1",
@@ -65,7 +68,9 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "node-uuid": "^1.4.7"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gowravshekar/bootstrap-webpack.git\u001brobocoach\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[C\u001b[C\u001b[com/EvAlex/RoboCoach"
@@ -75,5 +80,10 @@
     "fitness",
     "coach"
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "-vs-binding": {
+    "AfterBuild": [
+      "build"
+    ]
+  }
 }

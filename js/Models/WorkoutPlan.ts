@@ -7,7 +7,7 @@ export default class WorkoutPlan {
 
     public description: string;
 
-    public actions: (IExcercisePlanAction | IRestPlanAction)[];
+    public actions: (IExercisePlanAction | IRestPlanAction)[];
 
     public constructor() {
         this.actions = [];

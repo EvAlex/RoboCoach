@@ -18,6 +18,14 @@
         {
             "source": "/workout-plans/create",
             "destination": "/index.html"
+        },
+        {
+            "source": "/login",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/account",
+            "destination": "/index.html"
         }
     ]
 }

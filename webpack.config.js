@@ -42,7 +42,8 @@ var config = {
       'flux': path.join(nodeModulesPath, 'flux', 'index.js'),
       'jquery': path.join(nodeModulesPath, 'jquery', 'dist', 'jquery.js'),
       'bootstrap-js': path.join(nodeModulesPath, 'bootstrap', 'dist', 'js', 'bootstrap.min.js'),
-      'bootstrap-css': path.join(nodeModulesPath, 'bootstrap', 'dist', 'css', 'bootstrap.min.css')
+      'bootstrap-css': path.join(nodeModulesPath, 'bootstrap', 'dist', 'css', 'bootstrap.min.css'),
+      'RoboCoachConfig': path.join(__dirname, 'js', 'RoboCoachConfig.prod.json')
     }
   },
 
@@ -64,7 +65,8 @@ var config = {
       { test: /\.module\.less$/,
         loader: ExtractTextPlugin.extract("style-loader","css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader?-compress"),
         include: path.resolve(__dirname, "js") },
-      { test: /\.(jpg|png|woff|eot|ttf|svg|gif)$/, loader: "file-loader?name=[name]_[hash].[ext]", include: path.resolve(__dirname, "js") },
+      { test: /\.(jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name]_[hash].[ext]", include: path.resolve(__dirname, "js") },
+      { test: /\.json/, loader: "json-loader" },
 
       //    for bootstrap-webpack
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
@@ -86,6 +88,8 @@ var config = {
     function() {
         this.plugin("done", function(stats) {
             if (stats.compilation.errors && stats.compilation.errors.length && process.argv.indexOf('--watch') == -1) {
+                console.log("================> Errors count: ", stats.compilation.errors.length);
+                console.log("================> Errors: ", stats.compilation.errors);
                 process.exit(1);
             }
         });

@@ -1,0 +1,4 @@
+
+interface IRoboCoachConfig {
+    firebaseUrl: string;
+}

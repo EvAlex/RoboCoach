@@ -1,0 +1,79 @@
+
+@color-green: rgba(68, 221, 111, 0.3);
+@color-green-hover: rgba(68, 221, 111, 0.5);
+@color-red: rgba(236, 145, 129, 0.3);
+@color-red-hover: rgba(236, 145, 129, 0.5);
+
+.planAction {
+    position: relative;
+
+    .planActionDurationWrap {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+    }
+
+    .planActionDetailsWrap {
+        position: absolute;
+        top: 0;
+        right:0;
+        bottom: 0;
+        left: 0;
+        padding: 5px;
+        padding-left: 100px;
+        border: 1px solid transparent;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        .planActionName {
+            margin-left: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+    }
+}
+
+.planActionExercise {
+    composes: planAction;
+
+    &:hover {
+        .planActionDurationWrap {
+            background: @color-red-hover;
+            border: 1px solid @color-red-hover;
+        }
+
+        .planActionDetailsWrap {
+            border: 1px solid @color-red;
+        }
+    }
+
+    .planActionDurationWrap {
+        padding: 2px 3px 2px 5px;
+        background: @color-red;
+        border: 1px solid @color-red;
+    }
+}
+
+.planActionRest {
+    composes: planAction;
+
+    &:hover {
+        .planActionDurationWrap {
+            background: @color-green-hover;
+            border: 1px solid @color-green-hover;
+        }
+
+        .planActionDetailsWrap {
+            border: 1px solid @color-green;
+        }
+    }
+
+    .planActionDurationWrap {
+        padding: 2px 3px 2px 5px;
+        background: @color-green;
+        border: 1px solid @color-green;
+    }
+}

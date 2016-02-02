@@ -19,7 +19,7 @@ export default class Workout implements IWorkout {
         return this.workout.planDescription;
     }
 
-    public get actions(): (IExcercisePlanAction | IRestPlanAction)[] {
+    public get actions(): (IExercisePlanAction | IRestPlanAction)[] {
         return this.workout.actions;
     }
 
@@ -35,11 +35,11 @@ export default class Workout implements IWorkout {
         return this.actions.reduce((p, c) => p + c.duration, 0);
     }
 
-    public get currentAction(): IExcercisePlanAction | IRestPlanAction {
+    public getAction(time: Date = new Date()): IExercisePlanAction | IRestPlanAction {
         var curWorkoutTime: number = this.workout.startTime.getTime(),
-            curTime: number = new Date().getTime(),
-            res: IExcercisePlanAction | IRestPlanAction = null;
-        if (curWorkoutTime < new Date().getTime()) {
+            curTime: number = time.getTime(),
+            res: IExercisePlanAction | IRestPlanAction = null;
+        if (curWorkoutTime < curTime) {
             for (let i: number = 0; i < this.workout.actions.length && !res; i++) {
                 if ((curWorkoutTime += this.workout.actions[i].duration) > curTime) {
                     res = this.workout.actions[i];
@@ -49,15 +49,19 @@ export default class Workout implements IWorkout {
         return res;
     }
 
-    public isActionRest(action: IExcercisePlanAction | IRestPlanAction): boolean {
-        return !("excercise" in action);
+    public isActionRest(action: IExercisePlanAction | IRestPlanAction): boolean {
+        return !("exercise" in action);
     }
 
     public getActionStartTime(action: IWorkoutPlanAction): Date {
+        if (this.workout.actions.indexOf(action) === -1) {
+            throw new Error("Specified action does not belong to current Workout");
+        }
         let startTime: number = this.workout.startTime.getTime(),
             i: number = 0;
         while (this.workout.actions[i] !== action) {
             startTime += this.workout.actions[i].duration;
+            i++;
         }
         let res: Date = new Date();
         res.setTime(startTime);

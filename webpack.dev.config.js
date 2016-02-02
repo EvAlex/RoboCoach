@@ -11,6 +11,8 @@ var mainConfig = new WebpackConfig().extend("webpack.config");
 // To work with webpack-dev-server
 webpackShared.removeObjectProperties(mainConfig.resolve.alias, ['react']);
 
+mainConfig.resolve.alias["RoboCoachConfig"] = path.join(__dirname, 'js', 'RoboCoachConfig.dev.json');
+
 var devConfigExtension = {
   entry: {
       app: [
@@ -42,7 +44,8 @@ var devConfigExtension = {
       { test: /\.import\.css$/,  loader: "style!css", include: path.resolve(__dirname, "js") },
       { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
       { test: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader","css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader"), include: path.resolve(__dirname, "js") },
-      { test: /\.(jpg|png|jpg|png|woff|eot|ttf|svg|gif)$/, loader: "file-loader?name=[name].[ext]" },
+      { test: /\.(jpg|png|jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name].[ext]" },
+      { test: /\.json/, loader: "json-loader" },
 
       //    for bootstrap-webpack
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },

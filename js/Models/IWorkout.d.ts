@@ -3,6 +3,6 @@ interface IWorkout {
     id: string;
     planName: string;
     planDescription: string;
-    actions: (IExcercisePlanAction | IRestPlanAction)[];
+    actions: (IExercisePlanAction | IRestPlanAction)[];
     startTime: Date;
 }

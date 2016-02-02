@@ -10,6 +10,7 @@ import WorkoutDetails from "./Components/WorkoutDetails/WorkoutDetails";
 import WorkoutPlansPage from "./Components/WorkoutPlansPage/WorkoutPlansPage";
 import WorkoutPlanDetails from "./Components/WorkoutPlansPage/WorkoutPlanDetails/WorkoutPlanDetails";
 import CreateWorkoutPlan from "./Components/CreateWorkoutPlan/CreateWorkoutPlan";
+import LoginPage from "./Components/LoginPage/LoginPage";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 
 ReactDom.render(
@@ -22,6 +23,7 @@ ReactDom.render(
                 <Route path="create" component={CreateWorkoutPlan}/>
                 <Route path=":planId" component={WorkoutPlanDetails}/>
             </Route>
+            <Route path="login" component={LoginPage} />
             <Route path="*" component={NotFoundPage}/>
         </Route>
     </Router>,

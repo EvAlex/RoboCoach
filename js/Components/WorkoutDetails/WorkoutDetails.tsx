@@ -9,6 +9,7 @@ const styles: any = require("./WorkoutDetails.module.less");
 
 import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
+import UserStore from "../../Stores/UserStore";
 import dispatcher from "../../Dispatcher/Dispatcher";
 import IAction from "../../Actions/IAction";
 import ProcessRequestWorkoutFailedAction from "../../Actions/ProcessRequestWorkoutFailedAction";
@@ -25,7 +26,7 @@ interface IWorkoutDetailsState {
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutStore.WorkoutStore = WorkoutStore.default;
-    private onStoreChangeListener: () => void = () => this.onStoreChange();
+    private storeListenerId: string;
     private registrationId: string;
 
     constructor() {
@@ -37,7 +38,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentDidMount(): void {
-        this.store.addListener(this.onStoreChangeListener);
+        this.storeListenerId = this.store.addListener(() => this.onStoreChanged());
         this.registrationId = dispatcher.register(a => this.processAction(a));
         var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
         if (workout !== null) {
@@ -46,12 +47,12 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
                 workoutRequestError: null
             });
         } else {
-            CommonActionCreators.requestWorkout(this.props.params.workoutId);
+            CommonActionCreators.requestWorkout(this.props.params.workoutId, UserStore.getCurrentUser());
         }
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.onStoreChangeListener);
+        this.store.removeListener(this.storeListenerId);
         dispatcher.unregister(this.registrationId);
     }
 
@@ -107,7 +108,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         );
     }
 
-    private onStoreChange(): void {
+    private onStoreChanged(): void {
         var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
         if (workout !== null) {
             this.setState({
