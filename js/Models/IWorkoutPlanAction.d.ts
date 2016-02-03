@@ -5,4 +5,6 @@ interface IWorkoutPlanAction {
      * @type {number}
      */
     duration: number;
+
+    exercise?: IExercise;
 }

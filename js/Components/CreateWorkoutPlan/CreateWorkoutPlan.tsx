@@ -28,6 +28,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
         this.state = {
             plan: new WorkoutPlan()
         };
+        this.state.plan.actions.push({ duration: 30000, exercise: { name: "" } });
     }
 
     render(): React.ReactElement<{}> {
@@ -41,17 +42,56 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                         <div className="col-sm-10">
                             <input type="text"
                                    className="form-control"
-                                   id="inputEmail3"
+                                   id="inputName"
                                    placeholder="Input name"
                                    value={this.state.plan.name}
                                        onChange={e => this.onNameChanged(e)} />
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputPassword3" className="col-sm-2 control-label">Description</label>
+                        <label htmlFor="inputDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                            <input type="password" className="form-control" id="inputPassword3" placeholder="Password" />
+                            <input type="text"
+                                   className="form-control"
+                                   id="inputDesc"
+                                   placeholder="Description" />
                         </div>
+                    </div>
+                    <div className="form-group">
+                    {this.state.plan.actions.map((a, index) => (
+                        <div key={ index }>
+                            <label htmlFor="inputActionName" className="col-sm-2 control-label">
+                                Action
+                            </label>
+                            <div className="col-sm-4">
+                                { "exercise" in a
+                                    ? (
+                                        <input type="text"
+                                               value={ a.exercise.name }
+                                               onChange={ (e: any) => {
+                                                            a["exercise"].name = e.target.value;
+                                                            this.setState(this.state);
+                                                        }}
+                                               className="form-control"
+                                               id="inputActionName"
+                                               placeholder="Action Name" />
+                                    )
+                                    : <span>Rest</span>}
+
+                            </div>
+                            <div className="col-sm-2">
+                                <input type="text"
+                                       value={ (a.duration / 1000 ).toString() }
+                                       className="form-control"
+                                       id="inputActionDuration"
+                                       placeholder="40"
+                                       onChange={ (e: any) => { a.duration = Number(e.target.value) * 1000; this.setState(this.state); } }
+                                        />
+                            </div>
+                            <label className="control-label" htmlFor="inputActionDuration">sec</label>
+                            <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
+                        </div>
+                    ))}
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
@@ -71,6 +111,19 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                 </form>
             </div>
         );
+    }
+
+    onAddActionClicked(e: any): void {
+        e.preventDefault();
+        var previous: IWorkoutPlanAction = this.state.plan.actions[this.state.plan.actions.length - 1];
+
+        if ("exercise" in previous) {
+            this.state.plan.actions.push( { duration: 10000 });
+        } else {
+            this.state.plan.actions.push( { duration: 30000, exercise: { name: "" } });
+        }
+
+        this.setState(this.state);
     }
 
     componentDidMount(): void {

@@ -18,7 +18,6 @@ import RoboCoachDbError from "../Errors/RoboCoachDbError";
 export class RoboCoachDb {
     private firebase: Firebase;
     private testWorkoutPlans: WorkoutPlan[];
-    private testWorkouts: IWorkout[];
 
     constructor() {
         this.firebase = new Firebase(config.firebaseUrl);
@@ -27,7 +26,10 @@ export class RoboCoachDb {
         this.handleAuth();
 
         this.testWorkoutPlans = this.createTestWorkoutPlans();
-        this.testWorkouts = [];
+    }
+
+    public get Dispatcher(): Flux.Dispatcher<IAction> {
+        return dispatcher;
     }
 
     private handleAuth(): void {
@@ -111,10 +113,11 @@ export class RoboCoachDb {
     }
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
-        var workout: IWorkout = {
-            id: action.WorkoutPlan.id + "w",
+        var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
+            workout: IWorkout = {
+            id: pushRef.key(),
             planName: action.WorkoutPlan.name,
-            planDescription: action.WorkoutPlan.description,
+            planDescription: action.WorkoutPlan.description || "",
             actions: action.WorkoutPlan.actions.map(a => {
                 var ex: IExercise = a["exercise"],
                     exCopy: IExercise = ex
@@ -126,27 +129,49 @@ export class RoboCoachDb {
             }),
             startTime: new Date()
         };
-        this.testWorkouts.push(workout);
-        window.setTimeout(() => CommonActionCreators.processWorkoutStarted(workout, action));
+        pushRef.set(workout, error => {
+            if (error) {
+                CommonActionCreators.processWorkoutStartFailed(
+                    new RoboCoachDbError(error),
+                    action);
+            } else {
+                workout.id = pushRef.key();
+                CommonActionCreators.processWorkoutStarted(workout, action);
+            }
+        });
     }
 
     private processRequestWorkoutAction(action: RequestWorkoutAction): void {
-        var workout: IWorkout = this.testWorkouts.filter(w => w.id === action.WorkoutId)[0];
-        window.setTimeout(() => {
-            if (workout) {
-                CommonActionCreators.receiveWorkout(workout, action);
-            } else {
-                CommonActionCreators.processRequestWorkoutFailed(
-                    new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
-                    action);
-            }
-        });
+        this.firebase
+            .child(`users/${action.User.id}/workouts/${action.WorkoutId}`)
+            .once(
+                "value",
+                dataSnapshot => {
+                    if (dataSnapshot.exists()) {
+                        CommonActionCreators.receiveWorkout(dataSnapshot.val(), action);
+                    } else {
+                        CommonActionCreators.processRequestWorkoutFailed(
+                            new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
+                            action);
+                    }
+                },
+                error => {
+                    CommonActionCreators.processRequestWorkoutFailed(
+                        new RoboCoachDbError(error),
+                        action);
+                });
     }
 
     private processLogInAction(action: AuthActions.LogInAction): void {
         var provider: string = action.getProvider() === AuthActions.AuthProvider.Facebook
             ? "facebook"
-            : null;
+            : action.getProvider() === AuthActions.AuthProvider.Google
+                ? "google"
+                : action.getProvider() === AuthActions.AuthProvider.Github
+                    ? "github"
+                    : action.getProvider() === AuthActions.AuthProvider.Twitter
+                        ? "twitter"
+                        : null;
         if (!provider) {
             throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);
         }
@@ -341,6 +366,54 @@ export class RoboCoachDb {
             { duration: 30000, exercise: { name: "Бой с тенью" } },
             { duration: 10000 },
             { duration: 30000, exercise: { name: "Отжимания" } },
+        ];
+        res.push(plan);
+
+        plan = new WorkoutPlan();
+        plan.id = "-JRHTHaKuITFIhnj02FG";
+        plan.name = "7 минут на фитнес - красная 24, 25";
+        plan.actions = [
+            { duration: 15000 },
+            { duration: 30000, exercise: { name: "Паучьи отжимания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания с выпрыгиванием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Шаги на руках" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Велосипед" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Обратные отжимания с поворотом" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпад-реверанс" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бег в упоре лёжа" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Диагональные скручивания с подъёмом ног" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бой с тенью" } },
+            { duration: 60000 },
+            { duration: 30000, exercise: { name: "Шаги на руках" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Спринт на месте" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Гиперэкстензия на полу" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады с наклонами" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Круги на скорость" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Велосипед" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Сёрферские выпрыгивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Обратные отжамания с поворотом" } },
+            { duration: 10000 },
         ];
         res.push(plan);
 

@@ -11,6 +11,7 @@ import Duration from "../../Duration/Duration";
 
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import * as WorkoutPlansStore from "../../../Stores/WorkoutPlansStore";
+import UserStore from "../../../Stores/UserStore";
 import WorkoutPlan from "../../../Models/WorkoutPlan";
 import dispatcher from "../../../Dispatcher/Dispatcher";
 import IAction from "../../../Actions/IAction";
@@ -29,7 +30,7 @@ interface IWorkoutDetailsState {
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutPlansStore.WorkoutPlansStore = WorkoutPlansStore.default;
-    private onStoreChangeListener: () => void = () => this.onStoreChange();
+    private storeListenerId: string;
     private registrationId: string;
 
     private minActionHeight: number = 50;
@@ -44,7 +45,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentDidMount(): void {
-        this.store.addListener(this.onStoreChangeListener);
+        this.storeListenerId = this.store.addListener(() => this.onStoreChange());
         this.registrationId = dispatcher.register(a => this.processAction(a));
         this.setOrRequestPlan(this.props.params.planId);
     }
@@ -54,7 +55,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.onStoreChangeListener);
+        this.store.removeListener(this.storeListenerId);
         dispatcher.unregister(this.registrationId);
     }
 
@@ -90,10 +91,9 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private renderPlanActions(plan: IWorkoutPlan): React.ReactElement<{}> {
-        if (!plan.actions) {
+        if (!plan.actions || !plan.actions.length) {
             return <div></div>;
         }
-
         let planDuration: number = plan.actions.reduce((p, c) => p + c.duration, 0),
             minActionDuration: number = plan.actions.slice().sort((a, b) => a.duration - b.duration)[0].duration;
         return (
@@ -158,7 +158,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private onStartWorkoutClicked(): void {
-        CommonActionCreators.startWorkout(this.state.plan);
+        CommonActionCreators.startWorkout(this.state.plan, UserStore.getCurrentUser());
     }
 
     private setOrRequestPlan(planId: string): void {

@@ -72,8 +72,8 @@ class CommonActionCreators {
         dispatcher.dispatch(new CreateWorkoutPlanFailAction(error, requestAction));
     }
 
-    startWorkout(workoutPlan: IWorkoutPlan): void {
-        dispatcher.dispatch(new StartWorkoutAction(workoutPlan));
+    startWorkout(workoutPlan: IWorkoutPlan, user: IUser): void {
+        dispatcher.dispatch(new StartWorkoutAction(workoutPlan, user));
     }
 
     processWorkoutStarted(workout: IWorkout, requestAction: StartWorkoutAction): void {
@@ -84,8 +84,8 @@ class CommonActionCreators {
         dispatcher.dispatch(new ProcessWorkoutStartFailedAction(error, requestAction));
     }
 
-    requestWorkout(workoutId: string): void {
-        dispatcher.dispatch(new RequestWorkoutAction(workoutId));
+    requestWorkout(workoutId: string, user: IUser): void {
+        dispatcher.dispatch(new RequestWorkoutAction(workoutId, user));
     }
 
     receiveWorkout(workout: IWorkout, requestAction: RequestWorkoutAction): void {

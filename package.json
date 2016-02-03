@@ -37,6 +37,7 @@
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cli": "^0.1.2",
+    "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^0.2.3",
     "karma-sourcemap-loader": "^0.3.7",
@@ -46,6 +47,7 @@
     "less-loader": "^2.2.2",
     "lodash": "^4.0.0",
     "node-libs-browser": "^0.5.3",
+    "node-uuid": "^1.4.7",
     "null-loader": "^0.1.1",
     "phantomjs": "^1.9.19",
     "phantomjs-polyfill": "0.0.1",
@@ -67,7 +69,9 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "node-uuid": "^1.4.7"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gowravshekar/bootstrap-webpack.git\u001brobocoach\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[C\u001b[C\u001b[com/EvAlex/RoboCoach"

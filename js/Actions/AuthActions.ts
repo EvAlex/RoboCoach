@@ -88,5 +88,8 @@ export class ProcessLogInFailedAction extends ResponseActionBase {
 }
 
 export enum AuthProvider {
-    Facebook
+    Facebook,
+    Google,
+    Github,
+    Twitter
 }
