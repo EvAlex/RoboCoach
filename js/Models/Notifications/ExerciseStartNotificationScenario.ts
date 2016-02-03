@@ -12,7 +12,7 @@ export default class ExerciseStartNotificationScenario implements INotificationS
     public createNotifications(workout: Workout): INotification[] {
         let notifications: INotification[] = [];
 
-        for (var action of workout.actions) { 
+        for (var action of workout.actions) {
 
             if (!workout.isActionRest(action)) {
                 notifications.push(new SoundNotification(

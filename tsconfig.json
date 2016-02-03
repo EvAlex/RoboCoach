@@ -56,6 +56,7 @@
         "./js/Models/Notifications/NotificationsBuilder.ts",
         "./js/Models/Notifications/NotificationsPlayer.ts",
         "./js/Models/Notifications/PrepareToExerciseNotificationScenario.ts",
+        "./js/Models/Notifications/SoundAndTextNotification.ts",
         "./js/Models/Notifications/SoundNotification.ts",
         "./js/Models/Workout.ts",
         "./js/Models/WorkoutPlan.ts",

@@ -4,27 +4,29 @@
 /// <reference path="../IExcercisePlanAction.d.ts"/>
 
 import Workout from "../../Models/Workout";
-import SoundNotification from "./SoundNotification";
+import SoundAndTextNotification from "./SoundAndTextNotification";
 import audioPlayer from "../../AudioPlayer/AudioPlayer";
 
 export default class PrepareToExerciseNotificationScenario implements INotificationScenario {
 
     private timeToPrepare: number = 5000;
+    private soundToSpeechDelay: number = 100;
 
     public createNotifications(workout: Workout): INotification[] {
         let notifications: INotification[] = [];
 
-        for (var action of workout.actions) { 
+        for (let i: number = 0; i < workout.actions.length - 1; i++) {
+            let current: IWorkoutPlanAction = workout.actions[i];
+            let next: IWorkoutPlanAction = workout.actions[i + 1];
 
-            if (workout.isActionRest(action)) {
-                let minTime: number = Math.min(this.timeToPrepare, action.duration);
+            if (workout.isActionRest(current)) {
+                let minTime: number = Math.min(this.timeToPrepare, current.duration);
 
-                notifications.push(new SoundNotification(
-                    workout.getRelativeActionStartTime(action) + action.duration - minTime,
-                    audioPlayer.getFiles().prepare));
+                notifications.push(new SoundAndTextNotification(
+                    workout.getRelativeActionStartTime(current) + current.duration - minTime,
+                    audioPlayer.getFiles().prepare, next["exercise"].name, this.soundToSpeechDelay));
             }
         }
-
         return notifications;
     }
 }
