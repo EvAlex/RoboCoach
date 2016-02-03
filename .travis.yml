@@ -5,6 +5,9 @@ before_script:
   - npm install -g webpack jsx-typescript firebase-tools tsd
   - npm install
   - tsd install
+  - "export DISPLAY=:99.0"  # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
   - npm run build
   - npm run test

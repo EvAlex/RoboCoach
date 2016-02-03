@@ -8,7 +8,7 @@ module.exports = function(config) {
     config.set({
         logLevel: config.LOG_DEBUG,
         port: 3334,
-        browsers: ['PhantomJS'],
+        browsers: ['Firefox', /*'PhantomJS'*/],
         singleRun: true, //just run once by default
         frameworks: ['jasmine'], //use jasmine as framework
         files: [

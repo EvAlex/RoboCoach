@@ -28,6 +28,10 @@ export class RoboCoachDb {
         this.testWorkoutPlans = this.createTestWorkoutPlans();
     }
 
+    public get Dispatcher(): Flux.Dispatcher<IAction> {
+        return dispatcher;
+    }
+
     private handleAuth(): void {
         this.firebase.onAuth(authData => {
             if (dispatcher.isDispatching) {

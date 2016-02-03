@@ -30,6 +30,7 @@
         "./js/Actions/StartWorkoutAction.ts",
         "./js/AudioPlayer/AudioPlayer.ts",
         "./js/AudioPlayer/SpeechSynthesiser.ts",
+        "./js/BackendApi/__tests__/RoboCoachDb-test.ts",
         "./js/BackendApi/RoboCoachDb.ts",
         "./js/Components/NotFoundPage/INotFoundPageState.ts",
         "./js/Dispatcher/Dispatcher.ts",
