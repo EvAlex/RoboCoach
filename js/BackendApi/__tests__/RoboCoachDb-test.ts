@@ -12,11 +12,9 @@ describe('RoboCoachDb', () => {
 
     describe('When StartWorkoutAction is dispatched', () => {
 
+        var actual: any = null;
+
         beforeAll(done => {
-
-        }, specTimeout);
-
-        it('Should create Workout on Firebase at /users/{userId}/workouts/{workoutId}', done => {
             // arrange
             var plan: IWorkoutPlan = {
                 id: "aaabbbccc123",
@@ -34,28 +32,13 @@ describe('RoboCoachDb', () => {
             // act
             db.Dispatcher.dispatch(new StartWorkoutAction(plan, user));
 
-            // assert
+            // prepare data for asserts
             db.Dispatcher.register(a => {
                 if (a instanceof ProcessWorkoutStartedAction) {
-                    let action: ProcessWorkoutStartedAction = <ProcessWorkoutStartedAction>a,
-                        firebase: Firebase = new Firebase(`${config.firebaseUrl}users/userid123/workouts/${action.Workout.id}`);
+                    let action = <ProcessWorkoutStartedAction>a,
+                        firebase = new Firebase(`${config.firebaseUrl}users/userid123/workouts/${action.Workout.id}`);
                     firebase.once("value", snapshot => {
-                        expect(snapshot.exists).toBeTruthy();
-                        let actual: any = snapshot.val();
-                        expect(actual.planName).toEqual("10-min crossfit");
-                        expect(actual.planDescription).toEqual("Really hard one");
-                        expect(actual.actions.length).toEqual(4);
-                        expect(actual.actions[0].duration).toEqual(10000);
-                        expect(actual.actions[0].exercise).toBeUndefined();
-                        expect(actual.actions[1].duration).toEqual(30000);
-                        expect(actual.actions[1].exercise).toBeDefined();
-                        expect(actual.actions[1].exercise.name).toEqual("push-ups");
-                        expect(actual.actions[2].duration).toEqual(30000);
-                        expect(actual.actions[2].exercise).toBeUndefined();
-                        expect(actual.actions[3].duration).toEqual(30000);
-                        expect(actual.actions[3].exercise).toBeDefined();
-                        expect(actual.actions[3].exercise.name).toEqual("pull-ups");
-                        //expect(actual.startTime).toBeDefined();
+                        actual = snapshot.val();
                         done();
                     });
                 } else if (a instanceof ProcessWorkoutStartFailedAction) {
@@ -64,6 +47,38 @@ describe('RoboCoachDb', () => {
                 }
             });
         }, specTimeout);
+
+        it('Should create Workout on Firebase at /users/{userId}/workouts/{workoutId}', () => {
+            expect(actual).not.toBeNull();
+        });
+
+        describe('Created Workout', () => {
+            it("Should have planName equal to the name of the WorkoutPlan it is created from.", () => {
+                expect(actual.planName).toEqual("10-min crossfit");
+            });
+            it("Should have planDescription equal to the name of the WorkoutPlan it is created from.", () => {
+                expect(actual.planDescription).toEqual("Really hard one");
+            });
+            it("Should have the same count of actions as WorkoutPlan it is created from does.", () => {
+                expect(actual.actions.length).toEqual(4);
+            });
+            it("Should have the same actions as WorkoutPlan it is created from does.", () => {
+                expect(actual.actions[0].duration).toEqual(10000);
+                expect(actual.actions[0].exercise).toBeUndefined();
+                expect(actual.actions[1].duration).toEqual(30000);
+                expect(actual.actions[1].exercise).toBeDefined();
+                expect(actual.actions[1].exercise.name).toEqual("push-ups");
+                expect(actual.actions[2].duration).toEqual(30000);
+                expect(actual.actions[2].exercise).toBeUndefined();
+                expect(actual.actions[3].duration).toEqual(30000);
+                expect(actual.actions[3].exercise).toBeDefined();
+                expect(actual.actions[3].exercise.name).toEqual("pull-ups");
+            });
+            xit("Should be started, i.e. startTime should be set.", () => {
+                expect(actual.startTime).toBeDefined();
+            });
+        });
+
 
     });
 
