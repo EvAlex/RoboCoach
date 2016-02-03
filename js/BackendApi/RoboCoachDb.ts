@@ -113,8 +113,9 @@ export class RoboCoachDb {
     }
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
-        var workout: IWorkout = {
-            id: action.WorkoutPlan.id + "w",
+        var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
+            workout: IWorkout = {
+            id: pushRef.key(),
             planName: action.WorkoutPlan.name,
             planDescription: action.WorkoutPlan.description || "",
             actions: action.WorkoutPlan.actions.map(a => {
@@ -128,17 +129,16 @@ export class RoboCoachDb {
             }),
             startTime: new Date()
         };
-        this.firebase.child(`users/${action.User.id}/workouts`)
-            .push()
-            .set(workout, error => {
-                if (error) {
-                    CommonActionCreators.processWorkoutStartFailed(
-                        new RoboCoachDbError(error),
-                        action);
-                } else {
-                    CommonActionCreators.processWorkoutStarted(workout, action);
-                }
-            });
+        pushRef.set(workout, error => {
+            if (error) {
+                CommonActionCreators.processWorkoutStartFailed(
+                    new RoboCoachDbError(error),
+                    action);
+            } else {
+                workout.id = pushRef.key();
+                CommonActionCreators.processWorkoutStarted(workout, action);
+            }
+        });
     }
 
     private processRequestWorkoutAction(action: RequestWorkoutAction): void {
