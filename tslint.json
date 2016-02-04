@@ -8,10 +8,10 @@
         ],
         "ban": false,
         "class-name": true,
-        "comment-format": [
+        /*"comment-format": [
             true,
             "check-space"
-        ],
+        ],*/
         "curly": true,
         "eofline": false,
         "forin": true,

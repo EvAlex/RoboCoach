@@ -57,15 +57,24 @@ export default class Workout implements IWorkout {
         if (this.workout.actions.indexOf(action) === -1) {
             throw new Error("Specified action does not belong to current Workout");
         }
-        let startTime: number = this.workout.startTime.getTime(),
+
+        let res: Date = new Date();
+        res.setTime(this.workout.startTime.getTime() + this.getRelativeActionStartTime(action));
+        return res;
+    }
+
+    public getRelativeActionStartTime(action: IWorkoutPlanAction): number {
+        if (this.workout.actions.indexOf(action) === -1) {
+            throw new Error("Specified action does not belong to current Workout");
+        }
+        let startTime: number = 0,
             i: number = 0;
         while (this.workout.actions[i] !== action) {
             startTime += this.workout.actions[i].duration;
             i++;
         }
-        let res: Date = new Date();
-        res.setTime(startTime);
-        return res;
+
+        return startTime;
     }
 
     public getTimeLeftForAction(action: IWorkoutPlanAction): number {

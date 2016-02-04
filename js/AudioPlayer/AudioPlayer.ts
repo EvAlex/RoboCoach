@@ -20,7 +20,7 @@ interface IAudioFileMetadata {
     playbackEnd: number;
 }
 
-interface IAudioFile extends IResource<AudioBuffer> {
+export interface IAudioFile extends IResource<AudioBuffer> {
     audioMetadata: IAudioFileMetadata;
 }
 
