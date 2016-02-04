@@ -20,6 +20,7 @@ var config = {
       { test: /\.ts(x?)$/, loader: 'ts-loader?instance=jsx' },
       { test: /\.less$/, loader: 'null-loader' },
       { test: /\.json/, loader: "json-loader" },
+      { test: /\.(jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name].[ext]", include: path.resolve(__dirname, "js")},
     ]
   }
 }
