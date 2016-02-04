@@ -114,28 +114,32 @@ export class RoboCoachDb {
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
         var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
+            model: IFirebaseWorkout = {
+                planName: action.WorkoutPlan.name,
+                planDescription: action.WorkoutPlan.description || null,
+                actions: action.WorkoutPlan.actions.map(a => {
+                    return a.exercise
+                        ? {
+                            duration: a.duration,
+                            exercise: a.exercise
+                          }
+                        : { duration: a.duration }
+                }),
+                startTime: new Date().getTime()
+            },
             workout: IWorkout = {
-            id: pushRef.key(),
-            planName: action.WorkoutPlan.name,
-            planDescription: action.WorkoutPlan.description || "",
-            actions: action.WorkoutPlan.actions.map(a => {
-                var ex: IExercise = a["exercise"],
-                    exCopy: IExercise = ex
-                        ? { name: ex.name }
-                        : null;
-                return exCopy
-                    ? { duration: a.duration, exercise: exCopy }
-                    : { duration: a.duration };
-            }),
-            startTime: new Date()
-        };
-        pushRef.set(workout, error => {
+                id: pushRef.key(),
+                planName: model.planName,
+                planDescription: model.planDescription,
+                actions: model.actions,
+                startTime: new Date(model.startTime)
+            };
+        pushRef.set(model, error => {
             if (error) {
                 CommonActionCreators.processWorkoutStartFailed(
                     new RoboCoachDbError(error),
                     action);
             } else {
-                workout.id = pushRef.key();
                 CommonActionCreators.processWorkoutStarted(workout, action);
             }
         });
@@ -145,21 +149,21 @@ export class RoboCoachDb {
         this.firebase
             .child(`users/${action.User.id}/workouts/${action.WorkoutId}`)
             .once(
-                "value",
-                dataSnapshot => {
-                    if (dataSnapshot.exists()) {
-                        CommonActionCreators.receiveWorkout(dataSnapshot.val(), action);
-                    } else {
-                        CommonActionCreators.processRequestWorkoutFailed(
-                            new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
-                            action);
-                    }
-                },
-                error => {
+            "value",
+            dataSnapshot => {
+                if (dataSnapshot.exists()) {
+                    CommonActionCreators.receiveWorkout(dataSnapshot.val(), action);
+                } else {
                     CommonActionCreators.processRequestWorkoutFailed(
-                        new RoboCoachDbError(error),
+                        new RoboCoachDbError(`Workout with id = ${action.WorkoutId} not found.`),
                         action);
-                });
+                }
+            },
+            error => {
+                CommonActionCreators.processRequestWorkoutFailed(
+                    new RoboCoachDbError(error),
+                    action);
+            });
     }
 
     private processLogInAction(action: AuthActions.LogInAction): void {
@@ -177,26 +181,26 @@ export class RoboCoachDb {
         }
         // Prefer pop-ups, so we don't navigate away from the page
         this.firebase.authWithOAuthPopup(provider, (error, authData) => {
-          if (error) {
-            if (error.code === "TRANSPORT_UNAVAILABLE") {
-              /* Fall-back to browser redirects, and pick up the session
-                 automatically when we come back to the origin page */
-              this.firebase.authWithOAuthRedirect(provider, (error) => {
-                  dispatcher.dispatch(
-                      new AuthActions.ProcessLogInFailedAction(
-                          action,
-                          new RoboCoachDbError(error)));
-              });
-          } else {
-              dispatcher.dispatch(
-                  new AuthActions.ProcessLogInFailedAction(
-                      action,
-                      new RoboCoachDbError(error)));
-          }
-          } else if (authData) {
-            // User authenticated with Firebase
-            // No need to dispatch - Firebase will emit event for us.
-          }
+            if (error) {
+                if (error.code === "TRANSPORT_UNAVAILABLE") {
+                    /* Fall-back to browser redirects, and pick up the session
+                       automatically when we come back to the origin page */
+                    this.firebase.authWithOAuthRedirect(provider, (error) => {
+                        dispatcher.dispatch(
+                            new AuthActions.ProcessLogInFailedAction(
+                                action,
+                                new RoboCoachDbError(error)));
+                    });
+                } else {
+                    dispatcher.dispatch(
+                        new AuthActions.ProcessLogInFailedAction(
+                            action,
+                            new RoboCoachDbError(error)));
+                }
+            } else if (authData) {
+                // User authenticated with Firebase
+                // No need to dispatch - Firebase will emit event for us.
+            }
         });
     }
 

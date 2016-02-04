@@ -74,8 +74,10 @@ describe('RoboCoachDb', () => {
                 expect(actual.actions[3].exercise).toBeDefined();
                 expect(actual.actions[3].exercise.name).toEqual("pull-ups");
             });
-            xit("Should be started, i.e. startTime should be set.", () => {
+            it("Should be started, i.e. startTime should be set.", () => {
                 expect(actual.startTime).toBeDefined();
+                expect(actual.startTime).toBeGreaterThan(new Date().getTime() - 5000);
+                expect(actual.startTime).toBeLessThan(new Date().getTime());
             });
         });
 
