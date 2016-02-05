@@ -412,6 +412,54 @@ export class RoboCoachDb {
         ];
         res.push(plan);
 
+        plan = new WorkoutPlan();
+        plan.id = "-JRHTHaKuITFIhnj02HE";
+        plan.name = "7 минут на фитнес - красная 12, 16";
+        plan.actions = [
+            { duration: 15000 },
+            { duration: 30000, exercise: { name: "Приседания с выпрыгиванием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Планка" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Круги на скорость" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Планка с отжиманием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бег в упоре лёжа" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпад-реверанс" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Плавание" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Сёрферские выпрыгивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Касания носков" } },
+            { duration: 60000 },
+            { duration: 30000, exercise: { name: "Бег в упоре лёжа" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады в прыжке" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Планка" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Прыжки ноги вместе - ноги врозь" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Отжимания волной" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Двойные скручивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания из упора лёжа" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Боковые выпады" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Отжимания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Бой с тенью" } },
+            { duration: 10000 },
+        ];
+        res.push(plan);
+
         return res;
     }
 
