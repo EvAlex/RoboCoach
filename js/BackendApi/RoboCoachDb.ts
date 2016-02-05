@@ -4,6 +4,7 @@ const config: IRoboCoachConfig = require("RoboCoachConfig");
 import IAction from "./../Actions/IAction";
 import dispatcher from "../Dispatcher/Dispatcher";
 import WorkoutPlan from "../Models/WorkoutPlan";
+import AggregateConverter from "../Models/Firebase/AggregateConverter";
 
 import CommonActionCreators from "../ActionCreators/CommonActionCreators";
 import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
@@ -17,10 +18,12 @@ import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
 export class RoboCoachDb {
     private firebase: Firebase;
+    private converter: AggregateConverter;
     private testWorkoutPlans: WorkoutPlan[];
 
     constructor() {
         this.firebase = new Firebase(config.firebaseUrl);
+        this.converter = new AggregateConverter();
         dispatcher.register((action: IAction) => this.processAction(action));
 
         this.handleAuth();
@@ -114,26 +117,14 @@ export class RoboCoachDb {
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
         var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
-            model: IFirebaseWorkout = {
-                planName: action.WorkoutPlan.name,
-                planDescription: action.WorkoutPlan.description || null,
-                actions: action.WorkoutPlan.actions.map(a => {
-                    return a.exercise
-                        ? {
-                            duration: a.duration,
-                            exercise: a.exercise
-                          }
-                        : { duration: a.duration }
-                }),
-                startTime: new Date().getTime()
-            },
             workout: IWorkout = {
                 id: pushRef.key(),
-                planName: model.planName,
-                planDescription: model.planDescription,
-                actions: model.actions,
-                startTime: new Date(model.startTime)
-            };
+                planName: action.WorkoutPlan.name,
+                planDescription: action.WorkoutPlan.description,
+                actions: action.WorkoutPlan.actions,
+                startTime: new Date()
+            },
+            model: IFirebaseWorkout = this.converter.Workout.toFirebase(workout);
         pushRef.set(model, error => {
             if (error) {
                 CommonActionCreators.processWorkoutStartFailed(
