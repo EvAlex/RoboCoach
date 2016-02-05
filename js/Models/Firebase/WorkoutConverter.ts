@@ -10,10 +10,10 @@ export default class WorkoutConverter implements IModelConverter<IWorkout, IFire
                         duration: a.duration,
                         exercise: a.exercise
                       }
-                    : { duration: a.duration }
+                    : { duration: a.duration };
             }),
             startTime: new Date().getTime()
-        }
+        };
     }
 
     fromFirebase(firebaseModel: IFirebaseWorkout, id: string): IWorkout {
@@ -23,6 +23,6 @@ export default class WorkoutConverter implements IModelConverter<IWorkout, IFire
             planDescription: firebaseModel.planDescription,
             startTime: new Date(firebaseModel.startTime),
             actions: firebaseModel.actions
-        }
+        };
     }
 }
