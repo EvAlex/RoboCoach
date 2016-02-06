@@ -12,7 +12,7 @@ export default class WorkoutConverter implements IModelConverter<IWorkout, IFire
                       }
                     : { duration: a.duration };
             }),
-            startTime: new Date().getTime()
+            startTime: model.startTime.getTime()
         };
     }
 

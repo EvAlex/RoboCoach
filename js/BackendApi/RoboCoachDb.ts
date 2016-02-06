@@ -1,5 +1,6 @@
 
 import * as Firebase from "firebase";
+import * as uuid from "node-uuid";
 const config: IRoboCoachConfig = require("RoboCoachConfig");
 import IAction from "./../Actions/IAction";
 import dispatcher from "../Dispatcher/Dispatcher";
@@ -116,24 +117,30 @@ export class RoboCoachDb {
     }
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
-        var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
-            workout: IWorkout = {
-                id: pushRef.key(),
-                planName: action.WorkoutPlan.name,
-                planDescription: action.WorkoutPlan.description,
-                actions: action.WorkoutPlan.actions,
-                startTime: new Date()
-            },
-            model: IFirebaseWorkout = this.converter.Workout.toFirebase(workout);
-        pushRef.set(model, error => {
-            if (error) {
-                CommonActionCreators.processWorkoutStartFailed(
-                    new RoboCoachDbError(error),
-                    action);
-            } else {
-                CommonActionCreators.processWorkoutStarted(workout, action);
-            }
-        });
+        var workout: IWorkout = {
+            id: null,
+            planName: action.WorkoutPlan.name,
+            planDescription: action.WorkoutPlan.description,
+            actions: action.WorkoutPlan.actions,
+            startTime: new Date()
+        };
+        if (action.User) {
+            var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
+                model: IFirebaseWorkout = this.converter.Workout.toFirebase(workout);
+            workout.id = pushRef.key();
+            pushRef.set(model, error => {
+                if (error) {
+                    CommonActionCreators.processWorkoutStartFailed(
+                        new RoboCoachDbError(error),
+                        action);
+                } else {
+                    CommonActionCreators.processWorkoutStarted(workout, action);
+                }
+            });
+        } else {
+            workout.id = uuid.v4();
+            window.setTimeout(() => CommonActionCreators.processWorkoutStarted(workout, action));
+        }
     }
 
     private processRequestWorkoutAction(action: RequestWorkoutAction): void {

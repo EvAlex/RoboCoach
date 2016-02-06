@@ -71,7 +71,7 @@ describe("WorkoutConverter", () => {
 
     describe("fromFirebase(firebaseModel)", () => {
         var firebaseModel: IFirebaseWorkout,
-            firebaseModelId: "-1241dewf2u3JEkd2js",
+            firebaseModelId: string = "-1241dewf2u3JEkd2js",
             converter: WorkoutConverter;
 
         beforeEach(() => {
@@ -87,6 +87,16 @@ describe("WorkoutConverter", () => {
                 ]
             };
             converter = new WorkoutConverter();
+        });
+
+        it("Should set id", () => {
+            // arrange
+
+            // act
+            var actual = converter.fromFirebase(firebaseModel, firebaseModelId);
+
+            // assert
+            expect(actual.id).toEqual(firebaseModelId);
         });
 
         it("Should set planName", () => {
