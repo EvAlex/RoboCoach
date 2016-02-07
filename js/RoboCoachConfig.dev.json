@@ -1,3 +1,4 @@
 {
-    "firebaseUrl": "https://robocoach-dev.firebaseio.com/"
+    "firebaseUrl": "https://robocoach-dev.firebaseio.com/",
+    "googleApiKey": "AIzaSyAjZR9S-arLFPrYa4_ysyoA9kfztIfCtZY"
 }
