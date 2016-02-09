@@ -5,7 +5,9 @@ require("./Log/ActionLogger");
 /* tslint:disable:no-unused-variable */
 import Dispatcher = require("./Dispatcher/Dispatcher");
 import * as RoboCoachDb from "./BackendApi/RoboCoachDb";
+import * as GoogleApi from "./BackendApi/GoogleApi";
 var db: RoboCoachDb.RoboCoachDb = RoboCoachDb.default;
+var googleApi: GoogleApi.GoogleApi = GoogleApi.default;
 /* tslint:enable:no-unused-variable */
 
 require("bluebird");
