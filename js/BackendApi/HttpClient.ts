@@ -8,12 +8,12 @@ export default class HttpClient implements IHttpClient {
         xhr.open("GET", url, true);
         xhr.responseType = "json";
         xhr.onload = e => {
-            let response: T = <T>xhr.response;
+            let response: T = <T> xhr.response;
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     d.resolve(response);
                 } else {
-                    d.reject(xhr)
+                    d.reject(xhr);
                 }
             }
         };
