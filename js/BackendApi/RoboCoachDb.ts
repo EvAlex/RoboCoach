@@ -87,6 +87,7 @@ export class RoboCoachDb {
     }
 
     private processRequestWorkoutPlanAction(action: RequestWorkoutPlanAction): void {
+        /*
         console.warn("WARNING! Mock Workout plan in RoboCoachDb.");
         var plan: WorkoutPlan = this.testWorkoutPlans.filter(p => p.id === action.PlanId)[0];
         if (plan) {
@@ -97,13 +98,13 @@ export class RoboCoachDb {
                 new RoboCoachDbError("Workout plan with specified id not found"),
                 action));
         }
-        /*
-        this.firebase.child(`WorkoutPlans/${action.PlanId}`)
+        */
+        this.firebase.child(`workoutPlans/${action.PlanId}`)
             .once(
             "value",
             (s: FirebaseDataSnapshot) => {
-                if (s.val()) {
-                    CommonActionCreators.receiveWorkoutPlan(s.val(), action);
+                if (s.exists()) {
+                    CommonActionCreators.receiveWorkoutPlan(this.converter.WorkoutPlan.fromFirebase(s.val(), action.PlanId), action);
                 } else {
                     CommonActionCreators.receiveWorkoutPlanFail(
                         action.PlanId,
@@ -115,7 +116,6 @@ export class RoboCoachDb {
                 var error: RoboCoachDbError = new RoboCoachDbError(err);
                 CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, error, action);
             });
-            */
     }
 
     private processCreateWorkoutPlanAction(action: CreateWorkoutPlanAction): void {
