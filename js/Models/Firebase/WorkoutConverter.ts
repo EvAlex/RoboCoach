@@ -1,6 +1,19 @@
+import RoboCoachFirebaseConverterError from "../../Errors/RoboCoachFirebaseConverterError";
 
 export default class WorkoutConverter implements IModelConverter<IWorkout, IFirebaseWorkout> {
     toFirebase(model: IWorkout): IFirebaseWorkout {
+        if (!model.planName) {
+            throw new RoboCoachFirebaseConverterError("WorkoutConverter", "planName", "Value is missing");
+        }
+        if (!model.planDescription) {
+            model.planDescription = null;
+        }
+        if (!model.startTime) {
+            throw new RoboCoachFirebaseConverterError("WorkoutConverter", "startTime", "Value is missing");
+        }
+        if (!model.actions) {
+            model.actions = [];
+        }
         return {
             planName: model.planName,
             planDescription: model.planDescription || null,

@@ -42,6 +42,7 @@
         "./js/Errors/IRoboCoachError.d.ts",
         "./js/Errors/RoboCoachDbError.ts",
         "./js/Errors/RoboCoachError.ts",
+        "./js/Errors/RoboCoachFirebaseConverterError.ts",
         "./js/IRoboCoachConfig.d.ts",
         "./js/Log/ActionLogEntry.ts",
         "./js/Log/ActionLogger.ts",
