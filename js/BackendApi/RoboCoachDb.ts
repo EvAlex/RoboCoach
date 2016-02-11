@@ -119,10 +119,24 @@ export class RoboCoachDb {
     }
 
     private processCreateWorkoutPlanAction(action: CreateWorkoutPlanAction): void {
+        var pushRef: Firebase = this.firebase.child("workoutPlans").push(),
+            model: IFirebaseWorkoutPlan = this.converter.WorkoutPlan.toFirebase(action.Plan);
+        action.Plan.id = pushRef.key();
+        pushRef.set(model, error => {
+            if (error) {
+                CommonActionCreators.createWorkoutPlanFailed(
+                    new RoboCoachDbError(error),
+                    action);
+            } else {
+                CommonActionCreators.createWorkoutPlanSucceeded(action.Plan, action);
+            }
+        });
+        /*
         action.Plan.id = this.testWorkoutPlans[this.testWorkoutPlans.length - 1].id;
         action.Plan.id = action.Plan.id + "1";
         this.testWorkoutPlans.push(action.Plan);
         window.setTimeout(() => CommonActionCreators.createWorkoutPlanSucceeded(action.Plan, action));
+        */
     }
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {
