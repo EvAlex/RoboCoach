@@ -73,8 +73,17 @@ export class RoboCoachDb {
     }
 
     private processRequestWorkoutPlansAction(action: RequestWorkoutPlansAction): void {
+        this.firebase.child("workoutPlans").once(
+            "value",
+            dataSnapshot => {
+                debugger;
+                let response: IWorkoutPlan[] = dataSnapshot.exists()
+                    ? dataSnapshot.val().map(p => this.converter.WorkoutPlan.fromFirebase(p, "a"))
+                    : [];
+                CommonActionCreators.receiveWorkoutPlans(response, action);
+            });
         console.warn("WARNING! Mock Workout Plans in RoboCoachDb.");
-        window.setTimeout(() => CommonActionCreators.receiveWorkoutPlans(this.testWorkoutPlans.slice(), action));
+        // window.setTimeout(() => CommonActionCreators.receiveWorkoutPlans(this.testWorkoutPlans.slice(), action));
     }
 
     private processRequestWorkoutPlanAction(action: RequestWorkoutPlanAction): void {

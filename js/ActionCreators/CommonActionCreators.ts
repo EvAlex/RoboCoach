@@ -52,7 +52,7 @@ class CommonActionCreators {
         dispatcher.dispatch(new RequestWorkoutPlansAction());
     }
 
-    receiveWorkoutPlans(plans: WorkoutPlan[], requestAction: RequestWorkoutPlansAction): void {
+    receiveWorkoutPlans(plans: IWorkoutPlan[], requestAction: RequestWorkoutPlansAction): void {
         dispatcher.dispatch(new ReceiveWorkoutPlansAction(plans, requestAction));
     }
 

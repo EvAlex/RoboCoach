@@ -23,7 +23,7 @@ interface IWorkoutDetailsProps extends ReactRouter.RouteComponentProps<{ planId:
 }
 
 interface IWorkoutDetailsState {
-    plan?: WorkoutPlan;
+    plan?: IWorkoutPlan;
     planRequestError?: IRoboCoachError;
     workoutStartError?: IRoboCoachError;
 }
@@ -162,7 +162,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private setOrRequestPlan(planId: string): void {
-        var plan: WorkoutPlan = this.store.findWorkoutPlan(planId);
+        var plan: IWorkoutPlan = this.store.findWorkoutPlan(planId);
         if (plan !== null) {
             this.setState({
                 plan: plan,
@@ -175,7 +175,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     private onStoreChange(): void {
-        var plan: WorkoutPlan = this.store.findWorkoutPlan(this.props.params.planId);
+        var plan: IWorkoutPlan = this.store.findWorkoutPlan(this.props.params.planId);
         if (plan !== null) {
             this.setState({
                 plan: plan,

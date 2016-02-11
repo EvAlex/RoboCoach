@@ -11,14 +11,13 @@ const styles: any = require("./WorkoutPlansPage.module.less");
 import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
 import * as WorkoutStore from "../../Stores/WorkoutStore";
 import * as WorkoutPlansStore from "../../Stores/WorkoutPlansStore";
-import WorkoutPlan from "../../Models/WorkoutPlan";
 
 interface IWorkoutPlansPageProps {
     children: React.ReactElement<{}>[];
 }
 
 interface IWorkoutPlansPageState {
-    plans?: WorkoutPlan[];
+    plans?: IWorkoutPlan[];
     workoutStatus?: WorkoutStore.CurrentWorkoutStatus;
 }
 

@@ -7,18 +7,18 @@ import WorkoutPlan from "../Models/WorkoutPlan";
 import BaseStore from "./BaseStore";
 
 export class WorkoutPlansStore extends BaseStore {
-    private plans: WorkoutPlan[] = [];
+    private plans: IWorkoutPlan[] = [];
 
     constructor() {
         super();
         dispatcher.register((action: IAction) => this.processActions(action));
     }
 
-    public getWorkoutPlans(): WorkoutPlan[] {
+    public getWorkoutPlans(): IWorkoutPlan[] {
         return this.plans.slice();
     }
 
-    public findWorkoutPlan(planId: string): WorkoutPlan {
+    public findWorkoutPlan(planId: string): IWorkoutPlan {
         return this.plans.filter((p: WorkoutPlan) => p.id === planId)[0] || null;
     }
 
@@ -39,7 +39,7 @@ export class WorkoutPlansStore extends BaseStore {
     }
 
     private processReceiveWorkoutPlanAction(action: ReceiveWorkoutPlanAction): void {
-        var match: WorkoutPlan = this.plans.filter((p: WorkoutPlan) => p.id === action.Plan.id)[0];
+        var match: IWorkoutPlan = this.plans.filter((p: WorkoutPlan) => p.id === action.Plan.id)[0];
         if (match) {
             this.plans[this.plans.indexOf(match)] = action.Plan;
         } else {
