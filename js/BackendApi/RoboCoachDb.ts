@@ -467,6 +467,54 @@ export class RoboCoachDb {
         ];
         res.push(plan);
 
+        plan = new WorkoutPlan();
+        plan.id = "-JRHTHaKuITFIhnjWeRG";
+        plan.name = "7 минут на фитнес - красная 9";
+        plan.actions = [
+            { duration: 15000 },
+            { duration: 30000, exercise: { name: "Планка с отжиманием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Диагональные выпады" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Круги на скорость" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады с наклонами" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Скручивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Отжимания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады в прыжке" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Берми" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Ножницы" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания" } },
+            { duration: 60000 },
+            { duration: 30000, exercise: { name: "Планка с отжиманием" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Диагональные выпады" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Круги на скорость" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады с наклонами" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Скручивания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Отжимания" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Выпады в прыжке" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Берми" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Ножницы" } },
+            { duration: 10000 },
+            { duration: 30000, exercise: { name: "Приседания" } },
+            { duration: 10000 },
+        ];
+        res.push(plan);
+
         return res;
     }
 
