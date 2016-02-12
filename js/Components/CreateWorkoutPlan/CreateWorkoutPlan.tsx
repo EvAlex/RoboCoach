@@ -43,7 +43,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                             <input type="text"
                                    className="form-control"
                                    id="inputName"
-                                   placeholder="Input name"
+                                   placeholder="Plan name"
                                    value={this.state.plan.name}
                                        onChange={e => this.onNameChanged(e)} />
                         </div>
@@ -54,16 +54,30 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                             <input type="text"
                                    className="form-control"
                                    id="inputDesc"
-                                   placeholder="Description" />
+                                   placeholder="Plan description" />
                         </div>
                     </div>
                     <div className="form-group">
                     {this.state.plan.actions.map((a, index) => (
                         <div key={ index }>
                             <label htmlFor="inputActionName" className="col-sm-2 control-label">
-                                Action
+                                { index + 1 }.
                             </label>
-                            <div className="col-sm-4">
+                            <div className="col-sm-3">
+                                <div className="input-group">
+                                    <span className="input-group-addon">
+                                        <span className="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <input type="text"
+                                           value={ (a.duration / 1000 ).toString() }
+                                           className="form-control"
+                                           id="inputActionDuration"
+                                           placeholder="40"
+                                           onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
+                                    <span className="input-group-addon">sec</span>
+                                </div>
+                            </div>
+                            <div className="col-sm-7">
                                 { "exercise" in a
                                     ? (
                                         <input type="text"
@@ -76,30 +90,15 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                                                id="inputActionName"
                                                placeholder="Action Name" />
                                     )
-                                    : <span>Rest</span>}
+                                    : <label>Rest</label>}
 
                             </div>
-                            <div className="col-sm-2">
-                                <input type="text"
-                                       value={ (a.duration / 1000 ).toString() }
-                                       className="form-control"
-                                       id="inputActionDuration"
-                                       placeholder="40"
-                                       onChange={ (e: any) => { a.duration = Number(e.target.value) * 1000; this.setState(this.state); } }
-                                        />
-                            </div>
-                            <label className="control-label" htmlFor="inputActionDuration">sec</label>
-                            <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
                         </div>
                     ))}
                     </div>
                     <div className="form-group">
-                        <div className="col-sm-offset-2 col-sm-10">
-                            <div className="checkbox">
-                                <label>
-                                    <input type="checkbox" /> Remember me
-                                </label>
-                            </div>
+                        <div className="col-md-offset-2 col-md-2">
+                            <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
                         </div>
                     </div>
                     <div className="form-group">
@@ -124,6 +123,11 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
         }
 
         this.setState(this.state);
+    }
+
+    onActionDurationChanged(e: any, action: IWorkoutPlanAction): void {
+        action.duration = Number(e.target.value) * 1000;
+        this.forceUpdate();
     }
 
     componentDidMount(): void {
