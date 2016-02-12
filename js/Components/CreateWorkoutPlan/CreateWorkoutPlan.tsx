@@ -22,6 +22,7 @@ interface ICreateWorkoutPlansState {
 }
 
 export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
+    private pendingFocus: boolean = false;
 
     constructor() {
         super();
@@ -57,45 +58,43 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                                    placeholder="Plan description" />
                         </div>
                     </div>
-                    <div className="form-group">
                     {this.state.plan.actions.map((a, index) => (
-                        <div key={ index }>
-                            <label htmlFor="inputActionName" className="col-sm-2 control-label">
-                                { index + 1 }.
-                            </label>
-                            <div className="col-sm-3">
-                                <div className="input-group">
-                                    <span className="input-group-addon">
-                                        <span className="glyphicon glyphicon-time"></span>
-                                    </span>
-                                    <input type="text"
-                                           value={ (a.duration / 1000 ).toString() }
-                                           className="form-control"
-                                           id="inputActionDuration"
-                                           placeholder="40"
-                                           onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
-                                    <span className="input-group-addon">sec</span>
-                                </div>
-                            </div>
-                            <div className="col-sm-7">
-                                { "exercise" in a
-                                    ? (
-                                        <input type="text"
-                                               value={ a.exercise.name }
-                                               onChange={ (e: any) => {
-                                                            a["exercise"].name = e.target.value;
-                                                            this.setState(this.state);
-                                                        }}
-                                               className="form-control"
-                                               id="inputActionName"
-                                               placeholder="Action Name" />
-                                    )
-                                    : <label>Rest</label>}
-
+                    <div className="form-group" key={ index }>
+                        <label htmlFor="inputActionName" className="col-sm-2 control-label">
+                            { index + 1 }.
+                        </label>
+                        <div className="col-sm-3">
+                            <div className="input-group">
+                                <span className="input-group-addon">
+                                    <span className="glyphicon glyphicon-time"></span>
+                                </span>
+                                <input type="text"
+                                       value={ (a.duration / 1000 ).toString() }
+                                       className="form-control"
+                                       id="inputActionDuration"
+                                       placeholder="40"
+                                       onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
+                                <span className="input-group-addon">sec</span>
                             </div>
                         </div>
-                    ))}
+                        <div className="col-sm-7">
+                            { "exercise" in a
+                                ? (
+                                    <input type="text"
+                                           value={ a.exercise.name }
+                                           onChange={ (e: any) => {
+                                                        a["exercise"].name = e.target.value;
+                                                        this.setState(this.state);
+                                                    }}
+                                           className="form-control"
+                                           ref={`actionName[${index}]`}
+                                           placeholder="Action Name" />
+                                )
+                                : <span className={styles.restText}>Rest</span>}
+
+                        </div>
                     </div>
+                    ))}
                     <div className="form-group">
                         <div className="col-md-offset-2 col-md-2">
                             <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
@@ -120,6 +119,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
             this.state.plan.actions.push( { duration: 10000 });
         } else {
             this.state.plan.actions.push( { duration: 30000, exercise: { name: "" } });
+            this.pendingFocus = true;
         }
 
         this.setState(this.state);
@@ -132,6 +132,11 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
 
     componentDidMount(): void {
         Dispatcher.register(a => this.processActions(a));
+        this.processPendingFocus();
+    }
+
+    componentDidUpdate(): void {
+        this.processPendingFocus();
     }
 
     onNameChanged(e: any): void {
@@ -157,6 +162,24 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
             this.processSuccessSubmitted(action);
         } else if (action instanceof CreateWorkoutPlanFailAction) {
             this.processFailedSubmit(action);
+        }
+    }
+
+    private processPendingFocus(): void {
+        if (this.pendingFocus) {
+            if (this.state.plan.actions.length > 0) {
+                var actions: IWorkoutPlanAction[] = this.state.plan.actions,
+                    lastAction: IWorkoutPlanAction = actions[actions.length - 1],
+                    lastExerciseIndex: number = lastAction.exercise
+                        ? actions.length - 1
+                        : actions.length - 2,
+                    input: any = this.refs[`actionName[${lastExerciseIndex}]`];
+                if (input) {
+                    input.focus();
+                }
+            }
+
+            this.pendingFocus = false;
         }
     }
 }
