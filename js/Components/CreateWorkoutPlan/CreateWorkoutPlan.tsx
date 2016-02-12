@@ -42,7 +42,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
 
                     <div className="form-group">
                         <label htmlFor="inputEmail3" className="col-sm-2 control-label">Name</label>
-                        <div className="col-sm-10">
+                        <div className="col-sm-9">
                             <input type="text"
                                    className="form-control"
                                    id="inputName"
@@ -53,7 +53,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputDesc" className="col-sm-2 control-label">Description</label>
-                        <div className="col-sm-10">
+                        <div className="col-sm-9">
                             <input type="text"
                                    className="form-control"
                                    id="inputDesc"
@@ -61,39 +61,48 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                         </div>
                     </div>
                     {this.state.plan.actions.map((a, index) => (
-                    <div className="form-group" key={ index }>
-                        <label htmlFor="inputActionName" className="col-sm-2 control-label">
-                            { index + 1 }.
-                        </label>
-                        <div className="col-sm-3">
-                            <div className="input-group">
-                                <span className="input-group-addon">
-                                    <span className="glyphicon glyphicon-time"></span>
-                                </span>
-                                <input type="text"
-                                       value={ (a.duration / 1000 ).toString() }
-                                       className="form-control"
-                                       id="inputActionDuration"
-                                       placeholder="40"
-                                       onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
-                                <span className="input-group-addon">sec</span>
-                            </div>
-                        </div>
-                        <div className="col-sm-7">
-                            { "exercise" in a
-                                ? (
+                    <div key={ index } className={styles.planAction}>
+                        <div className="form-group">
+                            <label htmlFor="inputActionName" className="col-sm-2 control-label">
+                                { index + 1 }.
+                            </label>
+                            <div className="col-sm-3">
+                                <div className="input-group">
+                                    <span className="input-group-addon">
+                                        <span className="glyphicon glyphicon-time"></span>
+                                    </span>
                                     <input type="text"
-                                           value={ a.exercise.name }
-                                           onChange={ (e: any) => {
-                                                        a["exercise"].name = e.target.value;
-                                                        this.setState(this.state);
-                                                    }}
+                                           value={ (a.duration / 1000 ).toString() }
                                            className="form-control"
-                                           ref={`actionName[${index}]`}
-                                           placeholder="Action Name" />
-                                )
-                                : <span className={styles.restText}>Rest</span>}
+                                           id="inputActionDuration"
+                                           placeholder="40"
+                                           onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
+                                    <span className="input-group-addon">sec</span>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                { "exercise" in a
+                                    ? (
+                                        <input type="text"
+                                               value={ a.exercise.name }
+                                               onChange={ (e: any) => {
+                                                            a["exercise"].name = e.target.value;
+                                                            this.setState(this.state);
+                                                        }}
+                                               className="form-control"
+                                               ref={`actionName[${index}]`}
+                                               placeholder="Action Name" />
+                                    )
+                                    : <span className={styles.restText}>Rest</span>}
 
+                            </div>
+                            <div className="col-sm-1">
+                                <button type="button"
+                                        className={styles.removeAction}
+                                        onClick={() => this.onRemoveActionClick(a)}>
+                                    &times;
+                                </button>
+                            </div>
                         </div>
                     </div>
                     ))}
@@ -133,7 +142,14 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
             this.pendingFocus = true;
         }
 
-        this.setState(this.state);
+        this.forceUpdate();
+    }
+
+    onRemoveActionClick(action: IWorkoutPlanAction): void {
+        if (this.state.plan.actions.length > 1) {
+            this.state.plan.actions.splice(this.state.plan.actions.indexOf(action), 1);
+            this.forceUpdate();
+        }
     }
 
     onActionDurationChanged(e: any, action: IWorkoutPlanAction): void {

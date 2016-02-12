@@ -1,6 +1,33 @@
 
-.restText {
-    color: #777777;
-    margin-top: 7px;
-    display: inline-block;
+.planAction {
+    &:hover {
+        .removeAction {
+            display: inline-block;
+        }
+    }
+
+    .restText {
+        color: #777777;
+        margin-top: 7px;
+        display: inline-block;
+    }
+
+    .removeAction {
+        display: none;
+        margin-top: 5px;
+        padding: 0;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        -webkit-appearance: none;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 1;
+        color: gray;
+        text-shadow: 0 1px 0 #fff;
+
+        &:hover{
+            color: #000;
+        }
+    }
 }
