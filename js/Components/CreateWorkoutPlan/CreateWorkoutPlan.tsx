@@ -36,7 +36,9 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
         return (
             <div>
                 <h2>Create Plan...</h2>
-                <form className="form-horizontal" onSubmit={e => this.onFormSubmit(e)}>
+                <form className="form-horizontal"
+                      onSubmit={e => this.onFormSubmit(e)}
+                      onKeyDown={e => this.onKeyDown(e)}>
 
                     <div className="form-group">
                         <label htmlFor="inputEmail3" className="col-sm-2 control-label">Name</label>
@@ -96,8 +98,9 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                     </div>
                     ))}
                     <div className="form-group">
-                        <div className="col-md-offset-2 col-md-2">
+                        <div className="col-sm-offset-2 col-sm-3">
                             <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
+                            <i className="text-muted"> Ctrl + Enter</i>
                         </div>
                     </div>
                     <div className="form-group">
@@ -109,6 +112,14 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                 </form>
             </div>
         );
+    }
+
+    onKeyDown(e: React.KeyboardEvent): void {
+        var code: number = e.which || e.keyCode;
+        if (code === 13 && e.ctrlKey) {
+            // Ctrl + Enter
+            this.onAddActionClicked(e);
+        }
     }
 
     onAddActionClicked(e: any): void {
