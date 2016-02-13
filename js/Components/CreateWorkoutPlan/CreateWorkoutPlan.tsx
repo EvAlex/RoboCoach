@@ -20,6 +20,7 @@ interface ICreateWorkoutPlansProps extends ReactRouter.RouteComponentProps<{}, {
 interface ICreateWorkoutPlansState {
     plan: WorkoutPlan;
     draggedActionIndex?: number;
+    dropTargetActionIndex?: number;
 }
 
 export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
@@ -67,7 +68,11 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                         {this.state.plan.actions.map((a, index) => (
                         <div key={ index }
                              ref={`actionListItem${index}`}
-                             className={`${styles.planAction} ${index === this.state.draggedActionIndex ? styles.dragged : ""}`}
+                             className={
+                                 `${styles.planAction}
+                                  ${index === this.state.draggedActionIndex ? styles.dragged : ""}
+                                  ${index === this.state.dropTargetActionIndex ? styles.dropTarget : ""}`
+                              }
                              draggable={true}
                              onDragStart={e => this.onActionDragStart(e, index)}
                              onDragEnd={e => this.onActionDragEnd(e)}>
@@ -234,18 +239,32 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
 
     private onActionDragEnd(e: React.DragEvent): void {
         this.state.draggedActionIndex = null;
+        this.state.dropTargetActionIndex = null;
         this.forceUpdate();
     }
 
     private onDragOverActionsList(e: React.DragEvent): void {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
+        let targetIndex: number = this.getDropTargetActionIndex(e);
+        if (this.state.dropTargetActionIndex !== targetIndex) {
+            this.state.dropTargetActionIndex = targetIndex;
+            this.forceUpdate();
+        }
     }
 
     private onDropActionToActionsList(e: React.DragEvent): void {
         e.preventDefault();
         var actionIndex: number = Number(e.dataTransfer.getData("text/plain")),
-            nativeEvent: any = e.nativeEvent,
+            action: IWorkoutPlanAction = this.state.plan.actions[actionIndex],
+            index: number = this.getDropTargetActionIndex(e);
+        this.state.plan.actions.splice(actionIndex, 1);
+        this.state.plan.actions.splice(index, 0, action);
+        this.forceUpdate();
+    }
+
+    private getDropTargetActionIndex(e: React.DragEvent): number {
+        var nativeEvent: any = e.nativeEvent,
             mouseEvent: MouseEvent = nativeEvent,
             y: number = mouseEvent.clientY,
             itemsBounds: ClientRect[] = this.getActionListItemsBounds(),
@@ -260,10 +279,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                 index = i + 1;
             }
         }
-        var action: IWorkoutPlanAction = this.state.plan.actions[actionIndex];
-        this.state.plan.actions.splice(actionIndex, 1);
-        this.state.plan.actions.splice(index, 0, action);
-        this.forceUpdate();
+        return index;
     }
 
     private getActionListItemsBounds(): ClientRect[] {
