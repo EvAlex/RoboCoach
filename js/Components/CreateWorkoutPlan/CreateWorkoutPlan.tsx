@@ -19,6 +19,7 @@ interface ICreateWorkoutPlansProps extends ReactRouter.RouteComponentProps<{}, {
 
 interface ICreateWorkoutPlansState {
     plan: WorkoutPlan;
+    draggedActionIndex?: number;
 }
 
 export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
@@ -60,52 +61,66 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                                    placeholder="Plan description" />
                         </div>
                     </div>
-                    {this.state.plan.actions.map((a, index) => (
-                    <div key={ index } className={styles.planAction}>
-                        <div className="form-group">
-                            <label htmlFor="inputActionName" className="col-sm-2 control-label">
-                                { index + 1 }.
-                            </label>
-                            <div className="col-sm-3">
-                                <div className="input-group">
-                                    <span className="input-group-addon">
-                                        <span className="glyphicon glyphicon-time"></span>
-                                    </span>
-                                    <input type="text"
-                                           value={ (a.duration / 1000 ).toString() }
-                                           className="form-control"
-                                           id="inputActionDuration"
-                                           placeholder="40"
-                                           onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
-                                    <span className="input-group-addon">sec</span>
+                    <div className={ `${styles.planActionsList} ${!!this.state.draggedActionIndex ? styles.dragging : ""}`}
+                         onDragOver={e => this.onDragOverActionsList(e)}
+                         onDrop={e => this.onDropActionToActionsList(e)}>
+                        {this.state.plan.actions.map((a, index) => (
+                        <div key={ index }
+                             ref={`actionListItem${index}`}
+                             className={`${styles.planAction} ${index === this.state.draggedActionIndex ? styles.dragged : ""}`}
+                             draggable={true}
+                             onDragStart={e => this.onActionDragStart(e, index)}
+                             onDragEnd={e => this.onActionDragEnd(e)}>
+                            <div className="form-group">
+                                <div className="col-sm-1">
+                                    <div className={styles.actionDragZone}>
+                                        <span className="glyphicon glyphicon-resize-vertical"></span>
+                                    </div>
+                                </div>
+                                <label htmlFor="inputActionName" className="col-sm-1 control-label">
+                                    { index + 1 }.
+                                </label>
+                                <div className="col-sm-3">
+                                    <div className="input-group">
+                                        <span className="input-group-addon">
+                                            <span className="glyphicon glyphicon-time"></span>
+                                        </span>
+                                        <input type="text"
+                                               value={ (a.duration / 1000 ).toString() }
+                                               className="form-control"
+                                               id="inputActionDuration"
+                                               placeholder="40"
+                                               onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
+                                        <span className="input-group-addon">sec</span>
+                                    </div>
+                                </div>
+                                <div className="col-sm-6">
+                                    { "exercise" in a
+                                        ? (
+                                            <input type="text"
+                                                   value={ a.exercise.name }
+                                                   onChange={ (e: any) => {
+                                                                a["exercise"].name = e.target.value;
+                                                                this.setState(this.state);
+                                                            }}
+                                                   className="form-control"
+                                                   ref={`actionName[${index}]`}
+                                                   placeholder="Action Name" />
+                                        )
+                                        : <span className={styles.restText}>Rest</span>}
+
+                                </div>
+                                <div className="col-sm-1">
+                                    <button type="button"
+                                            className={styles.removeAction}
+                                            onClick={() => this.onRemoveActionClick(a)}>
+                                        &times;
+                                    </button>
                                 </div>
                             </div>
-                            <div className="col-sm-6">
-                                { "exercise" in a
-                                    ? (
-                                        <input type="text"
-                                               value={ a.exercise.name }
-                                               onChange={ (e: any) => {
-                                                            a["exercise"].name = e.target.value;
-                                                            this.setState(this.state);
-                                                        }}
-                                               className="form-control"
-                                               ref={`actionName[${index}]`}
-                                               placeholder="Action Name" />
-                                    )
-                                    : <span className={styles.restText}>Rest</span>}
-
-                            </div>
-                            <div className="col-sm-1">
-                                <button type="button"
-                                        className={styles.removeAction}
-                                        onClick={() => this.onRemoveActionClick(a)}>
-                                    &times;
-                                </button>
-                            </div>
                         </div>
+                        ))}
                     </div>
-                    ))}
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-3">
                             <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
@@ -208,5 +223,54 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
 
             this.pendingFocus = false;
         }
+    }
+
+    private onActionDragStart(e: React.DragEvent, actionIndex: number): void {
+        e.dataTransfer.dropEffect = "move";
+        e.dataTransfer.setData("text/plain", actionIndex.toString());
+        this.state.draggedActionIndex = actionIndex;
+        this.forceUpdate();
+    }
+
+    private onActionDragEnd(e: React.DragEvent): void {
+        this.state.draggedActionIndex = null;
+        this.forceUpdate();
+    }
+
+    private onDragOverActionsList(e: React.DragEvent): void {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+    }
+
+    private onDropActionToActionsList(e: React.DragEvent): void {
+        e.preventDefault();
+        var actionIndex: number = Number(e.dataTransfer.getData("text/plain")),
+            nativeEvent: any = e.nativeEvent,
+            mouseEvent: MouseEvent = nativeEvent,
+            y: number = mouseEvent.clientY,
+            itemsBounds: ClientRect[] = this.getActionListItemsBounds(),
+            index: number;
+        for (let i: number = 0; i < itemsBounds.length; i++) {
+            if (i === 0 && y < itemsBounds[i].top + itemsBounds[i].height / 2) {
+                index = i;
+            } else if (i === itemsBounds.length - 1 && y > itemsBounds[i].top + itemsBounds[i].height / 2) {
+                index = i;
+            } else if (y > itemsBounds[i].top + itemsBounds[i].height / 2 &&
+                       y < itemsBounds[i + 1].top + itemsBounds[i + 1].height / 2) {
+                index = i + 1;
+            }
+        }
+        var action: IWorkoutPlanAction = this.state.plan.actions[actionIndex];
+        this.state.plan.actions.splice(actionIndex, 1);
+        this.state.plan.actions.splice(index, 0, action);
+        this.forceUpdate();
+    }
+
+    private getActionListItemsBounds(): ClientRect[] {
+        return this.state.plan.actions.map((a, i) => {
+            let ref: any = this.refs[`actionListItem${i}`],
+                element: Element = ref;
+            return element.getBoundingClientRect();
+        });
     }
 }
