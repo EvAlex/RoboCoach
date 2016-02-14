@@ -1,5 +1,6 @@
 
 import React = require("react");
+import {Link} from "react-router";
 
 /* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
@@ -76,10 +77,18 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
             <div>
                 <h2>
                     {this.state.plan.name}
-                    <button className="btn btn-success pull-right" onClick={() => this.onStartWorkoutClicked()}>
-                        <span className="glyphicon glyphicon-fire"></span>
-                        <span> Start Workout</span>
-                    </button>
+
+                    <div className="btn-group pull-right">
+                        <Link to={`/workout-plans/${this.props.params.planId}/edit`}
+                              className="btn btn-default">
+                            <span className="glyphicon glyphicon-edit"></span>
+                            <span> Edit</span>
+                        </Link>
+                        <button className="btn btn-success" onClick={() => this.onStartWorkoutClicked()}>
+                            <span className="glyphicon glyphicon-fire"></span>
+                            <span> Start Workout</span>
+                        </button>
+                    </div>
                 </h2>
 
                 <p>{this.state.plan.description}</p>

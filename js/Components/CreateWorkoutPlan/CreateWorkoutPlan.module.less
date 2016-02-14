@@ -1,0 +1,74 @@
+@gray: #777777;
+@black: #000;
+
+.planActionsList {
+    &.dragging {
+        .planAction {
+            border-color: gray;
+        }
+    }
+
+    .planAction {
+        padding: 6px 0;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        &:hover {
+            .actionDragZone {
+                display: block;
+            }
+            .removeAction {
+                display: inline-block;
+            }
+        }
+        &.dragged {
+            border-style: dashed;
+            border-color: gray;
+        }
+        &.dropTarget {
+            background: lightyellow;
+        }
+
+        >div {
+            margin-bottom: 0;
+        }
+
+        .actionDragZone {
+            display: none;
+            float: right;
+            padding-top: 8px;
+            font-size: 16px;
+            color: @gray;
+            cursor: pointer;
+
+            &:hover {
+                color: @black;
+            }
+        }
+
+        .restText {
+            color: @gray;
+            margin-top: 7px;
+            display: inline-block;
+        }
+
+        .removeAction {
+            display: none;
+            margin-top: 5px;
+            padding: 0;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1;
+            color: @gray;
+            text-shadow: 0 1px 0 #fff;
+
+            &:hover{
+                color: @black;
+            }
+        }
+    }
+}

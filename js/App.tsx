@@ -15,8 +15,7 @@ require("jquery");
 require("bootstrap-webpack!../bootstrap.config.js");
 // Fuck require("bootstrap-webpack");
 
-interface IAppProps {
-    children: React.ReactElement<{}>[];
+interface IAppProps extends React.Props<{}> {
 }
 
 export default class App extends React.Component<IAppProps, {}> {
