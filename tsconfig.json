@@ -83,6 +83,7 @@
         "./js/Models/Workout.ts",
         "./js/Models/WorkoutPlan.ts",
         "./js/Models/WorkoutStatus.ts",
+        "./js/SleepPreventer/SleepPreventer.ts",
         "./js/Stores/BaseStore.ts",
         "./js/Stores/CommonStore.ts",
         "./js/Stores/UserStore.ts",
