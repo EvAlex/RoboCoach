@@ -1,29 +1,28 @@
 import React = require("react");
-import {Link} from "react-router";
-import Dispatcher from "../../Dispatcher/Dispatcher";
+import Dispatcher from "../../../Dispatcher/Dispatcher";
 
 /* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
-const styles: any = require("./CreateWorkoutPlan.module.less");
+const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
 
-import WorkoutPlan from "../../Models/WorkoutPlan";
-import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
-import IAction from "../../Actions/IAction";
-import CreateWorkoutPlanSuccessAction from "../../Actions/CreateWorkoutPlanSuccessAction";
-import CreateWorkoutPlanFailAction from "../../Actions/CreateWorkoutPlanFailAction";
+import WorkoutPlan from "../../../Models/WorkoutPlan";
+import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
+import IAction from "../../../Actions/IAction";
+import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
+import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
 
-interface ICreateWorkoutPlansProps extends ReactRouter.RouteComponentProps<{}, {}> {
+interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
 
-interface ICreateWorkoutPlansState {
+interface IWorkoutPlanFormState {
     plan: WorkoutPlan;
     draggedActionIndex?: number;
     dropTargetActionIndex?: number;
 }
 
-export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
+export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps> extends React.Component<TProps, IWorkoutPlanFormState> {
     private pendingFocus: boolean = false;
 
     constructor() {
@@ -37,7 +36,7 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
     render(): React.ReactElement<{}> {
         return (
             <div>
-                <h2>Create Plan...</h2>
+                {this.renderFormTitle()}
                 <form className="form-horizontal"
                       onSubmit={e => this.onFormSubmit(e)}
                       onKeyDown={e => this.onKeyDown(e)}>
@@ -135,13 +134,21 @@ export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPla
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
                             <button type="submit" className="btn btn-success">Create</button>
-                            <Link to="/workout-plans" className="btn btn-default">Cancel</Link>
+                            {this.renderCancelButton()}
                         </div>
                     </div>
                 </form>
             </div>
         );
     }
+
+    renderFormTitle(): React.ReactElement<{}> {
+        return (
+            <div></div>
+        );
+    }
+
+    abstract renderCancelButton(): React.ReactElement<{}>
 
     onKeyDown(e: React.KeyboardEvent): void {
         var code: number = e.which || e.keyCode;

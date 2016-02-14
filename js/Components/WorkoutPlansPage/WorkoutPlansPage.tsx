@@ -56,7 +56,7 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
 
                         <div className="list-group">
                             {this.state.plans.map(p => (
-                                    <Link to={"/workout-plans/" + p.id}
+                                    <Link to={`/workout-plans/${p.id}`}
                                           className="list-group-item"
                                           activeClassName="active"
                                           key={p.id}>
