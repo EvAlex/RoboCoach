@@ -9,7 +9,7 @@ import WorkoutPage from "./Components/WorkoutPage/WorkoutPage";
 import WorkoutDetails from "./Components/WorkoutDetails/WorkoutDetails";
 import WorkoutPlansPage from "./Components/WorkoutPlansPage/WorkoutPlansPage";
 import WorkoutPlanDetails from "./Components/WorkoutPlansPage/WorkoutPlanDetails/WorkoutPlanDetails";
-import CreateWorkoutPlan from "./Components/CreateWorkoutPlan/CreateWorkoutPlan";
+import CreateWorkoutPlanForm from "./Components/WorkoutPlansPage/CreateWorkoutPlanForm/CreateWorkoutPlanForm";
 import LoginPage from "./Components/LoginPage/LoginPage";
 import NotFoundPage from "./Components/NotFoundPage/NotFoundPage";
 
@@ -20,7 +20,7 @@ ReactDom.render(
                 <Route path=":workoutId" component={WorkoutDetails}/>
             </Route>
             <Route path="workout-plans" component={WorkoutPlansPage}>
-                <Route path="create" component={CreateWorkoutPlan}/>
+                <Route path="create" component={CreateWorkoutPlanForm}/>
                 <Route path=":planId" component={WorkoutPlanDetails}/>
             </Route>
             <Route path="login" component={LoginPage} />

@@ -1,29 +1,29 @@
 import React = require("react");
 import {Link} from "react-router";
-import Dispatcher from "../../Dispatcher/Dispatcher";
+import Dispatcher from "../../../Dispatcher/Dispatcher";
 
 /* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
-const styles: any = require("./CreateWorkoutPlan.module.less");
+const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
 
-import WorkoutPlan from "../../Models/WorkoutPlan";
-import CommonActionCreators from "../../ActionCreators/CommonActionCreators";
-import IAction from "../../Actions/IAction";
-import CreateWorkoutPlanSuccessAction from "../../Actions/CreateWorkoutPlanSuccessAction";
-import CreateWorkoutPlanFailAction from "../../Actions/CreateWorkoutPlanFailAction";
+import WorkoutPlan from "../../../Models/WorkoutPlan";
+import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
+import IAction from "../../../Actions/IAction";
+import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
+import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
 
-interface ICreateWorkoutPlansProps extends ReactRouter.RouteComponentProps<{}, {}> {
+interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
 
-interface ICreateWorkoutPlansState {
+interface IWorkoutPlanFormState {
     plan: WorkoutPlan;
     draggedActionIndex?: number;
     dropTargetActionIndex?: number;
 }
 
-export default class CreateWorkoutPlan extends React.Component<ICreateWorkoutPlansProps, ICreateWorkoutPlansState> {
+export default class WorkoutPlanForm extends React.Component<IWorkoutPlanFormProps, IWorkoutPlanFormState> {
     private pendingFocus: boolean = false;
 
     constructor() {
