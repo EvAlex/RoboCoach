@@ -11,6 +11,7 @@ import PrepareToExerciseNotificationScenario from "../../Models/Notifications/Pr
 import ExerciseEndNotificationScenario from "../../Models/Notifications/ExerciseEndNotificationScenario";
 import ExerciseStartNotificationScenario from "../../Models/Notifications/ExerciseStartNotificationScenario";
 import NotificationsPlayer from "../../Models/Notifications/NotificationsPlayer";
+import sleepPreventer from "../../SleepPreventer/SleepPreventer";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -38,9 +39,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     componentDidMount(): void {
         this.shouldTimerWork = true;
         window.requestAnimationFrame(t => this.onAminationFrame(t));
+        sleepPreventer.prevent();
     }
 
     componentWillUnmount(): void {
+        sleepPreventer.allow();
         this.shouldTimerWork = false;
     }
 
@@ -54,6 +57,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
                 this.forceUpdate();
             }
             this.shouldTimerWork = this.shouldTimerWork && this.props.workout.isInProgress;
+
+            if (!this.shouldTimerWork) {
+                this.forceUpdate();
+            }
+
             window.requestAnimationFrame(t => this.onAminationFrame(t));
         }
     }
@@ -90,7 +98,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
                 { this.renderTimeLeft(left) }
                 { next
                     ? <h1 className={styles["action-name"]}>{next["exercise"].name}</h1>
-                    : <h1>Workout complete!</h1> }
+                    : "" }
             </div>
         );
     }
@@ -126,9 +134,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         this.notificationsPlayer.play(elapsedMiliseconds);
 
         return (
-            <div>
-                Workout complete!
-            </div>
+            <h1 className={styles["action-name"]}>Workout complete!</h1>
         );
     }
 }
