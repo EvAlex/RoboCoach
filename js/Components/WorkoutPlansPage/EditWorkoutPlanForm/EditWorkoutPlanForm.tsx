@@ -12,6 +12,7 @@ import {AsyncDataComponent} from "../../AsyncDataComponent/AsyncDataComponent";
 import WorkoutPlansStore from "../../../Stores/WorkoutPlansStore";
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import IAction from "../../../Actions/IAction";
+import * as WorkoutPlanActions from "../../../Actions/WorkoutPlanActions.ts";
 import ReceiveWorkoutPlanFailAction from "../../../Actions/ReceiveWorkoutPlanFailAction";
 import dispatcher from "../../../Dispatcher/Dispatcher";
 
@@ -103,6 +104,10 @@ export default class EditWorkoutPlanForm extends WorkoutPlanForm<IEditWorkoutPla
         return (
             <Link to={`/workout-plans/${this.props.params.planId}`} className="btn btn-default">Cancel</Link>
         );
+    }
+
+    handleFormSubmit(): void {
+        dispatcher.dispatch(new WorkoutPlanActions.EditWorkoutPlanAction(this.state.plan));
     }
 
     private setOrRequestPlan(planId: string): void {

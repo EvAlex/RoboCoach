@@ -8,6 +8,7 @@ const styles: any = require("./CreateWorkoutPlanForm.module.less");
 /* tslint:enable:no-unused-variable */
 
 import {WorkoutPlanForm} from "../WorkoutPlanForm/WorkoutPlanForm";
+import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 
 export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: IWorkoutPlan }> {
     constructor() {
@@ -39,5 +40,9 @@ export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: I
         return (
             <Link to="/workout-plans" className="btn btn-default">Cancel</Link>
         );
+    }
+
+    handleFormSubmit(): void {
+        CommonActionCreators.createWorkoutPlan(this.state.plan);
     }
 }

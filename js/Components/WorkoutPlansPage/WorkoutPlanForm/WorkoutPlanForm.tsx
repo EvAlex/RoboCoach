@@ -7,7 +7,6 @@ const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
 
-import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import IAction from "../../../Actions/IAction";
 import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
 import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
@@ -200,8 +199,9 @@ extends React.Component<TProps, TState> {
 
     onFormSubmit(e: any): void {
         e.preventDefault();
-        CommonActionCreators.createWorkoutPlan(this.state.plan);
     }
+
+    abstract handleFormSubmit(): void;
 
     processSuccessSubmitted(action: CreateWorkoutPlanSuccessAction): void {
         this.props.history.pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
