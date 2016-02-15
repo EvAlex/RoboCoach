@@ -93,6 +93,12 @@ export default class EditWorkoutPlanForm extends WorkoutPlanForm<IEditWorkoutPla
         );
     }
 
+    renderSubmitButton(): React.ReactElement<{}> {
+            return (
+                <button type="submit" className="btn btn-success">Save</button>
+            );
+    }
+
     renderCancelButton(): React.ReactElement<{}> {
         return (
             <Link to={`/workout-plans/${this.props.params.planId}`} className="btn btn-default">Cancel</Link>

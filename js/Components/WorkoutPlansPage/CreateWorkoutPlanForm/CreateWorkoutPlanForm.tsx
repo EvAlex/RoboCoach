@@ -28,6 +28,13 @@ export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: I
             <h2>Create Plan</h2>
         );
     }
+
+    renderSubmitButton(): React.ReactElement<{}> {
+            return (
+                <button type="submit" className="btn btn-success">Create</button>
+            );
+    }
+
     renderCancelButton(): React.ReactElement<{}> {
         return (
             <Link to="/workout-plans" className="btn btn-default">Cancel</Link>

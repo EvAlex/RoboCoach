@@ -129,8 +129,10 @@ extends React.Component<TProps, TState> {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button type="submit" className="btn btn-success">Create</button>
-                            {this.renderCancelButton()}
+                            <div className="btn-group">
+                                {this.renderSubmitButton()}
+                                {this.renderCancelButton()}
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -143,6 +145,8 @@ extends React.Component<TProps, TState> {
             <div></div>
         );
     }
+
+    abstract renderSubmitButton(): React.ReactElement<{}>
 
     abstract renderCancelButton(): React.ReactElement<{}>
 
