@@ -11,6 +11,7 @@ import PrepareToExerciseNotificationScenario from "../../Models/Notifications/Pr
 import ExerciseEndNotificationScenario from "../../Models/Notifications/ExerciseEndNotificationScenario";
 import ExerciseStartNotificationScenario from "../../Models/Notifications/ExerciseStartNotificationScenario";
 import NotificationsPlayer from "../../Models/Notifications/NotificationsPlayer";
+import sleepPreventer from "../../SleepPreventer/SleepPreventer";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -38,9 +39,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     componentDidMount(): void {
         this.shouldTimerWork = true;
         window.requestAnimationFrame(t => this.onAminationFrame(t));
+        sleepPreventer.prevent();
     }
 
     componentWillUnmount(): void {
+        sleepPreventer.allow();
         this.shouldTimerWork = false;
     }
 

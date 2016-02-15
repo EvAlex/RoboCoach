@@ -65,7 +65,7 @@ var config = {
       { test: /\.module\.less$/,
         loader: ExtractTextPlugin.extract("style-loader","css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader?-compress"),
         include: path.resolve(__dirname, "js") },
-      { test: /\.(jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name]_[hash].[ext]", include: path.resolve(__dirname, "js") },
+      { test: /\.(jpg|png|woff|eot|ttf|svg|gif|mp3|mp4|ogv)$/, loader: "file-loader?name=[name]_[hash].[ext]", include: path.resolve(__dirname, "js") },
       { test: /\.json/, loader: "json-loader" },
 
       //    for bootstrap-webpack

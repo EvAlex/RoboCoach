@@ -44,7 +44,7 @@ var devConfigExtension = {
       { test: /\.import\.css$/,  loader: "style!css", include: path.resolve(__dirname, "js") },
       { test: /\.less$/, exclude: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader") },
       { test: /\.module\.less$/, loader: ExtractTextPlugin.extract("style-loader","css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!less-loader"), include: path.resolve(__dirname, "js") },
-      { test: /\.(jpg|png|jpg|png|woff|eot|ttf|svg|gif|mp3)$/, loader: "file-loader?name=[name].[ext]" },
+      { test: /\.(jpg|png|jpg|png|woff|eot|ttf|svg|gif|mp3|mp4|ogv)$/, loader: "file-loader?name=[name].[ext]" },
       { test: /\.json/, loader: "json-loader" },
 
       //    for bootstrap-webpack
