@@ -57,6 +57,11 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
                 this.forceUpdate();
             }
             this.shouldTimerWork = this.shouldTimerWork && this.props.workout.isInProgress;
+
+            if (!this.shouldTimerWork) {
+                this.forceUpdate();
+            }
+
             window.requestAnimationFrame(t => this.onAminationFrame(t));
         }
     }
@@ -93,7 +98,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
                 { this.renderTimeLeft(left) }
                 { next
                     ? <h1 className={styles["action-name"]}>{next["exercise"].name}</h1>
-                    : <h1>Workout complete!</h1> }
+                    : "" }
             </div>
         );
     }
@@ -129,9 +134,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         this.notificationsPlayer.play(elapsedMiliseconds);
 
         return (
-            <div>
-                Workout complete!
-            </div>
+            <h1 className={styles["action-name"]}>Workout complete!</h1>
         );
     }
 }
