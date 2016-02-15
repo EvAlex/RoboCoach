@@ -16,7 +16,17 @@ export default class BaseStore {
         return listenerId;
     }
 
-    removeListener(listenerId: string): void {
+    removeListener(listener: () => void): void {
+        for (let f in this.listeners) {
+            if (this.listeners.hasOwnProperty(f) && this.listeners[f] === listener) {
+                delete this.listeners[f];
+                return;
+            }
+        }
+        throw new Error("Specified listener not registered. Cannot remove listener.");
+    }
+
+    removeListenerById(listenerId: string): void {
         if (listenerId in this.listeners) {
             delete this.listeners[listenerId];
         } else {

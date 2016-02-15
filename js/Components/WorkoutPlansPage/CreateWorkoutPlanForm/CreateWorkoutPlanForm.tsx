@@ -9,7 +9,20 @@ const styles: any = require("./CreateWorkoutPlanForm.module.less");
 
 import {WorkoutPlanForm} from "../WorkoutPlanForm/WorkoutPlanForm";
 
-export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}> {
+export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: IWorkoutPlan }> {
+    constructor() {
+        super();
+        this.state = {
+            plan: {
+                id: null,
+                name: "",
+                description: "",
+                actions: [
+                    { duration: 15000 }
+                ] }
+        };
+    }
+
     renderFormTitle(): React.ReactElement<{}> {
         return (
             <h2>Create Plan</h2>

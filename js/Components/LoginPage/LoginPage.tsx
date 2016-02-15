@@ -11,7 +11,9 @@ interface ILoginPageState {
 }
 
 export default class LoginPage extends React.Component<{}, ILoginPageState> {
-    private userStoreListenerId: string;
+    private onUserStoreChanged: () => void = () => {
+        this.forceUpdate();
+    };
 
     constructor() {
         super();
@@ -19,11 +21,11 @@ export default class LoginPage extends React.Component<{}, ILoginPageState> {
     }
 
     componentDidMount(): void {
-        this.userStoreListenerId = UserStore.addListener(() => this.onUserStoreChanged());
+        UserStore.addListener(this.onUserStoreChanged);
     }
 
     componentWillUnmount(): void {
-        UserStore.removeListener(this.userStoreListenerId);
+        UserStore.removeListener(this.onUserStoreChanged);
     }
 
     render(): React.ReactElement<{}> {
@@ -79,10 +81,6 @@ export default class LoginPage extends React.Component<{}, ILoginPageState> {
                 </div>
             </div>
         );
-    }
-
-    private onUserStoreChanged(): void {
-        this.forceUpdate();
     }
 
     private onLoginWithFacebookClicked(): void {

@@ -7,30 +7,26 @@ const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
 
-import WorkoutPlan from "../../../Models/WorkoutPlan";
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
 import IAction from "../../../Actions/IAction";
 import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
 import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
 
-interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
+export interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
 
-interface IWorkoutPlanFormState {
-    plan: WorkoutPlan;
+export interface IWorkoutPlanFormState {
+    plan: IWorkoutPlan;
     draggedActionIndex?: number;
     dropTargetActionIndex?: number;
 }
 
-export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps> extends React.Component<TProps, IWorkoutPlanFormState> {
+export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TState extends IWorkoutPlanFormState>
+extends React.Component<TProps, TState> {
     private pendingFocus: boolean = false;
 
     constructor() {
         super();
-        this.state = {
-            plan: new WorkoutPlan()
-        };
-        this.state.plan.actions.push({ duration: 30000, exercise: { name: "" } });
     }
 
     render(): React.ReactElement<{}> {

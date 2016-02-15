@@ -26,8 +26,16 @@ interface IWorkoutDetailsState {
 
 export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsProps, IWorkoutDetailsState> {
     private store: WorkoutStore.WorkoutStore = WorkoutStore.default;
-    private storeListenerId: string;
     private registrationId: string;
+    private onStoreChanged: () => void = () => {
+        var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
+        if (workout !== null) {
+            this.setState({
+                workout: new Workout(workout),
+                workoutRequestError: null
+            });
+        }
+    };
 
     constructor() {
         super();
@@ -38,7 +46,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentDidMount(): void {
-        this.storeListenerId = this.store.addListener(() => this.onStoreChanged());
+        this.store.addListener(this.onStoreChanged);
         this.registrationId = dispatcher.register(a => this.processAction(a));
         var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
         if (workout !== null) {
@@ -52,7 +60,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.storeListenerId);
+        this.store.removeListener(this.onStoreChanged);
         dispatcher.unregister(this.registrationId);
     }
 
@@ -106,16 +114,6 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
         return (
             <div className="alert alert-danger">{this.state.workoutRequestError.toString()}</div>
         );
-    }
-
-    private onStoreChanged(): void {
-        var workout: IWorkout = this.store.findWorkout(this.props.params.workoutId);
-        if (workout !== null) {
-            this.setState({
-                workout: new Workout(workout),
-                workoutRequestError: null
-            });
-        }
     }
 
     private processAction(action: IAction): void {

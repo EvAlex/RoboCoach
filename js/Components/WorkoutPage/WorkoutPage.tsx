@@ -31,7 +31,7 @@ export default class WorkoutPage extends React.Component<IWorkoutPageProps, IWor
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.storeListenerId);
+        this.store.removeListenerById(this.storeListenerId);
     }
 
     render(): React.ReactElement<{}> {

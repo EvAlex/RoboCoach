@@ -56,7 +56,7 @@ export default class WorkoutPlanDetails extends React.Component<IWorkoutDetailsP
     }
 
     componentWillUnmount(): void {
-        this.store.removeListener(this.storeListenerId);
+        this.store.removeListenerById(this.storeListenerId);
         dispatcher.unregister(this.registrationId);
     }
 

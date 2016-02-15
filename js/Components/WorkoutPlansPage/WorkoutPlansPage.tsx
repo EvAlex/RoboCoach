@@ -41,8 +41,8 @@ export default class WorkoutPlansPage extends React.Component<IWorkoutPlansPageP
     }
 
     componentWillUnmount(): void {
-        this.workoutPlansStore.removeListener(this.workoutPlansStoreListenerId);
-        this.workoutStore.removeListener(this.workoutStoreListenerId);
+        this.workoutPlansStore.removeListenerById(this.workoutPlansStoreListenerId);
+        this.workoutStore.removeListenerById(this.workoutStoreListenerId);
     }
 
     render(): React.ReactElement<{}> {

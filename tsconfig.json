@@ -90,6 +90,7 @@
         "./js/Stores/WorkoutStore.ts",
         "./js/Utils.ts",
         "./js/App.tsx",
+        "./js/Components/AsyncDataComponent/AsyncDataComponent.tsx",
         "./js/Components/ContentPage/__tests__/ContentPage-test.tsx",
         "./js/Components/ContentPage/ContentBody/ContentBody.tsx",
         "./js/Components/ContentPage/ContentHeader/ContentHeader.tsx",

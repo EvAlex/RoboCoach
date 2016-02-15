@@ -18,8 +18,6 @@ import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
 import ReceiveWorkoutAction from "../Actions/ReceiveWorkoutAction";
 import ProcessRequestWorkoutFailedAction from "../Actions/ProcessRequestWorkoutFailedAction";
 
-import WorkoutPlan from "../Models/WorkoutPlan";
-
 class CommonActionCreators {
     loadApp(): void {
         const bodyTitle: string = "The standard Lorem Ipsum passage, used since the 1500s";
@@ -60,11 +58,11 @@ class CommonActionCreators {
         dispatcher.dispatch(new ReceiveWorkoutPlansFailAction(error, requestAction));
     }
 
-    createWorkoutPlan(workoutPlan: WorkoutPlan): void {
+    createWorkoutPlan(workoutPlan: IWorkoutPlan): void {
         dispatcher.dispatch(new CreateWorkoutPlanAction(workoutPlan));
     }
 
-    createWorkoutPlanSucceeded(workoutPlan: WorkoutPlan, requestAction: CreateWorkoutPlanAction): void {
+    createWorkoutPlanSucceeded(workoutPlan: IWorkoutPlan, requestAction: CreateWorkoutPlanAction): void {
         dispatcher.dispatch(new CreateWorkoutPlanSuccessAction(workoutPlan, requestAction));
     }
 
