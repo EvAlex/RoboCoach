@@ -91,8 +91,8 @@
 
  const sleepPreventer: ISleepPreventer = new SleepPreventer(
      {
-         mp4: getCorrectUrl(require("file-loader!./muted-blank.mp4")),
-         ogv: getCorrectUrl(require("file-loader!./muted-blank.ogv")),
+         mp4: getCorrectUrl(require("./muted-blank.mp4")),
+         ogv: getCorrectUrl(require("./muted-blank.ogv")),
      }
  );
 
