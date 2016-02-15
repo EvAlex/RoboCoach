@@ -8,8 +8,6 @@ const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-unused-variable */
 
 import IAction from "../../../Actions/IAction";
-import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
-import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
 
 export interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
@@ -199,25 +197,12 @@ extends React.Component<TProps, TState> {
 
     onFormSubmit(e: any): void {
         e.preventDefault();
+        this.handleFormSubmit();
     }
 
     abstract handleFormSubmit(): void;
 
-    processSuccessSubmitted(action: CreateWorkoutPlanSuccessAction): void {
-        this.props.history.pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
-    }
-
-    processFailedSubmit(action: CreateWorkoutPlanFailAction): void {
-        alert(action.Error.toString());
-    }
-
-    private processActions(action: IAction): void {
-        if (action instanceof CreateWorkoutPlanSuccessAction) {
-            this.processSuccessSubmitted(action);
-        } else if (action instanceof CreateWorkoutPlanFailAction) {
-            this.processFailedSubmit(action);
-        }
-    }
+    abstract processActions(action: IAction): void;
 
     private processPendingFocus(): void {
         if (this.pendingFocus) {

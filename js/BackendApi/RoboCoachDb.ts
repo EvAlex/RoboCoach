@@ -11,6 +11,7 @@ import CommonActionCreators from "../ActionCreators/CommonActionCreators";
 import RequestWorkoutPlansAction from "../Actions/RequestWorkoutPlansAction";
 import RequestWorkoutPlanAction from "../Actions/RequestWorkoutPlanAction";
 import CreateWorkoutPlanAction  from "../Actions/CreateWorkoutPlanAction";
+import * as WorkoutPlanActions from "../Actions/WorkoutPlanActions.ts";
 import StartWorkoutAction from "../Actions/StartWorkoutAction";
 import RequestWorkoutAction from "../Actions/RequestWorkoutAction";
 import * as AuthActions from "../Actions/AuthActions";
@@ -61,6 +62,8 @@ export class RoboCoachDb {
             this.processRequestWorkoutPlanAction(action);
         } else if (action instanceof CreateWorkoutPlanAction) {
             this.processCreateWorkoutPlanAction(action);
+        } else if (action instanceof WorkoutPlanActions.EditWorkoutPlanAction) {
+            this.processEditWorkoutPlanAction(action);
         } else if (action instanceof StartWorkoutAction) {
             this.processStartWorkoutAction(action);
         } else if (action instanceof RequestWorkoutAction) {
@@ -142,6 +145,22 @@ export class RoboCoachDb {
         this.testWorkoutPlans.push(action.Plan);
         window.setTimeout(() => CommonActionCreators.createWorkoutPlanSucceeded(action.Plan, action));
         */
+    }
+
+    private processEditWorkoutPlanAction(action: WorkoutPlanActions.EditWorkoutPlanAction): void {
+        var ref: Firebase = this.firebase.child(`workoutPlans/${action.Plan.id}`),
+            model: IFirebaseWorkoutPlan = this.converter.WorkoutPlan.toFirebase(action.Plan);
+        ref.set(model, error => {
+            if (error) {
+                dispatcher.dispatch(
+                    new WorkoutPlanActions.ProcessEditWorkoutPlanFailAction(
+                        new RoboCoachDbError(error),
+                        action));
+            } else {
+                dispatcher.dispatch(
+                new WorkoutPlanActions.ProcessEditWorkoutPlanSuccessAction(action.Plan, action));
+            }
+        });
     }
 
     private processStartWorkoutAction(action: StartWorkoutAction): void {

@@ -9,8 +9,15 @@ const styles: any = require("./CreateWorkoutPlanForm.module.less");
 
 import {WorkoutPlanForm} from "../WorkoutPlanForm/WorkoutPlanForm";
 import CommonActionCreators from "../../../ActionCreators/CommonActionCreators";
+import IAction from "../../../Actions/IAction";
+import CreateWorkoutPlanSuccessAction from "../../../Actions/CreateWorkoutPlanSuccessAction";
+import CreateWorkoutPlanFailAction from "../../../Actions/CreateWorkoutPlanFailAction";
 
-export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: IWorkoutPlan }> {
+interface ICreateWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
+
+}
+
+export default class CreateWorkoutPlanForm extends WorkoutPlanForm<ICreateWorkoutPlanFormProps, { plan: IWorkoutPlan }> {
     constructor() {
         super();
         this.state = {
@@ -44,5 +51,21 @@ export default class CreateWorkoutPlanForm extends WorkoutPlanForm<{}, { plan: I
 
     handleFormSubmit(): void {
         CommonActionCreators.createWorkoutPlan(this.state.plan);
+    }
+
+    processSubmitSuccess(action: CreateWorkoutPlanSuccessAction): void {
+        this.props.history.pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
+    }
+
+    processSubmitFail(action: CreateWorkoutPlanFailAction): void {
+        alert(action.Error.toString());
+    }
+
+    processActions(action: IAction): void {
+        if (action instanceof CreateWorkoutPlanSuccessAction) {
+            this.processSubmitSuccess(action);
+        } else if (action instanceof CreateWorkoutPlanFailAction) {
+            this.processSubmitFail(action);
+        }
     }
 }

@@ -74,6 +74,7 @@ export default class EditWorkoutPlanForm extends WorkoutPlanForm<IEditWorkoutPla
     }
 
     componentDidMount(): void {
+        super.componentDidMount();
         WorkoutPlansStore.addListener(this.onStoreChanged);
         this.registrationId = dispatcher.register(a => this.processAction(a));
         this.setOrRequestPlan(this.props.params.planId);
@@ -108,6 +109,22 @@ export default class EditWorkoutPlanForm extends WorkoutPlanForm<IEditWorkoutPla
 
     handleFormSubmit(): void {
         dispatcher.dispatch(new WorkoutPlanActions.EditWorkoutPlanAction(this.state.plan));
+    }
+
+    processSubmitSuccess(action: WorkoutPlanActions.ProcessEditWorkoutPlanSuccessAction): void {
+        this.props.history.pushState(null, `/workout-plans/${action.WorkoutPlan.id}`);
+    }
+
+    processSubmitFail(action: WorkoutPlanActions.ProcessEditWorkoutPlanFailAction): void {
+        alert(action.Error.toString());
+    }
+
+    processActions(action: IAction): void {
+        if (action instanceof WorkoutPlanActions.ProcessEditWorkoutPlanSuccessAction) {
+            this.processSubmitSuccess(action);
+        } else if (action instanceof WorkoutPlanActions.ProcessEditWorkoutPlanFailAction) {
+            this.processSubmitFail(action);
+        }
     }
 
     private setOrRequestPlan(planId: string): void {
