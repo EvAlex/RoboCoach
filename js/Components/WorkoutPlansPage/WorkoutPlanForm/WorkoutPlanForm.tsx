@@ -106,7 +106,9 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                                         </button>
                                     </div>
                                 </div>
-                                { a.exercise && "description" in a.exercise ? this.renderExerciseDescription(a, index) : <text></text> }
+                                <bs.Collapse in={a.exercise && "description" in a.exercise}>
+                                    {this.renderExerciseDescription(a, index)}
+                                </bs.Collapse>
                             </div>
                         )) }
                     </div>
