@@ -109,6 +109,9 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                                 <bs.Collapse in={a.exercise && "description" in a.exercise}>
                                     {this.renderExerciseDescription(a, index)}
                                 </bs.Collapse>
+                                <bs.Collapse in={a.exercise && "mediaUrl" in a.exercise}>
+                                    {this.renderExerciseMedia(a, index)}
+                                </bs.Collapse>
                             </div>
                         )) }
                     </div>
@@ -132,6 +135,9 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
     }
 
     renderExerciseDescription(action: IWorkoutPlanAction, index: number): React.ReactElement<{}> {
+        if (!action.exercise) {
+            return <text></text>;
+        }
         return (
             <div className={`form-group ${styles.actionDescriptionWrap}`}>
                 <label htmlFor={`action-desc${index}`}
@@ -141,7 +147,37 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                 <div className="col-sm-6">
                     <textarea className="form-control"
                         id={`action-desc${index}`}
-                        placeholder="description" />
+                        placeholder="description"
+                        value={action.exercise.description}
+                        onChange={(e: any) => {
+                            action.exercise.description = e.target.value;
+                            this.forceUpdate();
+                        }}  />
+                </div>
+            </div>
+        );
+    }
+
+    renderExerciseMedia(action: IWorkoutPlanAction, index: number): React.ReactElement<{}> {
+        if (!action.exercise) {
+            return <text></text>;
+        }
+        return (
+            <div className={`form-group ${styles.actionMediaWrap}`}>
+                <label htmlFor={`action-media${index}`}
+                    className="col-sm-2 col-sm-offset-3 control-label">
+                    Media URL
+                </label>
+                <div className="col-sm-6">
+                    <input id={`action-media${index}`}
+                           className="form-control"
+                           type="url"
+                           placeholder="http://"
+                           value={action.exercise.mediaUrl}
+                           onChange={(e: any) => {
+                               action.exercise.mediaUrl = e.target.value;
+                               this.forceUpdate();
+                           }} />
                 </div>
             </div>
         );
@@ -165,13 +201,17 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                 <div className="input-group-btn">
                     <bs.DropdownButton title="" id={`action-tools-dropdown${index}`}>
                         <bs.MenuItem key="1"
-                            onClick={() => {
-                                action.exercise.description = action.exercise.description || "";
-                                this.forceUpdate();
-                            } }>
+                                     onClick={() => {
+                                         action.exercise.description = action.exercise.description || "";
+                                         this.forceUpdate();
+                                     }}>
                             <bs.Glyphicon glyph="edit"/> Add Description
                         </bs.MenuItem>
-                        <bs.MenuItem key="2">
+                        <bs.MenuItem key="2"
+                                     onClick={() => {
+                                         action.exercise.mediaUrl = action.exercise.mediaUrl || "";
+                                         this.forceUpdate();
+                                     }}>
                             <bs.Glyphicon glyph="film"/> Add Media
                         </bs.MenuItem>
                     </bs.DropdownButton>
