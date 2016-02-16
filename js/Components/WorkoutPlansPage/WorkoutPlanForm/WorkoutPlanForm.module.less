@@ -9,8 +9,7 @@
     }
 
     .planAction {
-        padding: 6px 0;
-        margin-bottom: 5px;
+        padding: 6px 0 0;
         border-radius: 5px;
         border: 1px solid transparent;
         &:hover {
@@ -27,6 +26,13 @@
         }
         &.dropTarget {
             background: lightyellow;
+        }
+        &:after {
+            content: ' ';
+            display: block;
+            border-top: 1px solid #eeeeee;
+            height: 1px;
+            margin-top: 15px;
         }
 
         >div {
@@ -49,6 +55,7 @@
         .restText {
             color: @gray;
             margin-top: 7px;
+            margin-left: 12px;
             display: inline-block;
         }
 
@@ -69,6 +76,10 @@
             &:hover{
                 color: @black;
             }
+        }
+
+        .actionDescriptionWrap {
+            margin-top: 5px;
         }
     }
 }

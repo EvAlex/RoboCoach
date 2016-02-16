@@ -9,6 +9,12 @@ const styles: any = require("./WorkoutPlanForm.module.less");
 
 import IAction from "../../../Actions/IAction";
 
+interface IWorkoutPlanActionContext {
+    action: IWorkoutPlanAction;
+    actionsDropdownExpanded: boolean;
+    descriptionDisplayed: boolean;
+}
+
 export interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
 
@@ -16,6 +22,7 @@ export interface IWorkoutPlanFormState {
     plan: IWorkoutPlan;
     draggedActionIndex?: number;
     dropTargetActionIndex?: number;
+    actionsContexts?: IWorkoutPlanActionContext[];
 }
 
 export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TState extends IWorkoutPlanFormState>
@@ -94,15 +101,27 @@ extends React.Component<TProps, TState> {
                                 <div className="col-sm-6">
                                     { "exercise" in a
                                         ? (
-                                            <input type="text"
-                                                   value={ a.exercise.name }
-                                                   onChange={ (e: any) => {
-                                                                a["exercise"].name = e.target.value;
-                                                                this.setState(this.state);
-                                                            }}
-                                                   className="form-control"
-                                                   ref={`actionName[${index}]`}
-                                                   placeholder="Action Name" />
+                                            <div className="input-group">
+                                                <input type="text"
+                                                       value={ a.exercise.name }
+                                                       onChange={ (e: any) => this.onActionNameChanged(e, a) }
+                                                       className="form-control"
+                                                       ref={`actionName[${index}]`}
+                                                       placeholder="Action Name" />
+                                                <div className={`input-group-btn${this.isActionsDropdownExpanded(a) ? "open" : ""}`}>
+                                                    <button type="button"
+                                                            className="btn btn-default dropdown-toggle"
+                                                            data-toggle="dropdown"
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                        <span className="caret" />
+                                                    </button>
+                                                    <ul className="dropdown-menu dropdown-menu-right">
+                                                        <li><a href={undefined}>Add description</a></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
                                         )
                                         : <span className={styles.restText}>Rest</span>}
 
@@ -115,6 +134,7 @@ extends React.Component<TProps, TState> {
                                     </button>
                                 </div>
                             </div>
+                            { a.exercise && "description" in a.exercise ? this.renderExerciseDescription(a, index) : <text></text> }
                         </div>
                         ))}
                     </div>
@@ -137,6 +157,22 @@ extends React.Component<TProps, TState> {
         );
     }
 
+    renderExerciseDescription(action: IWorkoutPlanAction, index: number): React.ReactElement<{}> {
+        return (
+            <div className={`form-group ${styles.actionDescriptionWrap}`}>
+                <label htmlFor={`action-desc${index}`}
+                       className="col-sm-2 col-sm-offset-3 control-label">
+                   Description
+                </label>
+                <div className="col-sm-6">
+                    <textarea className="form-control"
+                              id={`action-desc${index}`}
+                              placeholder="description" />
+                </div>
+            </div>
+        );
+    }
+
     renderFormTitle(): React.ReactElement<{}> {
         return (
             <div></div>
@@ -153,6 +189,11 @@ extends React.Component<TProps, TState> {
             // Ctrl + Enter
             this.onAddActionClicked(e);
         }
+    }
+
+    onActionNameChanged(e: any, action: IWorkoutPlanAction): void {
+        action.exercise.name = e.target.value;
+        this.forceUpdate();
     }
 
     onAddActionClicked(e: any): void {
@@ -181,9 +222,17 @@ extends React.Component<TProps, TState> {
         this.forceUpdate();
     }
 
+    componentWillMount(): void {
+        this.setPlanActionsContexts();
+    }
+
     componentDidMount(): void {
         Dispatcher.register(a => this.processActions(a));
         this.processPendingFocus();
+    }
+
+    componentWillUpdate(): void {
+        this.setPlanActionsContexts();
     }
 
     componentDidUpdate(): void {
@@ -203,6 +252,30 @@ extends React.Component<TProps, TState> {
     abstract handleFormSubmit(): void;
 
     abstract processActions(action: IAction): void;
+
+    private setPlanActionsContexts(): void {
+        if (this.state.plan && this.state.plan.actions) {
+            if (!this.state.actionsContexts) {
+                this.state.actionsContexts = [];
+            }
+            this.state.plan.actions.forEach(
+                a => {
+                    if (!this.state.actionsContexts.filter(c => c.action === a)) {
+                        this.state.actionsContexts.push({
+                            action: a,
+                            descriptionDisplayed: false,
+                            actionsDropdownExpanded: false
+                        });
+                    }
+                }
+            );
+        }
+
+    }
+
+    private isActionsDropdownExpanded(action: IWorkoutPlanAction): boolean {
+        return this.state.actionsContexts.filter(c => c.action === action)[0].actionsDropdownExpanded;
+    }
 
     private processPendingFocus(): void {
         if (this.pendingFocus) {
