@@ -1,8 +1,9 @@
 import React = require("react");
 import Dispatcher from "../../../Dispatcher/Dispatcher";
 
-/* tslint:disable:no-any */
 /* tslint:disable:no-unused-variable */
+import * as bs from "react-bootstrap";
+/* tslint:disable:no-any */
 const styles: any = require("./WorkoutPlanForm.module.less");
 /* tslint:enable:no-any */
 /* tslint:enable:no-unused-variable */
@@ -26,7 +27,7 @@ export interface IWorkoutPlanFormState {
 }
 
 export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TState extends IWorkoutPlanFormState>
-extends React.Component<TProps, TState> {
+    extends React.Component<TProps, TState> {
     private pendingFocus: boolean = false;
 
     constructor() {
@@ -36,119 +37,97 @@ extends React.Component<TProps, TState> {
     render(): React.ReactElement<{}> {
         return (
             <div>
-                {this.renderFormTitle()}
+                {this.renderFormTitle() }
                 <form className="form-horizontal"
-                      onSubmit={e => this.onFormSubmit(e)}
-                      onKeyDown={e => this.onKeyDown(e)}>
+                    onSubmit={e => this.onFormSubmit(e) }
+                    onKeyDown={e => this.onKeyDown(e) }>
 
                     <div className="form-group">
                         <label htmlFor="inputEmail3" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-9">
                             <input type="text"
-                                   className="form-control"
-                                   id="inputName"
-                                   placeholder="Plan name"
-                                   value={this.state.plan.name}
-                                       onChange={e => this.onNameChanged(e)} />
+                                className="form-control"
+                                id="inputName"
+                                placeholder="Plan name"
+                                value={this.state.plan.name}
+                                onChange={e => this.onNameChanged(e) } />
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="inputDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-9">
                             <input type="text"
-                                   className="form-control"
-                                   id="inputDesc"
-                                   placeholder="Plan description" />
+                                className="form-control"
+                                id="inputDesc"
+                                placeholder="Plan description" />
                         </div>
                     </div>
                     <div className={ `${styles.planActionsList} ${!!this.state.draggedActionIndex ? styles.dragging : ""}`}
-                         onDragOver={e => this.onDragOverActionsList(e)}
-                         onDrop={e => this.onDropActionToActionsList(e)}>
+                        onDragOver={e => this.onDragOverActionsList(e) }
+                        onDrop={e => this.onDropActionToActionsList(e) }>
                         {this.state.plan.actions.map((a, index) => (
-                        <div key={ index }
-                             ref={`actionListItem${index}`}
-                             className={
-                                 `${styles.planAction}
+                            <div key={ index }
+                                ref={`actionListItem${index}`}
+                                className={
+                                    `${styles.planAction}
                                   ${index === this.state.draggedActionIndex ? styles.dragged : ""}
                                   ${index === this.state.dropTargetActionIndex ? styles.dropTarget : ""}`
-                              }
-                             draggable={true}
-                             onDragStart={e => this.onActionDragStart(e, index)}
-                             onDragEnd={e => this.onActionDragEnd(e)}>
-                            <div className="form-group">
-                                <div className="col-sm-1">
-                                    <div className={styles.actionDragZone}>
-                                        <span className="glyphicon glyphicon-resize-vertical"></span>
+                                }
+                                draggable={true}
+                                onDragStart={e => this.onActionDragStart(e, index) }
+                                onDragEnd={e => this.onActionDragEnd(e) }>
+                                <div className="form-group">
+                                    <div className="col-sm-1">
+                                        <div className={styles.actionDragZone}>
+                                            <span className="glyphicon glyphicon-resize-vertical"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <label htmlFor="inputActionName" className="col-sm-1 control-label">
-                                    { index + 1 }.
-                                </label>
-                                <div className="col-sm-3">
-                                    <div className="input-group">
-                                        <span className="input-group-addon">
-                                            <span className="glyphicon glyphicon-time"></span>
-                                        </span>
-                                        <input type="text"
-                                               value={ (a.duration / 1000 ).toString() }
-                                               className="form-control"
-                                               id="inputActionDuration"
-                                               placeholder="40"
-                                               onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
-                                        <span className="input-group-addon">sec</span>
+                                    <label htmlFor="inputActionName" className="col-sm-1 control-label">
+                                        { index + 1 }.
+                                    </label>
+                                    <div className="col-sm-3">
+                                        <div className="input-group">
+                                            <span className="input-group-addon">
+                                                <span className="glyphicon glyphicon-time"></span>
+                                            </span>
+                                            <input type="text"
+                                                value={ (a.duration / 1000).toString() }
+                                                className="form-control"
+                                                id="inputActionDuration"
+                                                placeholder="40"
+                                                onChange={ (e: any) => this.onActionDurationChanged(e, a) } />
+                                            <span className="input-group-addon">sec</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    { "exercise" in a
-                                        ? (
-                                            <div className="input-group">
-                                                <input type="text"
-                                                       value={ a.exercise.name }
-                                                       onChange={ (e: any) => this.onActionNameChanged(e, a) }
-                                                       className="form-control"
-                                                       ref={`actionName[${index}]`}
-                                                       placeholder="Action Name" />
-                                                <div className={`input-group-btn${this.isActionsDropdownExpanded(a) ? "open" : ""}`}>
-                                                    <button type="button"
-                                                            className="btn btn-default dropdown-toggle"
-                                                            data-toggle="dropdown"
-                                                            aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                        <span className="caret" />
-                                                    </button>
-                                                    <ul className="dropdown-menu dropdown-menu-right">
-                                                        <li><a href={undefined}>Add description</a></li>
-                                                    </ul>
-                                                </div>
+                                    <div className="col-sm-6">
+                                        { "exercise" in a
+                                            ? this.renderActionNameInput(a, index)
+                                            : <span className={styles.restText}>Rest</span>}
 
-                                            </div>
-                                        )
-                                        : <span className={styles.restText}>Rest</span>}
-
-                                </div>
-                                <div className="col-sm-1">
-                                    <button type="button"
+                                    </div>
+                                    <div className="col-sm-1">
+                                        <button type="button"
                                             className={styles.removeAction}
-                                            onClick={() => this.onRemoveActionClick(a)}>
-                                        &times;
-                                    </button>
+                                            onClick={() => this.onRemoveActionClick(a) }>
+                                            &times;
+                                        </button>
+                                    </div>
                                 </div>
+                                { a.exercise && "description" in a.exercise ? this.renderExerciseDescription(a, index) : <text></text> }
                             </div>
-                            { a.exercise && "description" in a.exercise ? this.renderExerciseDescription(a, index) : <text></text> }
-                        </div>
-                        ))}
+                        )) }
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-3">
-                            <button className="btn btn-default" onClick={e => this.onAddActionClicked(e)}>+</button>
+                            <button className="btn btn-default" onClick={e => this.onAddActionClicked(e) }>+</button>
                             <i className="text-muted"> Ctrl + Enter</i>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
                             <div className="btn-group">
-                                {this.renderSubmitButton()}
-                                {this.renderCancelButton()}
+                                {this.renderSubmitButton() }
+                                {this.renderCancelButton() }
                             </div>
                         </div>
                     </div>
@@ -161,13 +140,13 @@ extends React.Component<TProps, TState> {
         return (
             <div className={`form-group ${styles.actionDescriptionWrap}`}>
                 <label htmlFor={`action-desc${index}`}
-                       className="col-sm-2 col-sm-offset-3 control-label">
-                   Description
+                    className="col-sm-2 col-sm-offset-3 control-label">
+                    Description
                 </label>
                 <div className="col-sm-6">
                     <textarea className="form-control"
-                              id={`action-desc${index}`}
-                              placeholder="description" />
+                        id={`action-desc${index}`}
+                        placeholder="description" />
                 </div>
             </div>
         );
@@ -176,6 +155,34 @@ extends React.Component<TProps, TState> {
     renderFormTitle(): React.ReactElement<{}> {
         return (
             <div></div>
+        );
+    }
+
+    renderActionNameInput(action: IWorkoutPlanAction, index: number): React.ReactElement<{}> {
+        return (
+            <div className="input-group">
+                <input type="text"
+                    className="form-control"
+                    value={ action.exercise.name }
+                    onChange={ (e: any) => this.onActionNameChanged(e, action) }
+                    ref={`actionName[${index}]`}
+                    placeholder="Action Name"/>
+                <div className="input-group-btn">
+                    <bs.DropdownButton title="" id={`action-tools-dropdown${index}`}>
+                        <bs.MenuItem key="1"
+                            onClick={() => {
+                                action.exercise.description = action.exercise.description || "";
+                                this.forceUpdate();
+                            } }>
+                            <bs.Glyphicon glyph="edit"/> Add Description
+                        </bs.MenuItem>
+                        <bs.MenuItem key="2">
+                            <bs.Glyphicon glyph="film"/> Add Media
+                        </bs.MenuItem>
+                    </bs.DropdownButton>
+                </div>
+            </div>
+
         );
     }
 
@@ -201,9 +208,9 @@ extends React.Component<TProps, TState> {
         var previous: IWorkoutPlanAction = this.state.plan.actions[this.state.plan.actions.length - 1];
 
         if ("exercise" in previous) {
-            this.state.plan.actions.push( { duration: 10000 });
+            this.state.plan.actions.push({ duration: 10000 });
         } else {
-            this.state.plan.actions.push( { duration: 30000, exercise: { name: "" } });
+            this.state.plan.actions.push({ duration: 30000, exercise: { name: "" } });
             this.pendingFocus = true;
         }
 
@@ -272,11 +279,11 @@ extends React.Component<TProps, TState> {
         }
 
     }
-
-    private isActionsDropdownExpanded(action: IWorkoutPlanAction): boolean {
-        return this.state.actionsContexts.filter(c => c.action === action)[0].actionsDropdownExpanded;
-    }
-
+    /*
+        private isActionsDropdownExpanded(action: IWorkoutPlanAction): boolean {
+            return this.state.actionsContexts.filter(c => c.action === action)[0].actionsDropdownExpanded;
+        }
+    */
     private processPendingFocus(): void {
         if (this.pendingFocus) {
             if (this.state.plan.actions.length > 0) {
@@ -340,7 +347,7 @@ extends React.Component<TProps, TState> {
             } else if (i === itemsBounds.length - 1 && y > itemsBounds[i].top + itemsBounds[i].height / 2) {
                 index = i;
             } else if (y > itemsBounds[i].top + itemsBounds[i].height / 2 &&
-                       y < itemsBounds[i + 1].top + itemsBounds[i + 1].height / 2) {
+                y < itemsBounds[i + 1].top + itemsBounds[i + 1].height / 2) {
                 index = i + 1;
             }
         }
