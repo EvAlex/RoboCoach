@@ -28,6 +28,7 @@
         "./js/Actions/ResponseActionBase.ts",
         "./js/Actions/SayHelloAction.ts",
         "./js/Actions/StartWorkoutAction.ts",
+        "./js/Actions/WorkoutPlanActions.ts",
         "./js/AudioPlayer/AudioPlayer.ts",
         "./js/AudioPlayer/SpeechSynthesiser.ts",
         "./js/BackendApi/__tests__/GoogleApi-test.ts",
