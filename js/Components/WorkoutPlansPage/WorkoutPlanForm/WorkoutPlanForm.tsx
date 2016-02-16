@@ -10,12 +10,6 @@ const styles: any = require("./WorkoutPlanForm.module.less");
 
 import IAction from "../../../Actions/IAction";
 
-interface IWorkoutPlanActionContext {
-    action: IWorkoutPlanAction;
-    actionsDropdownExpanded: boolean;
-    descriptionDisplayed: boolean;
-}
-
 export interface IWorkoutPlanFormProps extends ReactRouter.RouteComponentProps<{}, {}> {
 }
 
@@ -23,7 +17,6 @@ export interface IWorkoutPlanFormState {
     plan: IWorkoutPlan;
     draggedActionIndex?: number;
     dropTargetActionIndex?: number;
-    actionsContexts?: IWorkoutPlanActionContext[];
 }
 
 export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TState extends IWorkoutPlanFormState>
@@ -229,17 +222,9 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
         this.forceUpdate();
     }
 
-    componentWillMount(): void {
-        this.setPlanActionsContexts();
-    }
-
     componentDidMount(): void {
         Dispatcher.register(a => this.processActions(a));
         this.processPendingFocus();
-    }
-
-    componentWillUpdate(): void {
-        this.setPlanActionsContexts();
     }
 
     componentDidUpdate(): void {
@@ -260,30 +245,6 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
 
     abstract processActions(action: IAction): void;
 
-    private setPlanActionsContexts(): void {
-        if (this.state.plan && this.state.plan.actions) {
-            if (!this.state.actionsContexts) {
-                this.state.actionsContexts = [];
-            }
-            this.state.plan.actions.forEach(
-                a => {
-                    if (!this.state.actionsContexts.filter(c => c.action === a)) {
-                        this.state.actionsContexts.push({
-                            action: a,
-                            descriptionDisplayed: false,
-                            actionsDropdownExpanded: false
-                        });
-                    }
-                }
-            );
-        }
-
-    }
-    /*
-        private isActionsDropdownExpanded(action: IWorkoutPlanAction): boolean {
-            return this.state.actionsContexts.filter(c => c.action === action)[0].actionsDropdownExpanded;
-        }
-    */
     private processPendingFocus(): void {
         if (this.pendingFocus) {
             if (this.state.plan.actions.length > 0) {
