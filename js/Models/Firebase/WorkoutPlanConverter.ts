@@ -1,6 +1,9 @@
 import RoboCoachFirebaseConverterError from "../../Errors/RoboCoachFirebaseConverterError";
+import WorkoutActionConverter from "./WorkoutActionConverter";
 
 export default class WorkoutPlanConverter implements IModelConverter<IWorkoutPlan, IFirebaseWorkoutPlan> {
+    private actionConverter: WorkoutActionConverter = new WorkoutActionConverter();
+
     toFirebase(model: IWorkoutPlan): IFirebaseWorkoutPlan {
         if (!model.name) {
             throw new RoboCoachFirebaseConverterError("WorkoutPlanConverter", "name", "Value is missing");
@@ -14,11 +17,7 @@ export default class WorkoutPlanConverter implements IModelConverter<IWorkoutPla
         return {
             name: model.name,
             description: model.description || null,
-            actions: model.actions.map(a => (
-                a.exercise
-                    ? { duration: a.duration, exercise: a.exercise }
-                    : { duration: a.duration }
-            ))
+            actions: model.actions.map(a => this.actionConverter.toFirebase(a))
         };
     }
     fromFirebase(firebaseModel: IFirebaseWorkoutPlan, id: string): IWorkoutPlan {
@@ -26,7 +25,7 @@ export default class WorkoutPlanConverter implements IModelConverter<IWorkoutPla
             id: id,
             name: firebaseModel.name,
             description: firebaseModel.description,
-            actions: firebaseModel.actions
+            actions: firebaseModel.actions.map((a, i) => this.actionConverter.fromFirebase(a, i.toString()))
         };
     }
 }
