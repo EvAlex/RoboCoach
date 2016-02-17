@@ -1,4 +1,5 @@
 import React = require("react");
+import moment = require("moment");
 import Dispatcher from "../../../Dispatcher/Dispatcher";
 import GoogleApi from "../../../BackendApi/GoogleApi";
 
@@ -172,10 +173,11 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                 <div className="col-sm-6">
                     <input id={`action-media${index}`}
                         className="form-control"
-                        type="url"
+                        type="text"
                         placeholder="http://"
                         value={action.exercise.mediaUrl}
-                        onChange={(e: any) => this.onMediaUrlChanged(e, action) } />
+                        onChange={(e: any) => this.onMediaUrlChanged(e, action) }
+                        onKeyUp={(e: any) => this.onMediaUrlChanged(e, action) } />
                 </div>
             </div>
         );
@@ -187,6 +189,7 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
         var videoId: string = GoogleApi.findYoutubeVideoId(action.exercise.mediaUrl);
         if (videoId) {
             GoogleApi.getVideoInfo(videoId).then(video => {
+                action.duration = moment.duration(video.contentDetails.duration).asMilliseconds();
                 action.exercise.name = video.snippet.title;
                 action.exercise.description = video.snippet.description;
             });

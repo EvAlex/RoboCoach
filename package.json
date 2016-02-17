@@ -46,6 +46,7 @@
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "lodash": "^4.0.0",
+    "moment": "^2.11.2",
     "node-libs-browser": "^0.5.3",
     "node-uuid": "^1.4.7",
     "null-loader": "^0.1.1",

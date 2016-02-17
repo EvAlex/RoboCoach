@@ -67,6 +67,12 @@
     },
     "react-bootstrap/react-bootstrap.d.ts": {
       "commit": "85af69c91599a6c904618545f0613970e1ff3f64"
+    },
+    "moment/moment.d.ts": {
+      "commit": "b57c33fec0be3cba8f5e9cec642db873565923d0"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "b57c33fec0be3cba8f5e9cec642db873565923d0"
     }
   }
 }

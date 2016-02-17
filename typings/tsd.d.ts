@@ -19,3 +19,5 @@
 /// <reference path="node-uuid/node-uuid-cjs.d.ts" />
 /// <reference path="node-uuid/node-uuid.d.ts" />
 /// <reference path="react-bootstrap/react-bootstrap.d.ts" />
+/// <reference path="moment/moment-node.d.ts" />
+/// <reference path="moment/moment.d.ts" />

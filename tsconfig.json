@@ -58,6 +58,7 @@
         "./js/Models/Firebase/IFirebaseWorkoutAction.d.ts",
         "./js/Models/Firebase/IFirebaseWorkoutPlan.d.ts",
         "./js/Models/Firebase/IModelConverter.d.ts",
+        "./js/Models/Firebase/WorkoutActionConverter.ts",
         "./js/Models/Firebase/WorkoutConverter.ts",
         "./js/Models/Firebase/WorkoutPlanConverter.ts",
         "./js/Models/Google/IPageInfo.d.ts",
