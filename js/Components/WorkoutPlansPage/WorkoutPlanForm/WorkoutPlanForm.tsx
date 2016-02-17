@@ -1,5 +1,6 @@
 import React = require("react");
 import Dispatcher from "../../../Dispatcher/Dispatcher";
+import GoogleApi from "../../../BackendApi/GoogleApi";
 
 /* tslint:disable:no-unused-variable */
 import * as bs from "react-bootstrap";
@@ -107,10 +108,10 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                                     </div>
                                 </div>
                                 <bs.Collapse in={a.exercise && "description" in a.exercise}>
-                                    {this.renderExerciseDescription(a, index)}
+                                    {this.renderExerciseDescription(a, index) }
                                 </bs.Collapse>
                                 <bs.Collapse in={a.exercise && "mediaUrl" in a.exercise}>
-                                    {this.renderExerciseMedia(a, index)}
+                                    {this.renderExerciseMedia(a, index) }
                                 </bs.Collapse>
                             </div>
                         )) }
@@ -152,7 +153,7 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                         onChange={(e: any) => {
                             action.exercise.description = e.target.value;
                             this.forceUpdate();
-                        }}  />
+                        } }  />
                 </div>
             </div>
         );
@@ -170,17 +171,26 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                 </label>
                 <div className="col-sm-6">
                     <input id={`action-media${index}`}
-                           className="form-control"
-                           type="url"
-                           placeholder="http://"
-                           value={action.exercise.mediaUrl}
-                           onChange={(e: any) => {
-                               action.exercise.mediaUrl = e.target.value;
-                               this.forceUpdate();
-                           }} />
+                        className="form-control"
+                        type="url"
+                        placeholder="http://"
+                        value={action.exercise.mediaUrl}
+                        onChange={(e: any) => this.onMediaUrlChanged(e, action) } />
                 </div>
             </div>
         );
+    }
+
+    onMediaUrlChanged(e: any, action: IWorkoutPlanAction): void {
+        action.exercise.mediaUrl = e.target.value;
+        this.forceUpdate();
+        var videoId: string = GoogleApi.findYoutubeVideoId(action.exercise.mediaUrl);
+        if (videoId) {
+            GoogleApi.getVideoInfo(videoId).then(video => {
+                action.exercise.name = video.snippet.title;
+                action.exercise.description = video.snippet.description;
+            });
+        }
     }
 
     renderFormTitle(): React.ReactElement<{}> {
@@ -201,17 +211,17 @@ export abstract class WorkoutPlanForm<TProps extends IWorkoutPlanFormProps, TSta
                 <div className="input-group-btn">
                     <bs.DropdownButton title="" id={`action-tools-dropdown${index}`}>
                         <bs.MenuItem key="1"
-                                     onClick={() => {
-                                         action.exercise.description = action.exercise.description || "";
-                                         this.forceUpdate();
-                                     }}>
+                            onClick={() => {
+                                action.exercise.description = action.exercise.description || "";
+                                this.forceUpdate();
+                            } }>
                             <bs.Glyphicon glyph="edit"/> Add Description
                         </bs.MenuItem>
                         <bs.MenuItem key="2"
-                                     onClick={() => {
-                                         action.exercise.mediaUrl = action.exercise.mediaUrl || "";
-                                         this.forceUpdate();
-                                     }}>
+                            onClick={() => {
+                                action.exercise.mediaUrl = action.exercise.mediaUrl || "";
+                                this.forceUpdate();
+                            } }>
                             <bs.Glyphicon glyph="film"/> Add Media
                         </bs.MenuItem>
                     </bs.DropdownButton>
