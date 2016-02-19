@@ -1,6 +1,8 @@
 import React = require("react");
+import Promise = require("bluebird");
 
 /* tslint:disable:no-any */
+//var youtubePlayer: any = require("youtube-player");
 const styles: any = require("./WorkoutPlayer.module.less");
 /* tslint:enable:no-any */
 
@@ -12,6 +14,7 @@ import ExerciseEndNotificationScenario from "../../Models/Notifications/Exercise
 import ExerciseStartNotificationScenario from "../../Models/Notifications/ExerciseStartNotificationScenario";
 import NotificationsPlayer from "../../Models/Notifications/NotificationsPlayer";
 import sleepPreventer from "../../SleepPreventer/SleepPreventer";
+import GoogleApi from "../../BackendApi/GoogleApi";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -23,9 +26,9 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private lastRenderTime: number = new Date().getTime();
     private notifications: INotification[];
     private notificationsPlayer: NotificationsPlayer;
+    private videoPlayer: YoutubePlayer = new YoutubePlayer();
 
     componentWillMount(): void {
-
         var builder: NotificationsBuilder = new NotificationsBuilder;
         var scenarios: INotificationScenario[] = [
             new PrepareToExerciseNotificationScenario(),
@@ -45,6 +48,7 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     componentWillUnmount(): void {
         sleepPreventer.allow();
         this.shouldTimerWork = false;
+        this.videoPlayer.stop();
     }
 
     componentDidUpdate(): void {
@@ -92,7 +96,6 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         let left: number = this.props.workout.getTimeLeftForAction(action),
             i: number = this.props.workout.actions.indexOf(action),
             next: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
-
         return (
             <div className={styles["rest-progress"]}>
                 { this.renderTimeLeft(left) }
@@ -106,7 +109,12 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private renderExerciseProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
             exercise: IExercise = action["exercise"];
-
+        if (action.exercise.mediaUrl) {
+            var videoId: string = GoogleApi.findYoutubeVideoId(action.exercise.mediaUrl);
+            if (videoId) {
+                this.videoPlayer.play(videoId);
+            }
+        }
         return (
             <div className={styles["exercise-progress"]}>
                 { this.renderTimeLeft(left) }
@@ -136,5 +144,88 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         return (
             <h1 className={styles["action-name"]}>Workout complete!</h1>
         );
+    }
+}
+
+class YoutubePlayer {
+    private playerPromise: Promise<YT.Player>;
+    private videoIdPlaying: string = null;
+
+    constructor() {
+        this.playerPromise = this.createYoutubePlayer();
+    }
+
+    public play(videoId: string): void {
+        if (this.videoIdPlaying === videoId) {
+            return;
+        }
+        this.videoIdPlaying = videoId;
+        this.playerPromise.then(p => {
+            if (this.videoIdPlaying) {
+                p.stopVideo();
+            }
+
+            this.findPlayerWrap().style.zIndex = "9000";
+            p.cueVideoById(videoId);
+            p.playVideo();
+        });
+    }
+
+    public stop(): void {
+        this.playerPromise.then(p => {
+            p.stopVideo();
+            this.findPlayerWrap().style.zIndex = "-1";
+        });
+    }
+
+    private findPlayerWrap(): HTMLElement {
+        return document.getElementById("video-player-wrap");
+    }
+
+    private createYoutubePlayer(): Promise<YT.Player> {
+        var d: Promise.Resolver<YT.Player> = Promise.defer<YT.Player>();
+        if (typeof YT === "undefined") {
+            var tag: HTMLScriptElement = document.createElement("script");
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag: HTMLScriptElement = document.getElementsByTagName("script")[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            window["onYouTubeIframeAPIReady"] = () => {
+                console.log("onYouTubeIframeAPIReady");
+                this.createYoutubePlayerWhenApiReady().then(p => d.resolve(p), e => d.reject(e));
+            };
+        } else {
+            this.createYoutubePlayerWhenApiReady().then(p => d.resolve(p), e => d.reject(e));
+        }
+        return d.promise;
+    }
+
+    private createYoutubePlayerWhenApiReady(): Promise<YT.Player> {
+        let d: Promise.Resolver<YT.Player> = Promise.defer<YT.Player>(),
+            playerId: string = "video-player",
+            cont: HTMLElement = document.getElementById(playerId);
+        if (!cont) {
+            var wrap: HTMLElement = document.createElement("div"),
+                topOffset: number = 51;
+            wrap.setAttribute("id", "video-player-wrap");
+            wrap.style.position = "absolute";
+            wrap.style.top = `${topOffset}px`;
+            wrap.style.left = wrap.style.right = wrap.style.bottom = "0";
+            document.body.appendChild(wrap);
+            cont = document.createElement("div");
+            cont.setAttribute("id", playerId);
+            wrap.appendChild(cont);
+        }
+        let opts: YT.PlayerOptions = {
+            height: window.innerHeight - topOffset - 3, // yo magic
+            width: window.innerWidth,
+            videoId: "M7lc1UVf-VE",
+            events: {}
+        },
+            player: YT.Player;
+        opts.events.onReady = () => {
+            d.resolve(player);
+        };
+        player = new YT.Player(playerId, opts);
+        return d.promise;
     }
 }

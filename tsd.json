@@ -73,6 +73,9 @@
     },
     "moment/moment-node.d.ts": {
       "commit": "b57c33fec0be3cba8f5e9cec642db873565923d0"
+    },
+    "youtube/youtube.d.ts": {
+      "commit": "95b7178e0ef33b4b88327676418b4cc3ad61df0f"
     }
   }
 }
