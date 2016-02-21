@@ -16,6 +16,7 @@ interface INavbarState {
 }
 
 export default class Navbar extends React.Component<{}, INavbarState> {
+    static height: number = 51;
 
     constructor() {
         super();

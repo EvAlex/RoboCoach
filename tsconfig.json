@@ -114,6 +114,7 @@
         "./js/Components/WorkoutPlansPage/WorkoutPlanForm/WorkoutPlanForm.tsx",
         "./js/Components/WorkoutPlansPage/WorkoutPlansPage.tsx",
         "./js/Components/WorkoutPlayer/WorkoutPlayer.tsx",
+        "./js/Components/YoutubeVideoPlayer/YoutubeVideoPlayer.tsx",
         "./js/Index.tsx",
         "./typings/tsd.d.ts"
     ],
