@@ -1,6 +1,7 @@
 import React = require("react");
 
 /* tslint:disable:no-any */
+//var youtubePlayer: any = require("youtube-player");
 const styles: any = require("./WorkoutPlayer.module.less");
 /* tslint:enable:no-any */
 
@@ -12,6 +13,7 @@ import ExerciseEndNotificationScenario from "../../Models/Notifications/Exercise
 import ExerciseStartNotificationScenario from "../../Models/Notifications/ExerciseStartNotificationScenario";
 import NotificationsPlayer from "../../Models/Notifications/NotificationsPlayer";
 import sleepPreventer from "../../SleepPreventer/SleepPreventer";
+import YoutubeVideoPlayer from "../YoutubeVideoPlayer/YoutubeVideoPlayer";
 
 export interface IWorkoutPlayerProps {
     workout: Workout;
@@ -25,7 +27,6 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private notificationsPlayer: NotificationsPlayer;
 
     componentWillMount(): void {
-
         var builder: NotificationsBuilder = new NotificationsBuilder;
         var scenarios: INotificationScenario[] = [
             new PrepareToExerciseNotificationScenario(),
@@ -92,7 +93,6 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
         let left: number = this.props.workout.getTimeLeftForAction(action),
             i: number = this.props.workout.actions.indexOf(action),
             next: IExercisePlanAction | IRestPlanAction = this.props.workout.actions[i + 1];
-
         return (
             <div className={styles["rest-progress"]}>
                 { this.renderTimeLeft(left) }
@@ -106,13 +106,14 @@ export default class WorkoutPlayer extends React.Component<IWorkoutPlayerProps, 
     private renderExerciseProgress(action: IExercisePlanAction | IRestPlanAction): React.ReactElement<{}> {
         let left: number = this.props.workout.getTimeLeftForAction(action),
             exercise: IExercise = action["exercise"];
-
-        return (
-            <div className={styles["exercise-progress"]}>
-                { this.renderTimeLeft(left) }
-                <h1 className={styles["action-name"]}>{exercise.name}</h1>
-            </div>
-        );
+        return action.exercise.mediaUrl
+            ? <YoutubeVideoPlayer url={action.exercise.mediaUrl} />
+            : (
+                <div className={styles["exercise-progress"]}>
+                    { this.renderTimeLeft(left) }
+                    <h1 className={styles["action-name"]}>{exercise.name}</h1>
+                </div>
+            );
     }
 
     private renderTimeLeft(timeLeft: number): React.ReactElement<{}> {
