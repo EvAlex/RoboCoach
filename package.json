@@ -66,10 +66,10 @@
     "tslint-loader": "^2.1.0",
     "typescript": "^1.7.5",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.11",
-    "webpack-config": "^3.1.0",
+    "webpack": "^1.13.1",
+    "webpack-config": "^5.2.1",
     "webpack-dev-server": "^1.14.1",
-    "webpack-stream": "^3.1.0"
+    "webpack-stream": "^3.2.0"
   },
   "dependencies": {
     "node-uuid": "^1.4.7"
