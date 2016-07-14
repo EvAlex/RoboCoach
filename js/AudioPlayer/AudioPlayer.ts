@@ -41,7 +41,13 @@ interface IGetFilePlayersResult {
     start: IAudioFilePlayer;
 }
 
-export class AudioPlayer {
+export interface IAudioPlayer {
+    getFiles(): IAudioPlayerResources;
+    play(file: IAudioFile): Promise<void>;
+    stop(): void;
+}
+
+export class AudioPlayer implements IAudioPlayer {
     private resources: IAudioPlayerResources;
     private context: AudioContext;
     private currentPlayer: IAudioFilePlayer = null;
@@ -112,6 +118,25 @@ export class AudioPlayer {
     }
 }
 
+export class FakeAudioPlayer implements IAudioPlayer {
+    private resources: IAudioPlayerResources;
+
+    constructor(resources: IAudioPlayerResources) {
+        this.resources = resources;
+    }
+
+    public getFiles(): IAudioPlayerResources {
+        return this.resources;
+    }
+
+    public play(file: IAudioFile): Promise<void> {
+        return Promise.resolve();
+    }
+
+    public stop(): void {
+    }
+}
+
 class AudioFilePlayer implements IAudioFilePlayer {
 
     constructor(file: IAudioFile, context: AudioContext) {
@@ -167,38 +192,41 @@ function getCorrectUrl(relativeOrAbsolute: string): string {
         : relativeOrAbsolute;
 }
 
-var player: AudioPlayer = new AudioPlayer({
-    prepare: {
-        url: getCorrectUrl(require("./prepare.mp3")),
-        data: null,
-        audioMetadata: {
-            duration: 3240,
-            playbackStart: 730,
-            playbackMedian: 990,
-            playbackEnd: 2100
+var resources: IAudioPlayerResources = {
+        prepare: {
+            url: getCorrectUrl(require("./prepare.mp3")),
+            data: null,
+            audioMetadata: {
+                duration: 3240,
+                playbackStart: 730,
+                playbackMedian: 990,
+                playbackEnd: 2100
+            }
+        },
+        start: {
+            url: getCorrectUrl(require("./start.mp3")),
+            data: null,
+            audioMetadata: {
+                duration: 1410,
+                playbackStart: 160,
+                playbackMedian: 260,
+                playbackEnd: 830
+            }
+        },
+        finish: {
+            url: getCorrectUrl(require("./finish.mp3")),
+            data: null,
+            audioMetadata: {
+                duration: 2190,
+                playbackStart: 100,
+                playbackMedian: 210,
+                playbackEnd: 1360
+            }
         }
     },
-    start: {
-        url: getCorrectUrl(require("./start.mp3")),
-        data: null,
-        audioMetadata: {
-            duration: 1410,
-            playbackStart: 160,
-            playbackMedian: 260,
-            playbackEnd: 830
-        }
-    },
-    finish: {
-        url: getCorrectUrl(require("./finish.mp3")),
-        data: null,
-        audioMetadata: {
-            duration: 2190,
-            playbackStart: 100,
-            playbackMedian: 210,
-            playbackEnd: 1360
-        }
-    }
-});
+    player: IAudioPlayer = 'AudioContext' in window || 'webkitAudioContext' in window 
+        ? new AudioPlayer(resources)
+        : new FakeAudioPlayer(resources);
 
 // Test: window["AudioPlayer"] = player;
 
