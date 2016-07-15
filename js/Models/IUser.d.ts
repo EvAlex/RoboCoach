@@ -1,5 +1,5 @@
 
 interface IUser {
     id: string;
-    authData: IFirebaseAuthData;
+    authData: firebase.User;
 }

@@ -1,5 +1,10 @@
 
 interface IRoboCoachConfig {
-    firebaseUrl: string;
+    firebase: {
+        apiKey: string,
+        authDomain: string,
+        databaseURL: string
+        storageBucket: string
+    };
     googleApiKey: string;
 }

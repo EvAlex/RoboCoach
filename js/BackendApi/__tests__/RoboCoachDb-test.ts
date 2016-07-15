@@ -37,7 +37,8 @@ describe('RoboCoachDb', () => {
                 db.Dispatcher.register(a => {
                     if (a instanceof ProcessWorkoutStartedAction) {
                         let action = <ProcessWorkoutStartedAction>a,
-                            firebase = new Firebase(`${config.firebaseUrl}users/userid123/workouts/${action.Workout.id}`);
+                            firebaseApp = Firebase.initializeApp(config.firebase),
+                            firebase = firebaseApp.database().ref(`${config.firebase.databaseURL}users/userid123/workouts/${action.Workout.id}`);
                         firebase.once("value", snapshot => {
                             actual = snapshot.val();
                             done();

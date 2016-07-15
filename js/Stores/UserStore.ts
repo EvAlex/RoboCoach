@@ -22,13 +22,13 @@ export class UserStore extends BaseStore {
         }
         switch (provider) {
             case AuthActions.AuthProvider.Facebook:
-                return !!this.currentUser.authData.facebook;
+                return this.currentUser.authData.providerId === 'facebook';
             case AuthActions.AuthProvider.Google:
-                return !!this.currentUser.authData.google;
+                return this.currentUser.authData.providerId === 'google';
             case AuthActions.AuthProvider.Github:
-                return !!this.currentUser.authData.github;
+                return this.currentUser.authData.providerId === 'github';
             case AuthActions.AuthProvider.Twitter:
-                return !!this.currentUser.authData.twitter;
+                return this.currentUser.authData.providerId === 'twitter';
             default:
                 throw new Error(`Unexpected AuthProvider: ${AuthActions.AuthProvider[provider]}.`);
         }

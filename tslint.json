@@ -8,10 +8,6 @@
         ],
         "ban": false,
         "class-name": true,
-        /*"comment-format": [
-            true,
-            "check-space"
-        ],*/
         "curly": true,
         "eofline": false,
         "forin": true,
@@ -46,15 +42,15 @@
         "no-debugger": false,
         "no-duplicate-key": true,
         "no-duplicate-variable": true,
-        "no-empty": true,
+        "no-empty": false,
         "no-eval": true,
         "no-string-literal": false,
         "no-switch-case-fall-through": true,
         "no-trailing-comma": true,
         "no-trailing-whitespace": false,
         "no-unreachable": true,
-        "no-unused-expression": true,
-        "no-unused-variable": true,
+        "no-unused-expression": false,
+        "no-unused-variable": false,
         "no-use-before-declare": true,
         "no-var-requires": false,
         "one-line": [
@@ -64,7 +60,7 @@
             "check-open-brace",
             "check-whitespace"
         ],
-        "quotemark": [ true, "double" ],
+        "quotemark": [ false ],
         "radix": true,
         "semicolon": true,
         "switch-default": true,
@@ -73,7 +69,6 @@
             true,
             "call-signature",
             "property-declaration",
-            "variable-declaration",
             "member-variable-declaration"
         ],
         "typedef-whitespace": [

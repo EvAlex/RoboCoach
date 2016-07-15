@@ -95,32 +95,14 @@ export default class Navbar extends React.Component<{}, INavbarState> {
 
     private getProfileImageUrl(): string {
         var res: string,
-            authData: IFirebaseAuthData = this.state.user.authData;
-        if (authData.facebook) {
-            res = authData.facebook.profileImageURL;
-        } else if (authData.google) {
-            res = authData.google.profileImageURL;
-        } else if (authData.github) {
-            res = authData.github.profileImageURL;
-        } else if (authData.twitter) {
-            res = authData.twitter.profileImageURL;
-        }
-        return res;
+            authData = this.state.user.authData;
+        return authData.photoURL;
     }
 
     private getProfileDisplayName(): string {
         var res: string,
-            authData: IFirebaseAuthData = this.state.user.authData;
-        if (authData.facebook) {
-            res = authData.facebook.displayName;
-        } else if (authData.google) {
-            res = authData.google.displayName;
-        } else if (authData.github) {
-            res = authData.github.displayName;
-        } else if (authData.twitter) {
-            res = authData.twitter.displayName;
-        }
-        return res;
+            authData = this.state.user.authData;
+        return authData.displayName;
     }
 
     private onLogoutClicked(): void {

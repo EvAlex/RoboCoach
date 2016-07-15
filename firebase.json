@@ -1,31 +1,32 @@
 {
-    "firebase": "robocoach",
+  "hosting": {
     "public": "dist",
-    "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-    ],
     "rewrites": [
-        {
-            "source": "/workout-plans",
-            "destination": "/index.html"
-        },
-        {
-            "source": "/workout-plans/**",
-            "destination": "/index.html"
-        },
-        {
-            "source": "/workout-plans/create",
-            "destination": "/index.html"
-        },
-        {
-            "source": "/login",
-            "destination": "/index.html"
-        },
-        {
-            "source": "/account",
-            "destination": "/index.html"
-        }
+      {
+        "source": "/workout-plans",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/workout-plans/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/workout-plans/create",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/login",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/account",
+        "destination": "/index.html"
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
     ]
+  }
 }

@@ -22,3 +22,4 @@
 /// <reference path="moment/moment-node.d.ts" />
 /// <reference path="moment/moment.d.ts" />
 /// <reference path="youtube/youtube.d.ts" />
+/// <reference path="uuid/UUID.d.ts" />

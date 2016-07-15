@@ -19,12 +19,13 @@ import * as AuthActions from "../Actions/AuthActions";
 import RoboCoachDbError from "../Errors/RoboCoachDbError";
 
 export class RoboCoachDb {
-    private firebase: Firebase;
+    private firebaseApp: Firebase.FirebaseApplication;
     private converter: AggregateConverter;
     private testWorkoutPlans: WorkoutPlan[];
 
     constructor() {
-        this.firebase = new Firebase(config.firebaseUrl);
+        this.firebaseApp = firebase.initializeApp(config.firebase);
+
         this.converter = new AggregateConverter();
         dispatcher.register((action: IAction) => this.processAction(action));
 
@@ -38,18 +39,19 @@ export class RoboCoachDb {
     }
 
     private handleAuth(): void {
-        this.firebase.onAuth(authData => {
+        var auth = this.firebaseApp.auth();
+        auth.onAuthStateChanged(user => {
             if (dispatcher.isDispatching) {
-                window.setTimeout(() => this.onAuthChanged(authData));
+                window.setTimeout(() => this.onAuthChanged(user));
             } else {
-                this.onAuthChanged(authData);
+                this.onAuthChanged(user);
             }
         });
     }
 
-    private onAuthChanged(authData: IFirebaseAuthData): void {
-        if (authData) {
-            dispatcher.dispatch(new AuthActions.ProcessUserLoggedInAction(authData));
+    private onAuthChanged(user: Firebase.User): void {
+        if (user) {
+            dispatcher.dispatch(new AuthActions.ProcessUserLoggedInAction(user));
         } else {
             dispatcher.dispatch(new AuthActions.ProcessUserLoggedOutAction());
         }
@@ -71,12 +73,16 @@ export class RoboCoachDb {
         } else if (action instanceof AuthActions.LogInAction) {
             this.processLogInAction(action);
         } else if (action instanceof AuthActions.LogOutAction) {
-            this.firebase.unauth();
+            this.firebaseApp.auth()
+                .signOut()
+                .then(
+                () => dispatcher.dispatch(new AuthActions.ProcessUserLoggedOutAction()),
+                e => dispatcher.dispatch(new AuthActions.ProcessUserLogoutFailedAction(action, e)));
         }
     }
 
     private processRequestWorkoutPlansAction(action: RequestWorkoutPlansAction): void {
-        this.firebase.child("workoutPlans").once(
+        this.firebaseApp.database().ref().child("workoutPlans").once(
             "value",
             dataSnapshot => {
                 let response: IWorkoutPlan[] = [],
@@ -107,10 +113,10 @@ export class RoboCoachDb {
                 action));
         }
         */
-        this.firebase.child(`workoutPlans/${action.PlanId}`)
-            .once(
-            "value",
-            (s: FirebaseDataSnapshot) => {
+        this.firebaseApp.database().ref().child(`workoutPlans/${action.PlanId}`)
+            .once("value")
+            .then(
+            (s: firebase.DataSnapshot) => {
                 if (s.exists()) {
                     CommonActionCreators.receiveWorkoutPlan(this.converter.WorkoutPlan.fromFirebase(s.val(), action.PlanId), action);
                 } else {
@@ -123,13 +129,14 @@ export class RoboCoachDb {
             (err: string | Error) => {
                 var error: RoboCoachDbError = new RoboCoachDbError(err);
                 CommonActionCreators.receiveWorkoutPlanFail(action.PlanId, error, action);
-            });
+            }
+            );
     }
 
     private processCreateWorkoutPlanAction(action: CreateWorkoutPlanAction): void {
-        var pushRef: Firebase = this.firebase.child("workoutPlans").push(),
+        var pushRef = this.firebaseApp.database().ref().child("workoutPlans").push(),
             model: IFirebaseWorkoutPlan = this.converter.WorkoutPlan.toFirebase(action.Plan);
-        action.Plan.id = pushRef.key();
+        action.Plan.id = pushRef.key;
         pushRef.set(model, error => {
             if (error) {
                 CommonActionCreators.createWorkoutPlanFailed(
@@ -148,7 +155,7 @@ export class RoboCoachDb {
     }
 
     private processEditWorkoutPlanAction(action: WorkoutPlanActions.EditWorkoutPlanAction): void {
-        var ref: Firebase = this.firebase.child(`workoutPlans/${action.Plan.id}`),
+        var ref = this.firebaseApp.database().ref().child(`workoutPlans/${action.Plan.id}`),
             model: IFirebaseWorkoutPlan = this.converter.WorkoutPlan.toFirebase(action.Plan);
         ref.set(model, error => {
             if (error) {
@@ -158,7 +165,7 @@ export class RoboCoachDb {
                         action));
             } else {
                 dispatcher.dispatch(
-                new WorkoutPlanActions.ProcessEditWorkoutPlanSuccessAction(action.Plan, action));
+                    new WorkoutPlanActions.ProcessEditWorkoutPlanSuccessAction(action.Plan, action));
             }
         });
     }
@@ -172,9 +179,9 @@ export class RoboCoachDb {
             startTime: new Date()
         };
         if (action.User) {
-            var pushRef: Firebase = this.firebase.child(`users/${action.User.id}/workouts`).push(),
+            var pushRef = this.firebaseApp.database().ref().child(`users/${action.User.id}/workouts`).push(),
                 model: IFirebaseWorkout = this.converter.Workout.toFirebase(workout);
-            workout.id = pushRef.key();
+            workout.id = pushRef.key;
             pushRef.set(model, error => {
                 if (error) {
                     CommonActionCreators.processWorkoutStartFailed(
@@ -191,10 +198,10 @@ export class RoboCoachDb {
     }
 
     private processRequestWorkoutAction(action: RequestWorkoutAction): void {
-        this.firebase
+        this.firebaseApp.database().ref()
             .child(`users/${action.User.id}/workouts/${action.WorkoutId}`)
-            .once(
-            "value",
+            .once("value")
+            .then(
             dataSnapshot => {
                 if (dataSnapshot.exists()) {
                     CommonActionCreators.receiveWorkout(dataSnapshot.val(), action);
@@ -208,29 +215,38 @@ export class RoboCoachDb {
                 CommonActionCreators.processRequestWorkoutFailed(
                     new RoboCoachDbError(error),
                     action);
-            });
+            }
+            );
     }
 
     private processLogInAction(action: AuthActions.LogInAction): void {
-        var provider: string = action.getProvider() === AuthActions.AuthProvider.Facebook
-            ? "facebook"
-            : action.getProvider() === AuthActions.AuthProvider.Google
-                ? "google"
-                : action.getProvider() === AuthActions.AuthProvider.Github
-                    ? "github"
-                    : action.getProvider() === AuthActions.AuthProvider.Twitter
-                        ? "twitter"
-                        : null;
+        var auth = this.firebaseApp.auth(),
+            provider: Firebase.AuthProvider = action.getProvider() === AuthActions.AuthProvider.Facebook
+                ? new auth.FacebookAuthProvider()
+                : action.getProvider() === AuthActions.AuthProvider.Google
+                    ? new auth.GoogleAuthProvider()
+                    : action.getProvider() === AuthActions.AuthProvider.Github
+                        ? new auth.GithubAuthProider()
+                        : action.getProvider() === AuthActions.AuthProvider.Twitter
+                            ? new auth.TwitterAuthProvider()
+                            : null;
         if (!provider) {
             throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);
         }
+
         // Prefer pop-ups, so we don't navigate away from the page
-        this.firebase.authWithOAuthPopup(provider, (error, authData) => {
-            if (error) {
-                if (error.code === "TRANSPORT_UNAVAILABLE") {
+        auth.signInWithPopup(provider).then(
+            user => {
+                if (user) {
+                    // User authenticated with Firebase
+                    // No need to dispatch - Firebase will emit event for us.
+                }
+            },
+            error => {
+                if (error.code === "auth/operation-not-supported-in-this-environment") {
                     /* Fall-back to browser redirects, and pick up the session
                        automatically when we come back to the origin page */
-                    this.firebase.authWithOAuthRedirect(provider, (error) => {
+                    auth.signInWithRedirect(provider).catch(error => {
                         dispatcher.dispatch(
                             new AuthActions.ProcessLogInFailedAction(
                                 action,
@@ -242,11 +258,7 @@ export class RoboCoachDb {
                             action,
                             new RoboCoachDbError(error)));
                 }
-            } else if (authData) {
-                // User authenticated with Firebase
-                // No need to dispatch - Firebase will emit event for us.
-            }
-        });
+            });
     }
 
     private createTestWorkoutPlans(): WorkoutPlan[] {

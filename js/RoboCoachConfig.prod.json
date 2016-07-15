@@ -1,4 +1,9 @@
 {
-    "firebaseUrl": "https://robocoach.firebaseio.com/",
+    "firebase": {
+        "apiKey": "AIzaSyCO5HGRSPsHTBTS2FwnouBL5GPPkXlqFXE",
+        "authDomain": "robocoach.firebaseapp.com",
+        "databaseURL": "https://robocoach.firebaseio.com/",
+        "storageBucket": "firebase-robocoach.appspot.com"
+    },
     "googleApiKey": "AIzaSyBKzTYybjZqh6E0pOURiN8oMGCQYicF0YQ"
 }

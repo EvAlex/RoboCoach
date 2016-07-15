@@ -3,14 +3,14 @@ import {ResponseActionBase} from "./ResponseActionBase";
 import {ActionLogEntry, LogLevel} from "../Log/ActionLogEntry";
 
 export class ProcessUserLoggedInAction extends ActionBase {
-    private authData: FirebaseAuthData;
+    private authData: firebase.User;
 
-    constructor(authData: FirebaseAuthData) {
+    constructor(authData: firebase.User) {
         super();
         this.authData = authData;
     }
 
-    public getAuthData(): FirebaseAuthData {
+    public getAuthData(): firebase.User {
         return this.authData;
     }
 
@@ -18,7 +18,7 @@ export class ProcessUserLoggedInAction extends ActionBase {
         return new ActionLogEntry(
             "ProcessUserLoggedInAction",
             LogLevel.Info,
-            { userId: this.authData.uid, provider: this.authData.provider });
+            { userId: this.authData.uid });
     }
 }
 
@@ -27,6 +27,23 @@ export class ProcessUserLoggedOutAction extends ActionBase {
         return new ActionLogEntry(
             "ProcessUserLoggedOutAction",
             LogLevel.Info);
+    }
+}
+
+export class ProcessUserLogoutFailedAction extends ResponseActionBase {
+    private error: IRoboCoachError;
+
+    constructor(requestAction: LogOutAction, error: IRoboCoachError) {
+        super(requestAction);
+        this.error = error;
+    }
+
+    public getError(): IRoboCoachError {
+        return this.error;
+    }
+
+    public toLogEntry(): ActionLogEntry {
+        return new ActionLogEntry("ProcessUserLogoutFailedAction", LogLevel.Error);
     }
 }
 
