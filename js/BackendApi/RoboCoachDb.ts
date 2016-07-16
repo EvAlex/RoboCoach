@@ -24,7 +24,7 @@ export class RoboCoachDb {
     private testWorkoutPlans: WorkoutPlan[];
 
     constructor() {
-        this.firebaseApp = firebase.initializeApp(config.firebase);
+        this.firebaseApp = Firebase.initializeApp(config.firebase);
 
         this.converter = new AggregateConverter();
         dispatcher.register((action: IAction) => this.processAction(action));
@@ -222,13 +222,13 @@ export class RoboCoachDb {
     private processLogInAction(action: AuthActions.LogInAction): void {
         var auth = this.firebaseApp.auth(),
             provider: Firebase.AuthProvider = action.getProvider() === AuthActions.AuthProvider.Facebook
-                ? new auth.FacebookAuthProvider()
+                ? new firebase.auth.FacebookAuthProvider()
                 : action.getProvider() === AuthActions.AuthProvider.Google
-                    ? new auth.GoogleAuthProvider()
+                    ? new firebase.auth.GoogleAuthProvider()
                     : action.getProvider() === AuthActions.AuthProvider.Github
-                        ? new auth.GithubAuthProider()
+                        ? new firebase.auth.GithubAuthProider()
                         : action.getProvider() === AuthActions.AuthProvider.Twitter
-                            ? new auth.TwitterAuthProvider()
+                            ? new firebase.auth.TwitterAuthProvider()
                             : null;
         if (!provider) {
             throw new RoboCoachDbError(`Unknown AuthProvider: ${action.getProvider()}.`);

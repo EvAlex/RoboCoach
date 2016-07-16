@@ -47,7 +47,8 @@ declare namespace firebase {
         databaseURL: string;
     }
     
-    var apps:FirebaseApplication[];
+    var apps:FirebaseApplication[],
+        auth:Auth;
     
     
     /**
